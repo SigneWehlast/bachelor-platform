@@ -1,0 +1,9 @@
+@use '../abstracts/variables' as v;
+
+.table-icon{
+    width: v.$icon-size-md;
+}
+
+.nav-icon{
+    width: v.$icon-size-lg;
+}

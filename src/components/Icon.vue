@@ -1,16 +1,16 @@
 <script setup>
+import { icons } from "@/config/icons.js"
+
 const props = defineProps({
-  path: { type: String, required: true },
-  size: { type: Number, default: 24 }
+  name: { type: String, required: true },
 })
+
+const path = icons[props.name]
 </script>
 
 <template>
   <svg
-    :width="size"
-    :height="size"
     viewBox="0 0 24 24"
-    fill="currentColor"
   >
     <path :d="path" />
   </svg>
