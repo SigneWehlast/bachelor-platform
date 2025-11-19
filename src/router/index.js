@@ -1,45 +1,33 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
+import { createRouter, createWebHistory } from "vue-router"
+import { menuItems } from "@/config/menuItems"
+
+// Funktion til at flade menuItems ud til routes
+function generateRoutes(items) {
+  const routes = []
+
+  items.forEach(item => {
+    if (item.path && item.view) {
+      routes.push({
+        path: item.path,
+        name: item.label.toLowerCase().replace(/\s+/g, ""),
+        component: item.view,
+      })
+    }
+
+    // Hvis item har children, rekursivt tilføj dem
+    if (item.children) {
+      routes.push(...generateRoutes(item.children))
+    }
+  })
+
+  return routes
+}
+
+const routes = generateRoutes(menuItems)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: LoginView,
-    },
-    {
-      path: '/administration',
-      name: 'administration',
-      component: () => import('../views/AdministrationView.vue'),
-    },
-        {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: () => import('../views/DashboardView.vue'),
-    },
-        {
-      path: '/carboost',
-      name: 'carboost',
-      component: () => import('../views/CarBoostView.vue'),
-    },
-            {
-      path: '/customerchanges',
-      name: 'customerchanges',
-      component: () => import('../views/CustomerChanges.vue'),
-    },
-    {
-      path: '/sales',
-      name: 'sales',
-      component: () => import('../views/SalesView.vue'),
-    },
-        {
-      path: '/nontificationsettings',
-      name: 'nontificationsettings',
-      component: () => import('../views/NotificationSettings.vue'),
-    },
-  ],
+  routes,
 })
 
 export default router

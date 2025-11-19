@@ -1,79 +1,98 @@
 <script setup>
+import { menuItems } from "@/config/menuItems"
+import Icon from "@/components/Icon.vue"
+import { ref } from "vue"
+
+// Holder styr på hvilken dropdown er åben
+const openDropdowns = ref({})
+
+// Toggle dropdown
+const toggleDropdown = (label) => {
+  const newState = {}
+
+  if (openDropdowns.value[label]) {
+    openDropdowns.value = {}
+  } else {
+    newState[label] = true
+    openDropdowns.value = newState
+  }
+}
+
+const getUserFullPath = (item, parentPath = "") => {
+  if (!item.path) return parentPath
+  // Hvis item.path starter med /, så betragtes det som absolut
+  if (item.path.startsWith("/")) return parentPath + item.path
+  return parentPath + "/" + item.path
+}
+
+const UserTracking = (item, parentPath = "") => {
+  const fullPath = getUserFullPath(item, parentPath)
+  console.log("User clicked:", item.label, "full path:", fullPath)
+}
 </script>
 
 <template>
-    <Icon name="CarMultiple" class="table-icon" />
-          <nav>
-        <RouterLink to="/">Login</RouterLink>
-        <RouterLink to="/administration">Administraion</RouterLink>
-        <RouterLink to="/dashboard">Dashboard</RouterLink>
-        <RouterLink to="/carboost">Carboost</RouterLink>
-        <RouterLink to="/customerchanges">customerchanges</RouterLink>
-        <RouterLink to="/sales">Salg</RouterLink>
-        <RouterLink to="/NontificationSettings">Nonifikation</RouterLink>
-      </nav>
+  <nav class="sidebar">
+    <div class="sidebar__top">
+      <p>logo</p>
+      <Icon name="BellOutline" class="sidebar__icon" />
+    </div>
+
+    <div v-for="section in menuItems" :key="section.label" class="sidebar__section">
+      <h4 class="h4">{{ section.label }}</h4>
+
+      <template v-for="item in section.children" :key="item.label">
+        <div class="sidebar__item-wrapper">
+          <div class="sidebar__item" @click="item.children && toggleDropdown(item.label)"
+            :class="{ 'sidebar__item--open': openDropdowns[item.label] }">
+              <RouterLink 
+                :to="item.path || '#'" 
+                class="sidebar__link"
+                @click="UserTracking(item)"
+              >
+              <Icon 
+                v-if="item.icon" 
+                :name="item.icon" 
+                :class="['sidebar__icon', { 'sidebar__icon--open': openDropdowns[item.label] }]" 
+              />
+              <span class="sidebar__label text-medium">{{ item.label }}</span>
+            </RouterLink>
+
+            <!-- Dropdown ikon -->
+            <Icon
+              v-if="item.children"
+              :name="openDropdowns[item.label] ? 'ChevronDoubleUp' : 'ChevronRight'"
+              class="sidebar__dropdown-icon"
+            />
+          </div>
+
+          <!-- Dropdown menu -->
+          <div v-if="item.children && openDropdowns[item.label]" class="sidebar__dropdown text-medium">
+            <div
+              v-for="subItem in item.children"
+              :key="subItem.label"
+              class="sidebar__dropdown-item"
+            >
+              <RouterLink 
+                :to="subItem.path || '#'" 
+                class="sidebar__dropdown-link"
+                @click="UserTracking(subItem, item.path)"
+              >
+                <Icon :name="subItem.icon || 'CircleSmall'" class="sidebar__icon" />
+                <Icon v-if="subItem.icon" :name="subItem.icon" class="sidebar__icon" />
+                <span class="text-medium">{{ subItem.label }}</span>
+              </RouterLink>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+    <div class="sidebar__bottom">
+  <p  class="sidebar__bottom-icon">KN</p>
+  <div class="sidebar__bottom-userdetails">
+    <p class="sidebar__bottom-username text-medium">Kasper. H. Nielsen</p>
+    <p class="sidebar__bottom-role text-medium">Studendermedhjælper</p>
+  </div>
+</div>
+  </nav>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>

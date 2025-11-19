@@ -11,6 +11,7 @@ const path = icons[props.name]
 <template>
   <svg
     viewBox="0 0 24 24"
+    
   >
     <path :d="path" />
   </svg>

@@ -1,0 +1,104 @@
+@use '../../abstracts/variables' as v;
+@use '../../base/typography' as t;
+@use '../icon' as i;
+
+.sidebar {
+  width: 265px; //hardcodet
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 v.$spacing-paddin-xs;
+    border-bottom: v.$border-width-xxs solid v.$border-color;
+  }
+
+  &__section {
+    margin-bottom: v.$spacing-margin-xl;
+  }
+
+  &__item-wrapper {
+    margin-bottom: v.$spacing-margin-xs;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: v.$spacing-paddin-sm;
+
+    &:hover {
+      background-color: v.$bg-light-gray;
+    }
+  }
+
+  &__item--open {
+    background: v.$bg-ultra-light-gray;
+    border-left: v.$border-width-xs solid v.$primary-color-carads-dark;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: v.$spacing-gap-xs;
+    flex-grow: 1;
+    text-decoration: none;
+  }
+
+  &__dropdown {
+    margin: 0;
+    border-left: v.$border-width-xs solid v.$primary-color-carads-dark;
+    background: v.$bg-ultra-light-gray;
+    display: flex;
+    flex-direction: column; 
+    gap: v.$spacing-gap-xs; 
+    
+  }
+
+  &__dropdown-item {
+    margin: 0;
+    padding: 0; 
+  }
+
+  &__dropdown-link {
+    display: flex;
+    width: 100%;
+    padding: v.$spacing-paddin-sm;
+    text-decoration: none;
+    box-sizing: border-box;
+
+    &:hover {
+      background-color: v.$bg-light-gray;
+    }
+  }
+
+  &__dropdown-link--active {
+  background-color: v.$bg-light-gray;
+}
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    padding: v.$spacing-paddin-sm;
+    border-top: v.$border-width-xxs solid v.$border-color;
+
+    &-icon {
+      background-color: v.$bg-light-gray;
+      height: 60px;
+      width: 60px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-userdetails {
+      display: flex;
+      flex-direction: column;
+      gap: v.$spacing-gap-xs;
+
+      &-username {}
+      &-role {}
+    }
+  }
+}

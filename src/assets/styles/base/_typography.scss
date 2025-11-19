@@ -33,13 +33,13 @@ h4, .h4 {
     color: v.$text-color-gray;
   }
 
-  p.medium {
+.text-medium {
     font-size: v.$font-size-base;
     font-weight: v.$font-weight-medium;
     color: v.$text-color-gray;
   }
 
-  p.light {
+.text-light {
     font-size: v.$font-size-sm;
     font-weight: v.$font-weight-light;
     color: v.$text-color-gray;
