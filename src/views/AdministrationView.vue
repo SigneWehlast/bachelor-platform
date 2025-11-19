@@ -2,5 +2,5 @@
 
 </script>
 <template>
-    <p>hej</p>
+    <p>AdministraionWiew.vue</p>
 </template>

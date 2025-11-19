@@ -1,4 +1,4 @@
-import { mdiCarMultiple, mdiCarWireless, mdiCarWrench, mdiCart, mdiLogout, mdiAccountGroup, mdiCog, mdiMailboxOpenUpOutline, mdiStoreClock, mdiStore, mdiBellOutline, mdiAccount, mdiViewDashboardVariant, mdiWeb, mdiCarSearchOutline, mdiAlert, mdiArrowUpBold, mdiArrowDownBold, mdiCalendar, mdiChartLine, mdiContentSave, mdiAccountDetails, mdiInformationOutline, mdiAlertCircle, mdiEye, mdiEyeOff} from "@mdi/js";
+import { mdiCarMultiple, mdiCarWireless, mdiCarWrench, mdiCart, mdiLogout, mdiAccountGroup, mdiCog, mdiMailboxOpenUpOutline, mdiStoreClock, mdiStore, mdiBellOutline, mdiAccount, mdiViewDashboardVariant, mdiWeb, mdiCarSearchOutline, mdiAlert, mdiArrowUpBold, mdiArrowDownBold, mdiCalendar, mdiChartLine, mdiContentSave, mdiAccountDetails, mdiInformationOutline, mdiAlertCircle, mdiEye, mdiEyeOff, mdiCreditCardWireless} from "@mdi/js";
 
 export const icons = {
 CarMultiple: mdiCarMultiple,
@@ -20,7 +20,7 @@ ArrowUpBold: mdiArrowUpBold,
 ArrowDownBold: mdiArrowDownBold,
 Calendar: mdiCalendar,
 ChartLine: mdiChartLine,
-
+CarWireless: mdiCreditCardWireless,
 ContentSave: mdiContentSave,
 AccountDetails: mdiAccountDetails,
 InformationOutline: mdiInformationOutline,

@@ -1,5 +1,5 @@
 <script>
 </script>
 <template>
-    <p>hej</p>
+    <p>LoginView</p>
 </template>
