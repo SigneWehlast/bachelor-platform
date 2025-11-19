@@ -1,0 +1,17 @@
+@use 'variables' as vars;
+
+@mixin input {
+    height: vars.$height-sm;
+    border-color: vars.$border-color;
+    border-radius: vars.$border-radius-sm;
+    color: vars.$text-color-gray;
+    background-color: vars.$white;
+    font-size: vars.$font-size-base;
+}
+
+@mixin buttons {
+    height: vars.$height-sm;
+    color: vars.$white;
+    font-size: vars.$font-size-base;
+    border-radius: vars.$border-radius-sm;
+}
