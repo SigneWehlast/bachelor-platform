@@ -1,0 +1,58 @@
+
+@use '../abstracts/variables' as vars;
+@use '../abstracts/mixins' as mix;
+
+.login {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+
+    &__blank {
+        flex: 0 0 50%;
+        background-color: vars.$btn-color-dark;
+        
+    }
+
+    &__form {
+        display: flex;
+        flex: 0 0 50%;
+        flex-direction: column;
+        margin: auto;
+        align-items: center;
+        gap: vars.$spacing-gap-xxl;
+       
+    }
+
+    &-form {
+            display: flex;
+            flex-direction: column;
+            gap: vars.$spacing-gap-md;
+            width: 100%;
+            max-width: 22.5rem;
+
+     &__group {
+            display: flex;
+            flex-direction: column;
+            gap: vars.$spacing-gap-xs;
+            & p {
+                margin:0;
+                color: vars.$text-color-black;
+                text-align: center;
+            }
+        }
+
+        &__input {
+            display: flex;
+            @include mix.input;
+            gap: vars.$spacing-gap-md;
+        }
+
+        &__btn {
+            all: unset;
+            @include mix.buttons;
+            background-color: vars.$btn-color-dark;
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+    }
+}

@@ -2,7 +2,7 @@
 
 @mixin input {
     height: vars.$height-sm;
-    border-color: vars.$border-color;
+    border: 0.0625rem solid vars.$border-color;
     border-radius: vars.$border-radius-sm;
     color: vars.$text-color-gray;
     background-color: vars.$white;
