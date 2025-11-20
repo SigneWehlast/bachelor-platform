@@ -1,23 +1,33 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
+import { createRouter, createWebHistory } from "vue-router"
+import { menuItems } from "@/config/menuItems"
+
+// Funktion til at flade menuItems ud til routes
+function generateRoutes(items) {
+  const routes = []
+
+  items.forEach(item => {
+    if (item.path && item.view) {
+      routes.push({
+        path: item.path,
+        name: item.label.toLowerCase().replace(/\s+/g, ""),
+        component: item.view,
+      })
+    }
+
+    // Hvis item har children, rekursivt tilføj dem
+    if (item.children) {
+      routes.push(...generateRoutes(item.children))
+    }
+  })
+
+  return routes
+}
+
+const routes = generateRoutes(menuItems)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: LoginView,
-    },
-    {
-      path: '/administration',
-      name: 'administration',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AdministrationView.vue'),
-    },
-  ],
+  routes,
 })
 
 export default router
