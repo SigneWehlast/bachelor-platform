@@ -9,6 +9,7 @@ const route = useRoute()
 // Holder styr på hvilken dropdown er åben
 const openDropdowns = ref({})
 
+
 // Toggle dropdown
 const toggleDropdown = (label) => {
   const newState = {}
@@ -46,7 +47,7 @@ const UserTracking = (item, parentPath = "") => {
       <h4 class="h4">{{ section.label }}</h4>
 
       <template v-for="item in section.children" :key="item.label">
-        <div class="sidebar__item-wrapper">
+        <div v-if="!item.hidden" class="sidebar__item-wrapper">
           <div class="sidebar__item" @click.stop="item.children && toggleDropdown(item.label)"
             :class="{ 'sidebar__item--open': openDropdowns[item.label] }">
               <RouterLink 
