@@ -62,7 +62,7 @@ export const menuItems = [
           },
           {
             label: "Notifikationsindstillinger",
-            path: "/nontificationsettings",
+            path: "/notificationsettings",
             view: () => import("@/views/NotificationSettings.vue"),
           },
 

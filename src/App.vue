@@ -4,13 +4,16 @@ import NavigationComp from './components/navigation/NavigationComp.vue';
 </script>
 
 <template>
-  <header>
-    <div>
+  <div class="view">
+    <header>
+      <div>
 
-<NavigationComp></NavigationComp>
-    </div>
-  </header>
-
-  <RouterView />
+        <NavigationComp />
+      </div>
+    </header>
+    <main class="view__page">
+      <RouterView />
+    </main>
+  </div>
 </template>
 

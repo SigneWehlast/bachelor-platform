@@ -11,14 +11,14 @@
     &__item {
     color: vars.$text-color-black;
 
-    &:active {
-        background-color: vars.$bg-navigation-gray;
-        height: vars.$height-xs;
-        display: flex;
-        align-items: center;
-        padding-left: vars.$spacing-padding-xs;
-        padding-right: vars.$spacing-padding-xs;
-        border-radius: vars.$border-radius-sm;
+        &.is-active {
+            background-color: vars.$bg-navigation-gray;
+            height: vars.$height-xs;
+            display: flex;
+            align-items: center;
+            padding-left: vars.$spacing-padding-xs;
+            padding-right: vars.$spacing-padding-xs;
+            border-radius: vars.$border-radius-sm;
+        }
     }
-}
 }

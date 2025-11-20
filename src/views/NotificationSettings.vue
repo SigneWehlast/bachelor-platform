@@ -4,12 +4,16 @@ import NotificationSettingsComp from '@/components/NotificationSettingsComp.vue'
 </script>
 <template>
     <div>
-        <h1>Indstillinger</h1>
-        <div class="notification-settings">
-            <div class="notification-settings__navigation">
+        <div class="settings-topbar">
+            <h1>Indstillinger</h1>
+            <button class="settings-topbar__btn">Gem</button>
+        </div>
+        <p class="regular settings-breadcrumbs">Breadcrumbs</p>
+        <div class="settings">
+            <div class="settings-navigation">
                 <SettingsNavigation />
             </div>
-            <div class="notification-settings__content">
+            <div class="settings-content">
                 <NotificationSettingsComp />
             </div>
         </div>    

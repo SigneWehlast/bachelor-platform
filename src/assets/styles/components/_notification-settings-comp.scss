@@ -1,25 +1,9 @@
 @use '../abstracts/variables' as vars;
-@use '../abstracts/mixins' as mix;
 
 .notification {
-    &-topbar {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-
-        &__btn {
-            all: unset;
-            @include mix.buttons;
-            background-color: vars.$btn-color-dark;
-            width: 120px;
-            height: vars.$height-sm;
-            text-align: center;
-        }
-    }
-
     &-settings {
-    display: flex;
-    margin-top: vars.$spacing-margin-md;
+        display: flex;
+        margin-top: vars.$spacing-margin-md;
 
         &__left {
             display: flex;
@@ -48,6 +32,7 @@
 
                     & input {
                         accent-color: #28a745;
+                        margin-left: 0;
                     }
                 }
             }

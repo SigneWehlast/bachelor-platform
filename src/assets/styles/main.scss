@@ -4,6 +4,9 @@
 // Base
 @use './base/typography';
 
+//app
+@use './app';
+
 // Components
 @use './components/icon';
 @use './components/car-boost-graph';
