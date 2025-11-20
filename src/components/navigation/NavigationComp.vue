@@ -46,7 +46,7 @@ const UserTracking = (item, parentPath = "") => {
     </div>
 <div class="sidebar__sectionwrapper">
     <div v-for="section in menuItems" :key="section.label" class="sidebar__section">
-      <h4 class="h4 sidebar__label">{{ section.label }}</h4>
+      <h4 class="h4 sidebar__titel">{{ section.label }}</h4>
 
       <template v-for="item in section.children" :key="item.label">
         <div v-if="!item.hidden" class="sidebar__item-wrapper">

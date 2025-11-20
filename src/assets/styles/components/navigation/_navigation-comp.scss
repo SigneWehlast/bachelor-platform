@@ -34,14 +34,16 @@
     padding-top: v.$spacing-padding-xs;
   }
 
-  &__label{
+  &__titel{
     padding-left: v.$spacing-gap-xs;
-    padding-bottom: v.$spacing-gap-xs;
+    padding-bottom: v.$spacing-padding-xs;
   }
 
   &__item-wrapper {
     margin-bottom: v.$spacing-margin-xs;
   }
+
+
 
   &__item {
     display: flex;
