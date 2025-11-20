@@ -13,14 +13,14 @@
   &__top {
     display: flex;
     justify-content: space-between;
-    padding: 0 v.$spacing-paddin-xs;
+    padding: 0 v.$spacing-padding-xs;
     border-bottom: v.$border-width-xxs solid v.$border-color;
     padding-left: v.$spacing-gap-xs;
   }
 
   &__logo{
     width: v.$width-xxxxl;
-    padding: v.$spacing-paddin-sm 0 v.$spacing-paddin-sm 0;
+    padding: v.$spacing-padding-sm 0 v.$spacing-padding-sm 0;
   }
 
   &__sectionwrapper{
@@ -31,7 +31,7 @@
 
   &__section {
     margin-bottom: v.$spacing-margin-xl;
-    padding-top: v.$spacing-paddin-xs;
+    padding-top: v.$spacing-padding-xs;
   }
 
   &__label{
@@ -48,7 +48,7 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    padding: v.$spacing-paddin-sm;
+    padding: v.$spacing-padding-sm;
     border-left: v.$border-width-xs solid transparent;
 
     &:hover {
@@ -87,7 +87,7 @@
   &__dropdown-link {
     display: flex;
     width: 100%;
-    padding: v.$spacing-paddin-sm;
+    padding: v.$spacing-padding-sm;
     text-decoration: none;
     box-sizing: border-box;
 
