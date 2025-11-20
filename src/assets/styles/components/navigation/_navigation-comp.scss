@@ -70,6 +70,10 @@
     &:hover {
       background-color: v.$bg-light-gray;
     }
+
+    &:active{
+      background-color: v.$bg-light-gray;
+    }
   }
 
   &__dropdown-link--active {

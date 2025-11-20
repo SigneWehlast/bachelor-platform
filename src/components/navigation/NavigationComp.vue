@@ -2,6 +2,9 @@
 import { menuItems } from "@/config/menuItems"
 import Icon from "@/components/Icon.vue"
 import { ref } from "vue"
+import { useRoute } from "vue-router"
+
+const route = useRoute()
 
 // Holder styr på hvilken dropdown er åben
 const openDropdowns = ref({})
@@ -16,6 +19,7 @@ const toggleDropdown = (label) => {
     newState[label] = true
     openDropdowns.value = newState
   }
+  console.log("State:", openDropdowns.value)
 }
 
 const getUserFullPath = (item, parentPath = "") => {
@@ -43,7 +47,7 @@ const UserTracking = (item, parentPath = "") => {
 
       <template v-for="item in section.children" :key="item.label">
         <div class="sidebar__item-wrapper">
-          <div class="sidebar__item" @click="item.children && toggleDropdown(item.label)"
+          <div class="sidebar__item" @click.stop="item.children && toggleDropdown(item.label)"
             :class="{ 'sidebar__item--open': openDropdowns[item.label] }">
               <RouterLink 
                 :to="item.path || '#'" 
@@ -61,7 +65,8 @@ const UserTracking = (item, parentPath = "") => {
             <!-- Dropdown ikon -->
             <Icon
               v-if="item.children"
-              :name="openDropdowns[item.label] ? 'ChevronDoubleUp' : 'ChevronRight'"
+              @click.stop="toggleDropdown(item.label)"
+              :name="openDropdowns[item.label] ? 'ChevronDoubleDown' : 'ChevronRight'"
               class="sidebar__dropdown-icon"
             />
           </div>
@@ -76,6 +81,7 @@ const UserTracking = (item, parentPath = "") => {
               <RouterLink 
                 :to="subItem.path || '#'" 
                 class="sidebar__dropdown-link"
+                  :class="{ 'sidebar__dropdown-link--active': route.path === subItem.path }"
                 @click="UserTracking(subItem, item.path)"
               >
                 <Icon :name="subItem.icon || 'CircleSmall'" class="sidebar__icon" />
