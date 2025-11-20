@@ -5,6 +5,7 @@ $font-family-base: system-ui, sans-serif;
 
 body {
 font-family: $font-family-base;
+margin: 0;
 }
 
 
@@ -12,6 +13,7 @@ h1, .h1{
 font-size: v.$font-size-lg;
 font-weight: v.$font-weight-semibold;
 color: v.$text-color-black;
+margin: 0;
 }
 
 
@@ -19,28 +21,33 @@ h2, .h2{
     font-size: v.$font-size-md;
     font-weight: v.$font-weight-semibold;
     color: v.$text-color-black;
+    margin: 0;
 }
     
 h3, .h3 {
     font-size: v.$font-size-base;
     font-weight: v.$font-weight-semibold;
     color: v.$text-color-black;
+    margin: 0;
   }
   
 h4, .h4 {
     font-size: v.$font-size-base;
     font-weight: v.$font-weight-medium;
     color: v.$text-color-gray;
+    margin: 0;
   }
 
 .text-medium {
     font-size: v.$font-size-base;
     font-weight: v.$font-weight-medium;
     color: v.$text-color-gray;
+    margin: 0;
   }
 
 .text-light {
     font-size: v.$font-size-sm;
     font-weight: v.$font-weight-light;
     color: v.$text-color-gray;
+    margin: 0;
   }

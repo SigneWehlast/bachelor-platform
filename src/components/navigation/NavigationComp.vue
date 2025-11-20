@@ -3,6 +3,8 @@ import { menuItems } from "@/config/menuItems"
 import Icon from "@/components/Icon.vue"
 import { ref } from "vue"
 import { useRoute } from "vue-router"
+import logo from '@/assets/images/Carads_logo_dark_text.svg';
+
 
 const route = useRoute()
 
@@ -39,12 +41,12 @@ const UserTracking = (item, parentPath = "") => {
 <template>
   <nav class="sidebar">
     <div class="sidebar__top">
-      <p>logo</p>
+      <img :src="logo" alt="Carads Logo" class="sidebar__logo"/>
       <Icon name="BellOutline" class="sidebar__icon" />
     </div>
-
+<div class="sidebar__sectionwrapper">
     <div v-for="section in menuItems" :key="section.label" class="sidebar__section">
-      <h4 class="h4">{{ section.label }}</h4>
+      <h4 class="h4 sidebar__label">{{ section.label }}</h4>
 
       <template v-for="item in section.children" :key="item.label">
         <div v-if="!item.hidden" class="sidebar__item-wrapper">
@@ -93,6 +95,7 @@ const UserTracking = (item, parentPath = "") => {
           </div>
         </div>
       </template>
+    </div>
     </div>
     <div class="sidebar__bottom">
   <p  class="sidebar__bottom-icon">KN</p>

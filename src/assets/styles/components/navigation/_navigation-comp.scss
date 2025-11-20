@@ -4,16 +4,36 @@
 
 .sidebar {
   width: 265px; //hardcodet
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 
   &__top {
     display: flex;
     justify-content: space-between;
     padding: 0 v.$spacing-paddin-xs;
     border-bottom: v.$border-width-xxs solid v.$border-color;
+    padding-left: 6px;
+  }
+
+  &__logo{
+    width: v.$width-xxxxl;
+    padding: v.$spacing-paddin-sm 0 v.$spacing-paddin-sm 0;
+  }
+
+  &__sectionwrapper{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
 
   &__section {
     margin-bottom: v.$spacing-margin-xl;
+    padding-top: 1rem;
+  }
+
+  &__label{
+    padding-left: 6px;
   }
 
   &__item-wrapper {
@@ -83,13 +103,13 @@
   &__bottom {
     display: flex;
     align-items: center;
-    padding: v.$spacing-paddin-sm;
     border-top: v.$border-width-xxs solid v.$border-color;
+    padding-left: 6px;
 
     &-icon {
       background-color: v.$bg-light-gray;
-      height: 60px;
-      width: 60px;
+      height: 46px; //hardcodet
+      width: 46px; //hardcodet
       border-radius: 100%;
       display: flex;
       align-items: center;
@@ -99,9 +119,13 @@
     &-userdetails {
       display: flex;
       flex-direction: column;
-      gap: v.$spacing-gap-xs;
+      margin: 0 0 0 6px ;
+      gap: 6px;
 
-      &-username {}
+
+      &-username {
+        margin-bottom: 6px;
+      }
       &-role {}
     }
   }
