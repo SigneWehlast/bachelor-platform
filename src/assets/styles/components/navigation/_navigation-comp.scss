@@ -43,8 +43,6 @@
     margin-bottom: v.$spacing-margin-xs;
   }
 
-
-
   &__item {
     display: flex;
     align-items: center;
@@ -93,10 +91,7 @@
     text-decoration: none;
     box-sizing: border-box;
 
-    &:hover {
-      background-color: v.$bg-light-gray;
-    }
-
+    &:hover,
     &:active{
       background-color: v.$bg-light-gray;
     }
@@ -111,6 +106,7 @@
     align-items: center;
     border-top: v.$border-width-xxs solid v.$border-color;
     padding-left: v.$spacing-gap-xs;
+    padding-top: v.$spacing-gap-xs;;
 
     &-icon {
       background-color: v.$bg-light-gray;
@@ -130,7 +126,7 @@
 
 
       &-username {
-        margin-bottom: v.$spacing-margin-xs;
+      margin-bottom: v.$spacing-margin-xs;
       }
     }
   }
