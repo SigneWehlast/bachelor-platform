@@ -1,0 +1,15 @@
+@use '../abstracts/variables' as vars;
+
+.notification-settings {
+    display: flex;
+    flex-direction: row;
+
+    &__navigation {
+        flex: 0 0 15%;
+        padding-left: vars.$spacing-padding-md;
+    }
+
+    &__content {
+        padding: vars.$spacing-padding-lg;
+    }
+}
