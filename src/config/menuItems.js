@@ -14,14 +14,19 @@ export const menuItems = [
         view: () => import("@/views/AdministrationView.vue"),
         children: [
           {
-            label: "Carboost",
+            label: "Lead-view",
             path: "/carboost",
             view: () => import("@/views/CarBoostView.vue"),
           },
           {
-            label: "Salg",
+            label: "Kundedata",
             path: "/sales",
             view: () => import("@/views/SalesView.vue"),
+          },
+          {
+            label: "Indstillinger",
+            path: "/nontificationsettings",
+            view: () => import("@/views/NotificationSettings.vue"),
           },
         ],
       },
