@@ -7,13 +7,15 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  border-right: v.$border-width-xxs solid v.$box-shaddow;
+
 
   &__top {
     display: flex;
     justify-content: space-between;
     padding: 0 v.$spacing-paddin-xs;
     border-bottom: v.$border-width-xxs solid v.$border-color;
-    padding-left: 6px;
+    padding-left: v.$spacing-gap-xs;
   }
 
   &__logo{
@@ -29,11 +31,12 @@
 
   &__section {
     margin-bottom: v.$spacing-margin-xl;
-    padding-top: 1rem;
+    padding-top: v.$spacing-paddin-xs;
   }
 
   &__label{
-    padding-left: 6px;
+    padding-left: v.$spacing-gap-xs;
+    padding-bottom: v.$spacing-gap-xs;
   }
 
   &__item-wrapper {
@@ -46,6 +49,7 @@
     justify-content: space-between;
     cursor: pointer;
     padding: v.$spacing-paddin-sm;
+    border-left: v.$border-width-xs solid transparent;
 
     &:hover {
       background-color: v.$bg-light-gray;
@@ -104,7 +108,7 @@
     display: flex;
     align-items: center;
     border-top: v.$border-width-xxs solid v.$border-color;
-    padding-left: 6px;
+    padding-left: v.$spacing-gap-xs;
 
     &-icon {
       background-color: v.$bg-light-gray;
@@ -119,14 +123,13 @@
     &-userdetails {
       display: flex;
       flex-direction: column;
-      margin: 0 0 0 6px ;
-      gap: 6px;
+      margin: 0 0 0 v.$spacing-margin-xs;
+      gap: v.$spacing-gap-xs;
 
 
       &-username {
-        margin-bottom: 6px;
+        margin-bottom: v.$spacing-margin-xs;
       }
-      &-role {}
     }
   }
 }
