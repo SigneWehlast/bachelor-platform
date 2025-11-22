@@ -105,8 +105,8 @@
     display: flex;
     align-items: center;
     border-top: v.$border-width-xxs solid v.$border-color;
-    padding-left: v.$spacing-gap-xs;
-    padding-top: v.$spacing-gap-xs;;
+    padding: v.$spacing-gap-xs 0 v.$spacing-gap-xs v.$spacing-gap-xs;
+
 
     &-icon {
       background-color: v.$bg-light-gray;
