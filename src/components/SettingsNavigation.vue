@@ -1,17 +1,38 @@
 <script setup>
+import { ref } from "vue"
+
+
+const items = [
+ "Bruger indstillinger",
+ "Notifikations indstillinger",
+ "Lokation",
+ "Faciliteter",
+ "Integrationer",
+ "Medier",
+ "Bannerboost",
+ "CarBoost",
+ "CarShop",
+ "Hjemmeside",
+ "Produkter"
+]
+
+
+const activeItem = ref("Notifikations indstillinger")
 </script>
+
+
 <template>
-    <ul class="settings-navigation">
-        <li class="settings-navigation__item h4">Bruger indstillinger</li>
-        <li class="settings-navigation__item h4">Notifikations indstillinger</li>
-        <li class="settings-navigation__item h4">Lokation</li>
-        <li class="settings-navigation__item h4">Faciliteter</li>
-        <li class="settings-navigation__item h4">Integrationer</li>
-        <li class="settings-navigation__item h4">Medier</li>
-        <li class="settings-navigation__item h4">Bannerboost</li>
-        <li class="settings-navigation__item h4">CarBoost</li>
-        <li class="settings-navigation__item h4">CarShop</li>
-        <li class="settings-navigation__item h4">Hjemmeside</li>
-        <li class="settings-navigation__item h4">Produkter</li>
-    </ul>
+ <ul class="settings-navigation">
+   <li
+     v-for="item in items"
+     :key="item"
+     :class="[
+       'settings-navigation__item',
+       'h4',
+       { 'is-active': activeItem === item }
+     ]"
+   >
+     {{ item }}
+   </li>
+ </ul>
 </template>

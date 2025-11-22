@@ -1,15 +1,41 @@
 @use '../abstracts/variables' as vars;
+@use '../abstracts/mixins' as mix;
 
-.notification-settings {
-    display: flex;
-    flex-direction: row;
 
-    &__navigation {
-        flex: 0 0 15%;
-        padding-left: vars.$spacing-padding-md;
-    }
+.settings {
+   display: flex;
+   flex-direction: row;
+   margin-top: vars.$spacing-margin-md;   
 
-    &__content {
-        padding: vars.$spacing-padding-lg;
-    }
+
+   &-topbar {
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+
+
+       &__btn {
+           all: unset;
+           @include mix.buttons;
+           background-color: vars.$btn-color-dark;
+           width: 120px;
+           height: vars.$height-sm;
+           text-align: center;
+       }
+   }
+
+
+   &-breadcrumbs {
+       margin-top: vars.$spacing-margin-md;
+   }
+
+
+   &-navigation {
+       flex: 0 0 15%;
+   }
+
+
+   &-content {
+       padding: 0 vars.$spacing-padding-lg 0 vars.$spacing-padding-lg;
+   }
 }

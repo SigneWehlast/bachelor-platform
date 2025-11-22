@@ -2,10 +2,7 @@
 </script>
 <template>
     <div>
-        <div class="notification-topbar">           
-            <h3>Notifikations indstillinger</h3>
-            <button class="notification-topbar__btn">Gem</button>
-        </div> 
+        <h3>Nontifikations indstillinger</h3>
         <div class="notification-settings">
             <div class="notification-settings__left">
                 <div class="nofication-settings__section">

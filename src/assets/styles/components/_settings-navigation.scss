@@ -1,24 +1,26 @@
 @use '../abstracts/variables' as vars;
 
 .settings-navigation {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: vars.$spacing-gap-md;
-    margin: 0;
-    padding: 0;
+   list-style: none;
+   display: flex;
+   flex-direction: column;
+   gap: vars.$spacing-gap-md;
+   margin: 0;
+   padding: 0;
 
-    &__item {
-    color: vars.$text-color-black;
 
-    &:active {
-        background-color: vars.$bg-navigation-gray;
-        height: vars.$height-xs;
-        display: flex;
-        align-items: center;
-        padding-left: vars.$spacing-padding-xs;
-        padding-right: vars.$spacing-padding-xs;
-        border-radius: vars.$border-radius-sm;
-    }
-}
+   &__item {
+   color: vars.$text-color-black;
+
+
+       &.is-active {
+           background-color: vars.$bg-navigation-gray;
+           height: vars.$height-xs;
+           display: flex;
+           align-items: center;
+           padding-left: vars.$spacing-padding-xs;
+           padding-right: vars.$spacing-padding-xs;
+           border-radius: vars.$border-radius-sm;
+       }
+   }
 }
