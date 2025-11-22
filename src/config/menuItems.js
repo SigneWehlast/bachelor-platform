@@ -10,36 +10,36 @@ export const menuItems = [
       },
       {
         label: "Administration",
-        path: "/administration",
+        path: "/Administration",
         icon: "Cog",
         view: () => import("@/views/AdministrationView.vue"),
         children: [
           {
             label: "Lead-view",
-            path: "/carboost",
+            path: "/Lead-view",
             view: () => import("@/views/CarBoostView.vue"),
           },
           {
             label: "Kundedata",
-            path: "/sales",
+            path: "/Kundedata",
             view: () => import("@/views/SalesView.vue"),
           },
           {
             label: "Indstillinger",
-            path: "/nontificationsettings",
-            view: () => import("@/views/NotificationSettings.vue"),
+            path: "/Indstillinger",
+            view: () => import("@/views/SettingsView.vue"),
           },
         ],
       },
       {
         label: "Dashboard",
-        path: "/dashboard",
+        path: "/Dashboard",
         icon: "ViewDashboardVariant",
         view: () => import("@/views/DashboardView.vue"),
         children: [
           {
             label: "Kundeændringer",
-            path: "/customerchanges",
+            path: "/Customerchanges",
             view: () => import("@/views/CustomerChanges.vue"),
           },
         ],
@@ -55,14 +55,12 @@ export const menuItems = [
       {
         label: "Diverse",
         icon: "AccountDetails",
+        path: "/Indstillinger",
+        view: () => import("@/views/SettingsView.vue"),
         children: [
-            {
-            label: "Bruger indstillnger",
-            path: "",
-          },
           {
             label: "Notifikationsindstillinger",
-            path: "/nontificationsettings",
+            path: "/Notificationsettings",
             view: () => import("@/views/NotificationSettings.vue"),
           },
 
