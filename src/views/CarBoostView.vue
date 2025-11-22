@@ -1,6 +1,7 @@
-<script>
+<script setup>
+import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 
 </script>
 <template>
-    <p>Carboost</p>
+  <BreadcrumbsComp/>
 </template>

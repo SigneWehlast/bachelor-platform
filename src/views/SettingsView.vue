@@ -1,18 +1,25 @@
 <script setup>
 import SettingsNavigation from '@/components/SettingsNavigation.vue';
 import NotificationSettingsComp from '@/components/NotificationSettingsComp.vue';
+import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
+
 </script>
 <template>
-    <div>
-        <h1>Indstillinger</h1>
-        <div class="notification-settings">
-            <div class="notification-settings__navigation">
-                <SettingsNavigation />
-            </div>
-            <div class="notification-settings__content">
-                <NotificationSettingsComp />
-            </div>
-        </div>    
-    </div>
+   <div>
+       <div class="settings-topbar">
+           <h1>Indstillinger</h1>
+           <button class="settings-topbar__btn">Gem</button>
+       </div>
+       <p class="regular settings-breadcrumbs">  <BreadcrumbsComp/></p>
+       <div class="settings">
+           <div class="settings-navigation">
+               <SettingsNavigation />
+           </div>
+           <div class="settings-content">
+               <NotificationSettingsComp />
+           </div>
+       </div>   
+   </div>
+
 
 </template>

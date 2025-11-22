@@ -24,11 +24,11 @@ export const menuItems = [
             path: "/Kundedata",
             view: () => import("@/views/SalesView.vue"),
           },
-          {
-            label: "Indstillinger",
-            path: "/Indstillinger",
-            view: () => import("@/views/SettingsView.vue"),
-          },
+           // {
+            // label: "Indstillinger",
+           // path: "/Indstillinger",
+           // view: () => import("@/views/SettingsView.vue"),
+        //  }, 
         ],
       },
       {
@@ -55,12 +55,12 @@ export const menuItems = [
       {
         label: "Diverse",
         icon: "AccountDetails",
-        path: "/Indstillinger",
+        path: "/Diverse",
         view: () => import("@/views/SettingsView.vue"),
         children: [
           {
             label: "Notifikationsindstillinger",
-            path: "/Notificationsettings",
+            path: "/Nontifikations indstillinger",
             view: () => import("@/views/NotificationSettings.vue"),
           },
 

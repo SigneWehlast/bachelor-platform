@@ -1,6 +1,8 @@
 <script setup>
 import SettingsNavigation from '@/components/SettingsNavigation.vue';
 import NotificationSettingsComp from '@/components/NotificationSettingsComp.vue';
+import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
+
 </script>
 <template>
    <div>
@@ -8,7 +10,7 @@ import NotificationSettingsComp from '@/components/NotificationSettingsComp.vue'
            <h1>Indstillinger</h1>
            <button class="settings-topbar__btn">Gem</button>
        </div>
-       <p class="regular settings-breadcrumbs">Breadcrumbs</p>
+       <p class="regular settings-breadcrumbs">  <BreadcrumbsComp/></p>
        <div class="settings">
            <div class="settings-navigation">
                <SettingsNavigation />
