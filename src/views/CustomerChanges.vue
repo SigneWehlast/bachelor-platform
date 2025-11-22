@@ -2,5 +2,5 @@
 
 </script>
 <template>
-    <p>CustomerCganges</p>
+    <p>Kundeændringer</p>
 </template>

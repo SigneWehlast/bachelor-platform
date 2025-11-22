@@ -2,5 +2,5 @@
 
 </script>
 <template>
-    <p>Dash</p>
+    <p>Dashboard</p>
 </template>

@@ -16,20 +16,20 @@ export const menuItems = [
         children: [
           {
             label: "Lead-view",
-            path: "/Lead-view",
-            view: () => import("@/views/CarBoostView.vue"),
+            path: "/Carboost/Lead-view",
+            view: () => import("@/views/CarBoostView.vue")
           },
           {
             label: "Kundedata",
-            path: "/Kundedata",
+            path: "/Salg/Kundedata",
             view: () => import("@/views/SalesView.vue"),
           },
-           // {
-            // label: "Indstillinger",
-           // path: "/Indstillinger",
-           // view: () => import("@/views/SettingsView.vue"),
-        //  }, 
-        ],
+            {
+            label: "Indstillinger",
+             path: "/Diverse/Notificationsettings",
+            view: () => import("@/views/SettingsView.vue"),
+          },
+        ]
       },
       {
         label: "Dashboard",
@@ -39,12 +39,12 @@ export const menuItems = [
         children: [
           {
             label: "Kundeændringer",
-            path: "/Customerchanges",
+            path: "/Dashboard/Customerchanges",
             view: () => import("@/views/CustomerChanges.vue"),
           },
-        ],
-      },
-    ],
+        ]
+      }
+    ]
   },
   {
     label: "Produkter",
@@ -60,10 +60,9 @@ export const menuItems = [
         children: [
           {
             label: "Notifikationsindstillinger",
-            path: "/Nontifikations indstillinger",
+            path: "/Notificationsettings",
             view: () => import("@/views/NotificationSettings.vue"),
           },
-
         ]
       }
     ]
