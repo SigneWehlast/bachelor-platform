@@ -1,0 +1,29 @@
+@use '../abstracts/variables' as vars;
+@use '../abstracts/mixins' as mix;
+
+.administration {
+  display: flex;
+  flex-direction: column;
+  margin-top: vars.$spacing-margin-md;
+
+  &__topbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly
+
+  }
+
+  &__section {
+
+  }
+
+  &__button {
+    @include mix.buttons-administration;
+  }
+}

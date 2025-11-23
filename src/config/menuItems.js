@@ -16,18 +16,22 @@ export const menuItems = [
         children: [
           {
             label: "Lead-view",
-            path: "/Carboost/Lead-view",
-            view: () => import("@/views/CarBoostView.vue")
+            path: "/Lead-view",
+            view: () => import("@/views/CarBoostView.vue"),
+            section: "Carboost"
           },
+          
           {
             label: "Kundedata",
-            path: "/Salg/Kundedata",
+            path: "/Kundedata",
             view: () => import("@/views/SalesView.vue"),
+            section: "Salg"
           },
             {
             label: "Indstillinger",
-             path: "/Diverse/Notificationsettings",
+            path: "/Diverse/Notificationsettings",
             view: () => import("@/views/SettingsView.vue"),
+            section: "Indstillinger"
           },
         ]
       },

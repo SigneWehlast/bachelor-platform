@@ -13,7 +13,7 @@ const route = useRoute()
 // State: Holder styr på hvilken dropdown er åben
 const openDropdowns = ref({})
 
-// MenuDropdown
+// MenuDropdown 
 const toggleDropdown = (label) => {
   const newState = {}
   if (openDropdowns.value[label]) {

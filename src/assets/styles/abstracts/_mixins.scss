@@ -15,3 +15,18 @@
     font-size: vars.$font-size-base;
     border-radius: vars.$border-radius-sm;
 }
+
+@mixin buttons-administration {
+    background-color: vars.$white;
+    color: vars.$black;
+
+    height: vars.$height-sm;
+    border-radius: vars.$border-radius-sm;
+    border-color: vars.$border-color;
+    border-width: vars.$border-width-xxs;
+
+    &:hover {
+    background-color: vars.$bg-light-gray;
+    color: vars.$black;
+  }
+}
