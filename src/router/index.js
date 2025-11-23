@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import { menuItems } from "@/config/menuItems"
+import { UserTracking } from "@/utils/tracking"
 
 // Funktion til at flade menuItems ud til routes
 function generateRoutes(items) {
@@ -28,6 +29,10 @@ const routes = generateRoutes(menuItems)
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+})
+
+router.afterEach((to) => {
+  UserTracking(to.path)
 })
 
 export default router

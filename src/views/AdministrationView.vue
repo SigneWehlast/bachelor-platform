@@ -1,6 +1,8 @@
-<script>
+<script setup>
+import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 
 </script>
 <template>
-    <p>AdministraionWiew.vue</p>
+  <BreadcrumbsComp/>
+  <p>Administration.vue</p>
 </template>

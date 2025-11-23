@@ -6,6 +6,7 @@
     
   &__item {
     color: v.$text-color-gray;
+    text-decoration: none ;
 
     &--active {
       font-weight: bold;

@@ -1,6 +1,8 @@
-<script>
+<script setup>
+import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 
 </script>
 <template>
-    <p>Dashboard</p>
+  <BreadcrumbsComp/>
+  <p>DashboardView.vue</p>
 </template>
