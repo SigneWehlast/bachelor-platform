@@ -45,3 +45,14 @@
        }
    }
 }
+
+.regular {
+    font-size: vars.$font-size-base;
+    font-weight: vars.$font-weight-regular;
+    color: vars.$text-color-gray;
+    margin-right: vars.$spacing-margin-sm;
+}
+
+p, h4, h3 {
+    margin: 0;
+}

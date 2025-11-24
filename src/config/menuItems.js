@@ -6,7 +6,8 @@ export const menuItems = [
         label: "Login",
         path: "/",
         view: () => import("@/views/LoginView.vue"),
-        hidden: true
+        hidden: true,
+        meta: { layout: "none" }
       },
       {
         label: "Administration",

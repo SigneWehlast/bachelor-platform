@@ -1,20 +1,25 @@
 <script setup>
-import {RouterView } from 'vue-router'
+import {RouterView, useRoute } from 'vue-router';
 import NavigationComp from './components/navigation/NavigationComp.vue';
+
+const route = useRoute();
 </script>
 
 
 <template>
- <div class="view">
-   <header>
-     <div>
+    <template v-if="route.meta.layout === 'none'">
+      <RouterView />
+    </template>
+    
+   <template v-else>
+    <div class="view">
+      <header>
+        <NavigationComp />
+      </header>
 
-
-       <NavigationComp />
-     </div>
-   </header>
-   <main class="view__page">
-     <RouterView />
-   </main>
- </div>
+      <main class="view__page">
+        <RouterView />
+      </main>
+    </div>
+  </template>
 </template>

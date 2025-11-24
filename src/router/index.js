@@ -12,6 +12,7 @@ function generateRoutes(items) {
         path: item.path,
         name: item.label.toLowerCase().replace(/\s+/g, ""),
         component: item.view,
+        meta: item.meta || {} 
       })
     }
 
