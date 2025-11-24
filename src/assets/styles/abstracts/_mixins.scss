@@ -2,7 +2,7 @@
 
 @mixin input {
     height: vars.$height-sm;
-    border: 0.0625rem solid vars.$border-color;
+    border: vars.$border-width-xxs solid vars.$border-color;
     border-radius: vars.$border-radius-sm;
     color: vars.$text-color-gray;
     background-color: vars.$white;
@@ -17,16 +17,20 @@
 }
 
 @mixin buttons-administration {
-    background-color: vars.$white;
-    color: vars.$black;
+  appearance: none;
+  border-style: solid;
+  border-color: vars.$border-color;
+  border-width: vars.$border-width-xxs;
+  border-radius: vars.$border-radius-md;
+  background-color: vars.$white;
+  color: vars.$black;
+  height: vars.$height-sm;
+  width: vars.$width-xxxxxl;
+  padding: vars.$spacing-padding-xl vars.$spacing-padding-xxl;
 
-    height: vars.$height-sm;
-    border-radius: vars.$border-radius-sm;
-    border-color: vars.$border-color;
-    border-width: vars.$border-width-xxs;
-
-    &:hover {
+  &:hover {
     background-color: vars.$bg-light-gray;
     color: vars.$black;
   }
+
 }

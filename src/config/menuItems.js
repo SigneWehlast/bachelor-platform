@@ -19,20 +19,26 @@ export const menuItems = [
             label: "Lead-view",
             path: "/Lead-view",
             view: () => import("@/views/CarBoostView.vue"),
-            section: "Carboost"
+            section: "Carboost",
+            iconAdministration: "ChartLine",
+            LabelAdministration: "Håndter CarBoost-funtkioner"
           },
           
           {
             label: "Kundedata",
             path: "/Kundedata",
             view: () => import("@/views/SalesView.vue"),
-            section: "Salg"
+            section: "Salg",
+            iconAdministration: "AccountGroup",
+            LabelAdministration: "Håndter salgs funktioner"
           },
             {
-            label: "Indstillinger",
+            label: "indstillinger",
             path: "/Diverse/Notificationsettings",
             view: () => import("@/views/SettingsView.vue"),
-            section: "Indstillinger"
+            section: "Generelle indstillinger",
+            iconAdministration: "Cog",
+            LabelAdministration:"Håndter bruger indstillinger"
           },
         ]
       },
