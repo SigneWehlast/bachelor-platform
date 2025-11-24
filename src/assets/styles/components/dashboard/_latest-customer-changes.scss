@@ -1,0 +1,42 @@
+@use '../../abstracts/variables' as vars;
+@use '../../abstracts/mixins' as mix;
+
+.latest-customer-changes {
+    width: 100%;
+    &__topbar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 18px;
+
+        &-btn {
+            all: unset;
+            @include mix.buttons;
+            background-color: vars.$btn-color-dark;
+            width: 120px;
+            height: vars.$height-sm;
+            text-align: center;
+        }
+
+    }
+
+    &__content {
+        display: grid;
+        grid-template-rows: auto 1fr;
+
+        &-titles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 6px;
+        }
+
+        &-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            &-wrapper {
+                display: grid;
+                gap: 18px;
+            }
+        }
+    }
+}

@@ -1,0 +1,36 @@
+@use '../../abstracts/variables' as vars;
+
+.conversion-data-cars {
+    &__title {
+        margin-bottom: 18px;
+    }
+
+    &__content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: 12px;
+        margin-top: 12px;
+
+        &__box {
+            border: 0.0625rem solid vars.$bg-ultra-light-gray;
+            background-color: vars.$bg-ultra-light-gray;
+            border-radius: vars.$border-radius-sm;
+            padding: vars.$spacing-padding-md;
+
+            &-name {
+                text-align: center;
+            }
+
+            &-data {
+                text-align: center;
+            }
+
+            &-description {
+                text-align: center;
+            }
+        }
+
+    }
+
+}
