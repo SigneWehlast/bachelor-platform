@@ -49,12 +49,7 @@
     }
 
     &__button-next{
-      all: unset;
       @include m.buttons;
-      background-color: v.$btn-color-dark;
-      width: 120px;
-      height: v.$height-sm;
-      text-align: center;
     }
   &__customer-list {
      border: v.$border-width-xxs solid v.$border-color;

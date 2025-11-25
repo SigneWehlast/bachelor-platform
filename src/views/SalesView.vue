@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import CarsInNumbers from "@/components/filter/CarsInNumbers.vue";
 import SearchBar from "@/components/filter/SearchBar.vue";
@@ -14,6 +14,8 @@ const salesCustomers = ref([
 ]);
 
 const selectedCustomers = ref([]);
+
+const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
 
 function moveToSelected(customer) {
   salesCustomers.value = salesCustomers.value.filter(c => c !== customer);
@@ -43,7 +45,13 @@ console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til
 <template>
   <div class="SalesView">
     <div class="SalesView__topbar"> <h1>Salg</h1>
-      <button class="SalesView__button-next" @click="showCustomerData">Vis valgte</button>
+      <button
+        class="SalesView__button-next"
+        :disabled="isButtonDisabled"
+        @click="showCustomerData"
+      >
+        Vis valgte
+      </button>
   </div>
 
   <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
