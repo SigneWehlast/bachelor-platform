@@ -6,37 +6,36 @@
     &__topbar {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 18px;
+        margin-bottom: vars.$spacing-margin-md;
 
         &-btn {
             all: unset;
-            @include mix.buttons;
             background-color: vars.$btn-color-dark;
-            width: 120px;
             height: vars.$height-sm;
+            @include mix.buttons;
             text-align: center;
+            width: vars.$width-xxxl;
         }
-
     }
 
     &__content {
-        display: grid;
-        grid-template-rows: auto 1fr;
+        display: flex;
+        justify-content: space-between;
 
-        &-titles {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            margin-bottom: 6px;
+        &-names {
+            display: flex;
+            flex-direction: column;
+            gap: vars.$spacing-gap-md;
         }
 
-        &-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        &-dates {
+            display: flex;
+            flex-direction: column;
+            gap: vars.$spacing-gap-md;
+        }
 
-            &-wrapper {
-                display: grid;
-                gap: 18px;
-            }
+        &-title {
+            margin-bottom: vars.$spacing-margin-sm-minus;
         }
     }
 }

@@ -3,14 +3,14 @@
 .mdkmedia-overview {
 
     &__title {
-        margin-bottom: 18px;
+        margin-bottom: vars.$spacing-margin-md;
     }
     
     &__content {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(2, auto);
-        gap: 12px;
+        gap: vars.$spacing-gap-sm;
 
         &__box {
             border: 0.0625rem solid vars.$bg-ultra-light-gray;

@@ -16,14 +16,16 @@ const customers = ref([
            <button class="latest-customer-changes__topbar-btn">Vis alle</button>
         </div>
         <div class="latest-customer-changes__content">
-            <div class="latest-customer-changes__content-titles">
-                <h3>Kundenavn</h3>
-                <h3>Dato</h3>
+            <div class="latest-customer-changes__content-names">
+                <h3 class="latest-customer-changes__content-title">Kundenavn</h3>
+                <div v-for="(customer, index) in customers" :key="index">
+                    <div class="text-medium">{{ customer.name }}</div> 
+                </div> 
             </div>
-            <div class="latest-customer-changes__content-list-wrapper">
-                <div v-for="(customer, index) in customers" :key="index" class="latest-customer-changes__content-list">
-                    <div class="latest-customer-changes__content-list-name">{{ customer.name }}</div> 
-                    <div class="latest-customer-changes__content-list-date">{{ customer.date }}</div>
+            <div class="latest-customer-changes__content-dates">
+                <h3 class="latest-customer-changes__content-title">Dato</h3>
+                <div v-for="(customer, index) in customers" :key="index">
+                    <div class="text-medium">{{ customer.date }}</div>
                 </div>
             </div>
         </div>
