@@ -1,9 +1,25 @@
 @use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
 
 .SalesView {
 
 
+  &__wrapper{
+   display: flex;
+   flex-direction: row;
+   gap: v.$spacing-gap-xs;
+  }
+
   &__topbar {
+    display: flex;
+    justify-content: space-between;
+
+  }
+
+  &__filter-section {
+    display: flex;
+    gap: v.$spacing-gap-sm
 
   }
 
@@ -29,11 +45,21 @@
       background-color: v.$bg-light-gray;
       color: v.$black;
   }
+
     }
 
+    &__button-next{
+      all: unset;
+      @include m.buttons;
+      background-color: v.$btn-color-dark;
+      width: 120px;
+      height: v.$height-sm;
+      text-align: center;
+    }
   &__customer-list {
      border: v.$border-width-xxs solid v.$border-color;
      border-radius: v.$border-radius-sm;
+     width: 50%;
 
     ul {
         list-style: none;
