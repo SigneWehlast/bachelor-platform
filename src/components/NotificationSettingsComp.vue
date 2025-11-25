@@ -2,7 +2,7 @@
 </script>
 <template>
     <div>
-        <h3>Nontifikations indstillinger</h3>
+        <h3>Notifikations indstillinger</h3>
         <div class="notification-settings">
             <div class="notification-settings__left">
                 <div class="nofication-settings__section">
@@ -41,6 +41,13 @@
                             <p class="regular">Stigende antal i leads</p>
                         </div>
                         <p class="light">Når denne funktion er slået til, modtager du notifikationer omkring stigende antal af leads blandt kunderne.</p>
+                    </div>
+                    <div class="notification-settings__section-group">
+                        <div class="notification-settings__section-group__check">
+                            <input type="checkbox" value="leads-stop"></input>
+                            <p class="regular">Lead stop</p>
+                        </div>
+                        <p class="light">Når denne funktion er slået til, modtager du notifikationer omkring stop i antal af leads blandt kunderne.</p>
                     </div>
                 </div>
             </div>
