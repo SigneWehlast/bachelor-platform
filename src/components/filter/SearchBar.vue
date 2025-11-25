@@ -2,6 +2,5 @@
 </script>
 
 <template>
-        <p>hej fra Serchbar comp</p>
-
+        <input class="search-bar text-regular" type="text" placeholder="Søg..."></input>
 </template>

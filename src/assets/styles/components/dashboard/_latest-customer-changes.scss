@@ -20,7 +20,6 @@
 
     &__content {
         display: flex;
-        justify-content: space-between;
 
         &-names {
             display: flex;
@@ -38,4 +37,13 @@
             margin-bottom: vars.$spacing-margin-sm-minus;
         }
     }
+}
+
+.layout-space-between {
+  justify-content: space-between;
+}
+
+.layout-gap {
+  gap: vars.$spacing-gap-xxxl;
+  justify-content: flex-start;
 }
