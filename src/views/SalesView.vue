@@ -15,14 +15,9 @@ const salesCustomers = ref([
 
 const selectedCustomers = ref([]);
 
-// Flyt fra venstre -> højre
 function moveToSelected(customer) {
   salesCustomers.value = salesCustomers.value.filter(c => c !== customer);
   selectedCustomers.value.push(customer);
-}
-
-function SelectAllSelected(customer){
-  selectedCustomers.value = salesCustomers.value.filter (c=> c !== customer);
 }
 
 function selectAllCustomers() {
@@ -35,20 +30,23 @@ function removeAllCustomers() {
   selectedCustomers.value = [];
 }
 
-// Flyt fra højre -> venstre
 function moveToAvailable(customer) {
   selectedCustomers.value = selectedCustomers.value.filter(c => c !== customer);
   salesCustomers.value.push(customer);
+}
+
+function showCustomerData() {
+console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til kunde id
 }
 </script>
 
 <template>
   <div class="SalesView">
     <div class="SalesView__topbar"> <h1>Salg</h1>
-      <button class="SalesView__button-next">Vis valgte</button>
+      <button class="SalesView__button-next" @click="showCustomerData">Vis valgte</button>
   </div>
 
-  <p class="regular settings-breadcrumbs"> <!--settings breadcrum??? --> <BreadcrumbsComp /> </p>
+  <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
 <div class="SalesView__filter-section">
 <CarsInNumbers/>
 <SearchBar/>
