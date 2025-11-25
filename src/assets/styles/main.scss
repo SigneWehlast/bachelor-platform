@@ -36,8 +36,8 @@
 @use './pages/customer-changes';
 @use './pages/dashboard-view';
 @use './pages/login-view';
-@use './pages/notification-settings';
 @use './pages/sales-view';
+@use './pages/notification-settings';
 
 // mixin
 @use './abstracts/mixins';

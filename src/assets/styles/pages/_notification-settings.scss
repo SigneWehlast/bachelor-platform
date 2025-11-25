@@ -15,12 +15,7 @@
 
 
        &__btn {
-           all: unset;
            @include mix.buttons;
-           background-color: vars.$btn-color-dark;
-           width: 120px;
-           height: vars.$height-sm;
-           text-align: center;
        }
    }
 
