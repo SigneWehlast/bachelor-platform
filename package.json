@@ -11,11 +11,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "test:unit": "vitest",
-    "lint": "eslint . --fix --cache"
+    "lint": "eslint . --fix --cache",
+    "sync": "node src/scripts/syncData.js"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
     "cypress": "^15.6.0",
+    "mysql2": "^3.15.3",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },
