@@ -1,21 +1,19 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import CarsInNumbers from "@/components/filter/CarsInNumbers.vue";
 import SearchBar from "@/components/filter/SearchBar.vue";
+import { getCustomers } from "@/config/customerService";
 
-const salesCustomers = ref([
-  "Auto-House Køge Hvidovre",
-  "Autotorvet",
-  "Billi Billi",
-  "RST Biler",
-  "SIXT Bilsag",
-  "Thomens Auto",
-]);
+const salesCustomers = ref([]);
 
 const selectedCustomers = ref([]);
 
 const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
+
+onMounted(async () => {
+  salesCustomers.value = await getCustomers();
+});
 
 function moveToSelected(customer) {
   salesCustomers.value = salesCustomers.value.filter(c => c !== customer);
@@ -74,7 +72,7 @@ console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til
           class="SalesView__customer-item h3"
           @click="moveToSelected(item)"
         >
-          {{ item }}
+          {{ item.name }}
         </li>
       </ul>
     </div>
@@ -92,7 +90,7 @@ console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til
           class="SalesView__customer-item h3"
           @click="moveToAvailable(item)"
         >
-          {{ item }}
+          {{ item.name }}
         </li>
       </ul>
     </div>
