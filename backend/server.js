@@ -2,7 +2,7 @@ import express from "express";
 import mysql from "mysql2/promise";
 import { targetDb } from "./config/dbConfig.js";
 
-// Skift navn fra 'app' til 'server'
+
 const server = express();
 
 const db = mysql.createPool(targetDb);
