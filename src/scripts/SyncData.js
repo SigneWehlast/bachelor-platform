@@ -6,7 +6,7 @@ const sourceDb = {
   port: 3306,
   user: 'student',
   password: 'uy4450Iy!d4S72#j3a',
-  database: 'Carads'
+  database: 'carads_platform'
 };
 
 // Target database configuration (update with your own database)
