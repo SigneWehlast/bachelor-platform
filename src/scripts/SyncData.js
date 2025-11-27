@@ -1,6 +1,5 @@
 import mysql from 'mysql2/promise';
 
-// Source database configuration
 const sourceDb = {
   host: 'nextgen.carads.io',
   port: 3306,
@@ -9,7 +8,6 @@ const sourceDb = {
   database: 'carads_platform'
 };
 
-// Target database configuration (update with your own database)
 const targetDb = {
   host: 'localhost',
   port: 3306,
@@ -22,98 +20,109 @@ async function syncData() {
   let sourceConn, targetConn;
 
   try {
-    // Connect to both databases
     console.log('Connecting to databases...');
     sourceConn = await mysql.createConnection(sourceDb);
     targetConn = await mysql.createConnection(targetDb);
     console.log('Connected successfully\n');
 
-    // Sync Budget
-    console.log('Syncing budget data...');
-    await targetConn.query('TRUNCATE TABLE budget');
-    const [budgetRows] = await sourceConn.query(
-      'SELECT `companies_id`, `amount`, `created_month`, `created_year` FROM `student_budget` WHERE 1'
-    );
-    console.log(`Found ${budgetRows.length} budget records`);
-    
-    if (budgetRows.length > 0) {
-      const values = budgetRows.map(row => 
-        [row.companies_id, row.amount, row.created_month, row.created_year]
-      );
-      await targetConn.query(
-        'INSERT INTO budget (companies_id, amount, created_month, created_year) VALUES ?',
-        [values]
-      );
-    }
-    console.log('Budget sync completed\n');
 
-    // Sync Dealers
-    console.log('Syncing dealers data...');
-    await targetConn.query('TRUNCATE TABLE dealers');
-    const [dealerRows] = await sourceConn.query(
-      'SELECT `id`, `name`, `latitude`, `longitude`, `domain` FROM `student_dealers` WHERE 1'
-    );
-    console.log(`Found ${dealerRows.length} dealer records`);
-    
-    if (dealerRows.length > 0) {
-      const values = dealerRows.map(row => 
-        [row.id, row.name, row.latitude, row.longitude, row.domain]
-      );
-      await targetConn.query(
-        'INSERT INTO dealers (id, name, latitude, longitude, domain) VALUES ?',
-        [values]
-      );
-    }
-    console.log('Dealers sync completed\n');
+    //delete customer table to overwrite
+    console.log('Clearing customer table...');
+    await targetConn.query("DELETE FROM customer");
+    console.log('Customer table cleared\n');
 
-    // Sync Leads
-    console.log('Syncing leads data...');
-    await targetConn.query('TRUNCATE TABLE leads');
-    const [leadRows] = await sourceConn.query(
-      'SELECT `companies_id`, `created_year`, `created_month`, `phone_lead`, `mail_lead`, `hard_lead` FROM `student_leads` WHERE 1'
-    );
-    console.log(`Found ${leadRows.length} lead records`);
-    
-    if (leadRows.length > 0) {
-      const values = leadRows.map(row => 
-        [row.companies_id, row.created_year, row.created_month, row.phone_lead, row.mail_lead, row.hard_lead]
-      );
-      await targetConn.query(
-        'INSERT INTO leads (companies_id, created_year, created_month, phone_lead, mail_lead, hard_lead) VALUES ?',
-        [values]
-      );
-    }
-    console.log('Leads sync completed\n');
+    //get data from student_budget
+    const [budgetRows] = await sourceConn.query(`
+      SELECT companies_id, amount, created_month, created_year
+      FROM student_budget
+    `);
 
-    // Sync Products
-    console.log('Syncing product count data...');
-    await targetConn.query('TRUNCATE TABLE product_count');
-    const [productRows] = await sourceConn.query(
-      'SELECT `companies_id`, `day`, `products` FROM `student_product_count` WHERE 1'
-    );
-    console.log(`Found ${productRows.length} product count records`);
-    
-    if (productRows.length > 0) {
-      const values = productRows.map(row => 
-        [row.companies_id, row.day, row.products]
-      );
-      await targetConn.query(
-        'INSERT INTO product_count (companies_id, day, products) VALUES ?',
-        [values]
-      );
-    }
-    console.log('Product count sync completed\n');
+    const budgetMapped = budgetRows.map(row => ({
+      customer_id: row.companies_id,
+      total_budget: row.amount,
+      create_date: `${row.created_year}-${String(row.created_month).padStart(2, '0')}-01`
+    }));
 
-    console.log('All data synced successfully!');
+    //get name from student_dealers
+    const [dealerRows] = await sourceConn.query(`
+      SELECT id, name 
+      FROM student_dealers
+    `);
+
+    const dealersMapped = dealerRows.map(row => ({
+      customer_id: row.id,
+      customer_name: row.name
+    }));
+
+    //get data from student_leads
+    const [leadRows] = await sourceConn.query(`
+      SELECT companies_id, phone_lead, mail_lead, hard_lead
+      FROM student_leads
+    `);
+
+    const leadsMapped = leadRows.map(row => ({
+      customer_id: row.companies_id,
+      leads: (row.phone_lead || 0) + (row.mail_lead || 0) + (row.hard_lead || 0),
+      carboost_conversions: row.hard_lead || 0
+    }));
+
+    //get data from student_product_count
+    const [productRows] = await sourceConn.query(`
+      SELECT companies_id, products
+      FROM student_product_count
+    `);
+
+    const productsMapped = productRows.map(row => ({
+      customer_id: row.companies_id,
+      number_of_cars: row.products
+    }));
+
+    //merge data through mapping
+    const customerMap = {};
+
+    const merge = (rows) => {
+      rows.forEach(r => {
+        const id = r.customer_id;
+        if (!customerMap[id]) customerMap[id] = {};
+        Object.assign(customerMap[id], r);
+      });
+    };
+
+    merge(budgetMapped);
+    merge(dealersMapped);
+    merge(leadsMapped);
+    merge(productsMapped);
+
+    //insert into customer table
+    const insertRows = Object.values(customerMap);
+
+    if (insertRows.length > 0) {
+      const values = insertRows.map(r => [
+        r.customer_id || null,
+        r.customer_name || null,
+        r.total_budget || 0,
+        r.create_date || null,
+        r.leads || 0,
+        r.number_of_cars || 0,
+        r.carboost_conversions || 0
+      ]);
+
+      await targetConn.query(`
+        INSERT INTO customer 
+        (customer_id, customer_name, total_budget, create_date, leads, number_of_cars, carboost_conversions)
+        VALUES ?
+      `, [values]);
+    }
+
+    console.log("Customer table synced ✓");
 
   } catch (err) {
-    console.error('Error during sync:', err);
+    console.error("Error during sync:", err);
     throw err;
   } finally {
-    // Close connections
     if (sourceConn) await sourceConn.end();
     if (targetConn) await targetConn.end();
-    console.log('\nDatabase connections closed');
+    console.log('Database connections closed');
   }
 }
 
