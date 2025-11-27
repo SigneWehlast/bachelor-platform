@@ -1,11 +1,11 @@
 import express from "express";
 import mysql from "mysql2/promise";
-import { targetDb } from "./config/dbConfig.js";
+import { platformDb } from "./config/dbConfig.js";
 import cors from "cors"; 
 
 const server = express();
 
-const db = mysql.createPool(targetDb);
+const db = mysql.createPool(platformDb);
 
 server.use(cors({
     origin: "http://localhost:5173"

@@ -1,4 +1,4 @@
-export const sourceDb = {
+export const clientDb = {
     host: 'nextgen.carads.io',
     port: 3306,
     user: 'student',
@@ -6,7 +6,7 @@ export const sourceDb = {
     database: 'carads_platform'
   };
   
-  export const targetDb = {
+  export const platformDb = {
     host: 'localhost',
     port: 3306,
     user: 'root',

@@ -1,27 +1,27 @@
 import mysql from "mysql2/promise";
-import { sourceDb, targetDb } from "../config/dbConfig.js";
+import { clientDb, platformDbDb } from "../config/dbConfig.js";
 
 async function syncData() {
-  let sourceConn, targetConn;
+  let clientConn, platformConn;
 
   try {
     console.log('Connecting to databases...');
-    sourceConn = await mysql.createConnection(sourceDb);
-    targetConn = await mysql.createConnection(targetDb);
+    clientConn = await mysql.createConnection(clientDb);
+    platformConn = await mysql.createConnection(platformDb);
     console.log('Connected successfully\n');
 
   //delete customer table to overwrite
     console.log('Disabling foreign key checks...');
-    await targetConn.query("SET FOREIGN_KEY_CHECKS = 0");
+    await platformConn.query("SET FOREIGN_KEY_CHECKS = 0");
 
     console.log('Clearing customer table...');
-    await targetConn.query("DELETE FROM customer");
+    await platformConn.query("DELETE FROM customer");
 
     console.log('Enabling foreign key checks...');
-    await targetConn.query("SET FOREIGN_KEY_CHECKS = 1");
+    await platformConn.query("SET FOREIGN_KEY_CHECKS = 1");
 
  //get data from student_budget
-    const [budgetRows] = await sourceConn.query(`
+    const [budgetRows] = await clientConn.query(`
       SELECT companies_id, amount, created_month, created_year
       FROM student_budget
     `);
@@ -33,7 +33,7 @@ async function syncData() {
     }));
 
     //get name from student_dealers
-    const [dealerRows] = await sourceConn.query(`
+    const [dealerRows] = await clientConn.query(`
       SELECT id, name 
       FROM student_dealers
     `);
@@ -44,7 +44,7 @@ async function syncData() {
     }));
 
     //get data from student_leads
-    const [leadRows] = await sourceConn.query(`
+    const [leadRows] = await clientConn.query(`
       SELECT companies_id, phone_lead, mail_lead, hard_lead
       FROM student_leads
     `);
@@ -56,7 +56,7 @@ async function syncData() {
     }));
 
     //get data from student_product_count
-    const [productRows] = await sourceConn.query(`
+    const [productRows] = await clientConn.query(`
       SELECT companies_id, products
       FROM student_product_count
     `);
@@ -95,7 +95,7 @@ async function syncData() {
         r.carboost_conversions || 0
       ]);
 
-      await targetConn.query(`
+      await platformConn.query(`
         INSERT INTO customer 
         (customer_id, customer_name, total_budget, create_date, leads, number_of_cars, carboost_conversions)
         VALUES ?
@@ -109,8 +109,8 @@ async function syncData() {
     throw err;
 
   } finally {
-    if (sourceConn) await sourceConn.end();
-    if (targetConn) await targetConn.end();
+    if (clientConn) await clientConn.end();
+    if (platformConn) await platformConn.end();
     console.log('Database connections closed');
   }
 }
