@@ -1,20 +1,5 @@
-import mysql from 'mysql2/promise';
-
-const sourceDb = {
-  host: 'nextgen.carads.io',
-  port: 3306,
-  user: 'student',
-  password: 'uy4450Iy!d4S72#j3a',
-  database: 'carads_platform'
-};
-
-const targetDb = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'root',
-  database: 'Platform'
-};
+import mysql from "mysql2/promise";
+import { sourceDb, targetDb } from "../config/dbConfig.js";
 
 async function syncData() {
   let sourceConn, targetConn;
@@ -25,18 +10,17 @@ async function syncData() {
     targetConn = await mysql.createConnection(targetDb);
     console.log('Connected successfully\n');
 
-
-    //delete customer table to overwrite
+  //delete customer table to overwrite
     console.log('Disabling foreign key checks...');
     await targetConn.query("SET FOREIGN_KEY_CHECKS = 0");
-    
+
     console.log('Clearing customer table...');
     await targetConn.query("DELETE FROM customer");
-    
+
     console.log('Enabling foreign key checks...');
     await targetConn.query("SET FOREIGN_KEY_CHECKS = 1");
 
-    //get data from student_budget
+ //get data from student_budget
     const [budgetRows] = await sourceConn.query(`
       SELECT companies_id, amount, created_month, created_year
       FROM student_budget
@@ -87,9 +71,8 @@ async function syncData() {
 
     const merge = (rows) => {
       rows.forEach(r => {
-        const id = r.customer_id;
-        if (!customerMap[id]) customerMap[id] = {};
-        Object.assign(customerMap[id], r);
+        if (!customerMap[r.customer_id]) customerMap[r.customer_id] = {};
+        Object.assign(customerMap[r.customer_id], r);
       });
     };
 
@@ -124,6 +107,7 @@ async function syncData() {
   } catch (err) {
     console.error("Error during sync:", err);
     throw err;
+
   } finally {
     if (sourceConn) await sourceConn.end();
     if (targetConn) await targetConn.end();
