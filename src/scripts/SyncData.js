@@ -27,9 +27,14 @@ async function syncData() {
 
 
     //delete customer table to overwrite
+    console.log('Disabling foreign key checks...');
+    await targetConn.query("SET FOREIGN_KEY_CHECKS = 0");
+    
     console.log('Clearing customer table...');
     await targetConn.query("DELETE FROM customer");
-    console.log('Customer table cleared\n');
+    
+    console.log('Enabling foreign key checks...');
+    await targetConn.query("SET FOREIGN_KEY_CHECKS = 1");
 
     //get data from student_budget
     const [budgetRows] = await sourceConn.query(`
