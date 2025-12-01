@@ -5,9 +5,10 @@ export async function getCustomers() {
       
       return data
         .filter(c => c.customer_name)
-        .map(c => ({ id: c.customer_id, name: c.customer_name }));
-        
-    } catch (err) {
+        .map(c => ({ id: c.customer_id, name: c.customer_name }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      } catch (err) {
       console.error("Fejl ved hentning af kunder:", err);
       return [];
     }
