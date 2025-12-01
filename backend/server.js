@@ -23,6 +23,14 @@ server.get("/api/customer", async (req, res) => {
 });
 
 //customer sale - show chosen customers
+server.get('/api/customer/sale', async (req, res) => {
+  const ids = req.query.ids.split(',').map(id => parseInt(id));
+  const [rows] = await db.query(
+    "SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions FROM customer WHERE customer_id IN (?)",
+    [ids]
+  );
+  res.json(rows);
+});
 
 //customers carboost
 server.get('/api/customer/carboost', async (req, res) => {

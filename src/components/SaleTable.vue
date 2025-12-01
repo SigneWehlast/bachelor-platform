@@ -26,18 +26,18 @@ const showId = ref(false);
         <th>Konverteringer</th>
         <th>Carboost konverteringer</th>
         <th>Budget pr dag</th>
-        <th>Konvertering %</th>
+        <th>Konvertering i procent</th>
       </template>
 
       <template #rows>
         <tr v-for="item in props.carsData" :key="item.customer_id">
-          <td>{{ showId ? item.customer_id : item.customer_name }}</td>
-          <td>{{ item.number_of_cars }}</td>
-          <td>{{ item.total_budget }}</td>
+          <td>{{ showId ? item.id : item.name }}</td>
+          <td>{{ item.numberOfCars }}</td>
+          <td>{{ item.totalBudget }}</td>
           <td>{{ item.leads }}</td>
-          <td>{{ item.carboost_conversions }}</td>
-          <td>{{ item.dailyBudget }}</td> 
-          <td>{{ item.conversionPercent }}%</td>
+          <td>{{ item.carboostConversions }}</td>
+          <td>{{ item.budgetPerDay }}</td> 
+          <td>{{ item.conversionPercent }}</td>
         </tr>
       </template>
     </BaseTable>
