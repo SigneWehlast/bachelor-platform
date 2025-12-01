@@ -5,6 +5,7 @@ import CarsInNumbers from "@/components/filter/CarsInNumbers.vue";
 import SearchBar from "@/components/filter/SearchBar.vue";
 import { getCustomers } from "@/config/customerService";
 import { sortByName } from "@/utils/sort";
+import SaleTable from "@/components/SaleTable.vue";
 
 
 const salesCustomers = ref([]);
@@ -40,7 +41,8 @@ function moveToAvailable(customer) {
 }
 
 function showCustomerData() {
-console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til kunde id
+  customerTableData.value = [...selectedCustomers.value];
+  console.log("Data der vises i tabellen:", customerTableData.value);
 }
 </script>
 
@@ -100,4 +102,7 @@ console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til
     </div>
   </div>
 </div>
+
+<SaleTable/>
+
 </template>
