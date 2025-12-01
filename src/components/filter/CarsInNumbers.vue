@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    <p>hej fra CarsInnumbers comp</p>
+    <p>CarsInNumbers</p>
 </template>

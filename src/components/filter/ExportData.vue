@@ -2,5 +2,5 @@
 </script>
 
 <template>
-    <p>DisplayComp</p>
+    <p>ExportData</p>
 </template>

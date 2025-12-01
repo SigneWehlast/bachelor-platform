@@ -14,12 +14,19 @@
   &__topbar {
     display: flex;
     justify-content: space-between;
+  }
 
+  &__buttons-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: v.$spacing-gap-sm;
   }
 
   &__filter-section {
     display: flex;
-    gap: v.$spacing-gap-sm
+    gap: v.$spacing-gap-sm;
+    padding: v.$spacing-padding-sm 0;
+    
 
   }
 
@@ -48,9 +55,16 @@
 
     }
 
-    &__button-next{
+    &__button-next,
+    &__button-back,
+    &__button-anonymize {
       @include m.buttons;
     }
+    
+    &__button-anonymize {
+      background-color: v.$primary-color-carads-dark;
+    }
+
   &__customer-list {
      border: v.$border-width-xxs solid v.$border-color;
      border-radius: v.$border-radius-sm;
@@ -63,6 +77,8 @@
         padding: v.$spacing-padding-xs v.$spacing-padding-xs;
         gap: v.$spacing-gap-xs;
         margin: 0;
+        max-height: 550px; // skal erstattes til en rem højde
+        overflow-y: auto;
     }
 
     &--selected {

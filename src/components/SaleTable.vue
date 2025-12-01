@@ -1,26 +1,25 @@
 <script setup>
-import { ref } from "vue";
 import BaseTable from './BaseTable.vue';
 
 const props = defineProps({
   carsData: {
     type: Array,
     required: true
+  },
+  showId: {
+    type: Boolean,
+    required: true
   }
 });
 
-const showId = ref(false);
 </script>
 
 <template>
   <div>
-    <label>
-      <input type="checkbox" v-model="showId" /> Vis ID i stedet for navn
-    </label>
 
     <BaseTable>
       <template #header>
-        <th>{{ showId ? 'ID' : 'Kundenavn' }}</th>
+        <th>{{ props.showId ? 'ID' : 'Kundenavn' }}</th>
         <th>Antal biler</th>
         <th>Samlet Budget</th>
         <th>Konverteringer</th>
