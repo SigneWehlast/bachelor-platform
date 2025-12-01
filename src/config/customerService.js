@@ -2,7 +2,7 @@ import { sortByName } from "@/utils/sort";
 
 export async function getCustomers() {
   try {
-    const res = await fetch("http://localhost:3000/api/customers");
+    const res = await fetch("http://localhost:3000/api/customer");
     const data = await res.json();
     
     const customers = data
