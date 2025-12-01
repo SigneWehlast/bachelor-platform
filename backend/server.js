@@ -13,7 +13,7 @@ server.use(cors({
 
 server.get("/api/customers", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM customer");
+    const [rows] = await db.query("SELECT customer_id, customer_name FROM customer");
     res.json(rows);
   } catch (err) {
     console.error(err);
