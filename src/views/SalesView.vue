@@ -4,6 +4,8 @@ import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import CarsInNumbers from "@/components/filter/CarsInNumbers.vue";
 import SearchBar from "@/components/filter/SearchBar.vue";
 import { getCustomers } from "@/config/customerService";
+import { sortByName } from "@/utils/sort";
+
 
 const salesCustomers = ref([]);
 
@@ -16,8 +18,9 @@ onMounted(async () => {
 });
 
 function moveToSelected(customer) {
-  salesCustomers.value = salesCustomers.value.filter(c => c !== customer);
+  salesCustomers.value = salesCustomers.value.filter(c => c.id !== customer.id);
   selectedCustomers.value.push(customer);
+  sortByName(selectedCustomers.value);
 }
 
 function selectAllCustomers() {
@@ -31,8 +34,9 @@ function removeAllCustomers() {
 }
 
 function moveToAvailable(customer) {
-  selectedCustomers.value = selectedCustomers.value.filter(c => c !== customer);
+  selectedCustomers.value = selectedCustomers.value.filter(c => c.id !== customer.id);
   salesCustomers.value.push(customer);
+  sortByName(salesCustomers.value);
 }
 
 function showCustomerData() {
@@ -68,7 +72,7 @@ console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til
       <ul>
         <li
           v-for="item in salesCustomers"
-          :key="item"
+          :key="item.id"
           class="SalesView__customer-item h3"
           @click="moveToSelected(item)"
         >
@@ -86,7 +90,7 @@ console.log("Valgte kunder:", selectedCustomers.value); //skal måske ændre til
       <ul>
         <li
           v-for="item in selectedCustomers"
-          :key="item"
+          :key="item.id"
           class="SalesView__customer-item h3"
           @click="moveToAvailable(item)"
         >
