@@ -13,6 +13,7 @@
 @use './components/sale-table';
 @use './components/settings-navigation';
 @use './components/notification-settings-comp';
+@use './components/base-table';
 
 
 @use './components/dashboard/conversions-data-budget';
@@ -29,6 +30,7 @@
 @use './components/navigation/breadcrumbs-comp';
 @use './components/navigation/navigation-comp';
 @use './components/navigation/pagination-comp';
+
 
 // Pages
 @use './pages/administration-view';

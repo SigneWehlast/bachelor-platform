@@ -25,15 +25,23 @@ server.get("/api/customer", async (req, res) => {
 //customer sale - show chosen customers
 
 //customers carboost
-server.get("/api/customer", async (req, res) => {
+server.get('/api/customer/carboost', async (req, res) => {
+  const page = parseInt(req.query.page) || 1; 
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+
   try {
-    const [rows] = await db.query("SELECT customer_id, leads, date FROM customer");
+    const [rows] = await db.query(
+      "SELECT customer_id, customer_name, leads, last_updated FROM customer WHERE customer_name IS NOT NULL ORDER BY customer_name ASC LIMIT ? OFFSET ?",
+      [limit, offset]
+    );
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: "Kunne ikke hente kunder" });
   }
 });
+
+
 
 //users
 server.get("/api/users", async (req, res) => {
@@ -69,7 +77,7 @@ server.get("/api/customergroup", async (req, res) => {
 });
 
 //history carboost
-server.get("/api/history", async (req, res) => {
+server.get("/api/history/carboost", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT customer_id, leads, date FROM history");
     res.json(rows);
@@ -80,7 +88,7 @@ server.get("/api/history", async (req, res) => {
 });
 
 //history sales
-server.get("/api/history", async (req, res) => {
+server.get("/api/history/sales", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT customer_id, carboost_conversions, total_budget, number_of_cars, leads FROM history");
     res.json(rows);
