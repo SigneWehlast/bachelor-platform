@@ -8,6 +8,9 @@ import { sortByName } from "@/utils/sort";
 import SaleTable from "@/components/SaleTable.vue";
 
 
+const showTable = ref(false);
+const customerTableData = ref([]);
+
 const salesCustomers = ref([]);
 
 const selectedCustomers = ref([]);
@@ -19,7 +22,7 @@ onMounted(async () => {
 });
 
 function moveToSelected(customer) {
-  salesCustomers.value = salesCustomers.value.filter(c => c.id !== customer.id);
+  salesCustomers.value = salesCustomers.value.filter(c => c.customer_id !== customer.customer_id);
   selectedCustomers.value.push(customer);
   sortByName(selectedCustomers.value);
 }
@@ -35,19 +38,20 @@ function removeAllCustomers() {
 }
 
 function moveToAvailable(customer) {
-  selectedCustomers.value = selectedCustomers.value.filter(c => c.id !== customer.id);
+  selectedCustomers.value = selectedCustomers.value.filter(c => c.customer_id !== customer.customer_id);
   salesCustomers.value.push(customer);
   sortByName(salesCustomers.value);
 }
 
 function showCustomerData() {
   customerTableData.value = [...selectedCustomers.value];
+  showTable.value = true;
   console.log("Data der vises i tabellen:", customerTableData.value);
 }
 </script>
 
 <template>
-  <div class="SalesView">
+  <div class="SalesView" v-if="!showTable">
     <div class="SalesView__topbar"> <h1>Salg</h1>
       <button
         class="SalesView__button-next"
@@ -74,11 +78,11 @@ function showCustomerData() {
       <ul>
         <li
           v-for="item in salesCustomers"
-          :key="item.id"
+          :key="item.customer_id"
           class="SalesView__customer-item h3"
           @click="moveToSelected(item)"
         >
-          {{ item.name }}
+        {{ item.customer_name }}
         </li>
       </ul>
     </div>
@@ -92,17 +96,21 @@ function showCustomerData() {
       <ul>
         <li
           v-for="item in selectedCustomers"
-          :key="item.id"
+          :key="item.customer_id"
           class="SalesView__customer-item h3"
           @click="moveToAvailable(item)"
         >
-          {{ item.name }}
+        {{ item.customer_name }}
         </li>
       </ul>
     </div>
   </div>
 </div>
 
-<SaleTable/>
+<div>
+  <SaleTable v-if="showTable" :carsData="customerTableData"/>
+
+</div>
+
 
 </template>

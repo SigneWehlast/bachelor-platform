@@ -5,9 +5,7 @@ export async function getCustomers() {
     const res = await fetch("http://localhost:3000/api/customer");
     const data = await res.json();
     
-    const customers = data
-      .filter(c => c.customer_name)
-      .map(c => ({ id: c.customer_id, name: c.customer_name }));
+    const customers = data.filter(c => c.customer_name);
 
     sortByName(customers);
 

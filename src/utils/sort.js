@@ -1,3 +1,6 @@
-export function sortByName(list) {
-    list.sort((a, b) => a.name.localeCompare(b.name));
-  }
+export function sortByName(arr, field = "customer_name") {
+  return arr.sort((a, b) => {
+    if (!a[field] || !b[field]) return 0;
+    return a[field].localeCompare(b[field]);
+  });
+}
