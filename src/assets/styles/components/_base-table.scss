@@ -1,13 +1,26 @@
 @use '../abstracts/variables' as vars;
 
 .base-table {
-    width: 100%;
+  width: 100%;
+  border-collapse: collapse;
 
-    &__head {
+  & td {
+     padding: vars.$spacing-padding-sm 0;
+  }
 
-    }
+  & th {
+    padding-bottom: vars.$spacing-padding-sm;
+  }
 
-    &__body {
+  & tbody tr:nth-child(even) {
+    background-color: vars.$table-color-last;
+  }
 
-    }
+  & tbody tr:nth-child(odd) {
+    background-color: vars.$table-color-first;
+  }
+
+  & th:not(:first-child), td:not(:first-child) {
+  padding-left: vars.$spacing-margin-xxl;
+}
 }

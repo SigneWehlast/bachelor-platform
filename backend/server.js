@@ -51,7 +51,14 @@ server.get('/api/customer/carboost', async (req, res) => {
       "SELECT customer_id, customer_name, leads, last_updated FROM customer WHERE customer_name IS NOT NULL ORDER BY customer_name ASC LIMIT ? OFFSET ?",
       [limit, offset]
     );
-    res.json(rows);
+
+     const [countRows] = await db.query(
+      "SELECT COUNT(*) as totalCount FROM customer WHERE customer_name IS NOT NULL"
+    );
+    
+    const totalCount = countRows[0].totalCount;
+
+    res.json({ data: rows, totalCount });
   } catch (err) {
     res.status(500).json({ error: "Kunne ikke hente kunder" });
   }
@@ -95,7 +102,7 @@ server.get("/api/customergroup", async (req, res) => {
 //history carboost
 server.get("/api/history/carboost", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT customer_id, leads, date FROM history");
+    const [rows] = await db.query("SELECT customer_id, leads, last_updated FROM history");
     res.json(rows);
   } catch (err) {
     console.error(err);
