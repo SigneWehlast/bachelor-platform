@@ -1,0 +1,16 @@
+@use '../abstracts/variables' as vars;
+
+.carboost-view {
+
+    min-height: 100vh;
+
+    &-title {
+        margin-bottom: vars.$spacing-margin-sm;
+    }
+
+    &__filter {
+        display: flex;
+        flex-direction: row;
+        margin: vars.$spacing-margin-sm 0 vars.$spacing-margin-lg 0;
+    }
+}
