@@ -3,6 +3,7 @@ import mysql from "mysql2/promise";
 import { platformDb } from "./config/dbConfig.js";
 import cors from "cors"; 
 import './cron.js';
+import jwt from "jsonwebtoken";
 
 const server = express();
 
@@ -66,15 +67,32 @@ server.get('/api/customer/carboost', async (req, res) => {
 });
 
 //users
-server.get("/api/users", async (req, res) => {
+
+
+// Login endpoint
+server.use(express.json());
+
+server.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  console.log("Login attempt:", req.body);
+
   try {
-    const [rows] = await db.query("SELECT * FROM users");
-    res.json(rows);
+    const [rows] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
+    console.log("DB rows:", rows);
+
+    if (rows.length === 0) return res.status(400).send("User not found");
+
+    if (password !== rows[0].password) return res.status(400).send("Wrong password");
+
+    const token = jwt.sign({ user_id: rows[0].user_id }, "secretKey", { expiresIn: "1h" });
+    res.json({ token });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
+    console.error("Login error:", err);
+    res.status(500).send("Database error");
   }
 });
+
+
 
 //customer-group
 server.get("/api/customers-in-groups", async (req, res) => {
