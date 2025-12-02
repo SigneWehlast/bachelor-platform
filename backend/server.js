@@ -2,6 +2,7 @@ import express from "express";
 import mysql from "mysql2/promise";
 import { platformDb } from "./config/dbConfig.js";
 import cors from "cors"; 
+import './cron.js';
 
 const server = express();
 

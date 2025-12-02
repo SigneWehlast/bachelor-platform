@@ -1,7 +1,7 @@
 import mysql from "mysql2/promise";
 import { clientDb, platformDb } from "../config/dbConfig.js";
 
-async function syncData() {
+export async function syncData() {
   let clientConn, platformConn;
 
   try {
@@ -9,6 +9,15 @@ async function syncData() {
     clientConn = await mysql.createConnection(clientDb);
     platformConn = await mysql.createConnection(platformDb);
     console.log('Connected successfully\n');
+
+    await platformConn.query(`
+      INSERT INTO history (
+        customer_id, carboost_conversions, leads, total_budget, number_of_cars, archived_at
+      )
+      SELECT 
+        customer_id, carboost_conversions, leads, total_budget, number_of_cars, NOW()
+      FROM customer
+    `);
 
   //delete customer table to overwrite
     console.log('Disabling foreign key checks...');
@@ -114,14 +123,3 @@ async function syncData() {
     console.log('Database connections closed');
   }
 }
-
-// Run the sync
-syncData()
-  .then(() => {
-    console.log('Sync completed!');
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error('Sync failed:', err);
-    process.exit(1);
-  });
