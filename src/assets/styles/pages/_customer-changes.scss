@@ -1,0 +1,11 @@
+@use '../abstracts/variables' as vars;
+
+.customer-changes {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$spacing-gap-md;
+
+    &__content {
+        margin-top: vars.$spacing-margin-xs;
+    }
+}

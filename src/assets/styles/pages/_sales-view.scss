@@ -1,0 +1,98 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+
+.SalesView {
+
+
+  &__wrapper{
+   display: flex;
+   flex-direction: row;
+   gap: v.$spacing-gap-xs;
+  }
+
+  &__topbar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__buttons-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: v.$spacing-gap-sm;
+  }
+
+  &__filter-section {
+    display: flex;
+    gap: v.$spacing-gap-sm;
+    padding: v.$spacing-padding-sm 0;
+    
+
+  }
+
+    &__controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: v.$spacing-padding-sm v.$spacing-padding-sm;
+        border-bottom: v.$border-width-xxs solid v.$border-color;
+
+    }
+
+    &__button{
+      appearance: none;
+      border-style: solid;
+      border-radius: v.$border-radius-sm;
+      background-color: v.$bg-white;
+      border: v.$border-width-xxs solid v.$border-color;
+      padding: v.$spacing-padding-xs;
+
+      &:hover {
+      border: v.$border-width-xxs solid v.$border-color;
+      background-color: v.$bg-light-gray;
+      color: v.$black;
+  }
+
+    }
+
+    &__button-next,
+    &__button-back,
+    &__button-anonymize {
+      @include m.buttons;
+    }
+    
+    &__button-anonymize {
+      background-color: v.$primary-color-carads-dark;
+    }
+
+  &__customer-list {
+     border: v.$border-width-xxs solid v.$border-color;
+     border-radius: v.$border-radius-sm;
+     width: 50%;
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        padding: v.$spacing-padding-xs v.$spacing-padding-xs;
+        gap: v.$spacing-gap-xs;
+        margin: 0;
+        max-height: 550px; // skal erstattes til en rem højde
+        overflow-y: auto;
+    }
+
+    &--selected {
+
+    }
+  }
+
+  &__customer-item {
+
+ padding: v.$spacing-gap-xs v.$spacing-gap-xs;
+    &:hover{
+    background-color:v.$bg-ultra-light-gray ;
+      
+    }
+   
+  }
+}

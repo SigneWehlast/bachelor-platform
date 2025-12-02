@@ -1,17 +1,67 @@
 @use 'variables' as vars;
 
 @mixin input {
-    height: vars.$height-sm;
-    border: 0.0625rem solid vars.$border-color;
-    border-radius: vars.$border-radius-sm;
-    color: vars.$text-color-gray;
-    background-color: vars.$white;
-    font-size: vars.$font-size-base;
+  height: vars.$height-sm;
+  border: vars.$border-width-xxs solid vars.$border-color;
+  border-radius: vars.$border-radius-sm;
+  color: vars.$text-color-gray;
+  background-color: vars.$white;
+  font-size: vars.$font-size-base;
 }
 
 @mixin buttons {
-    height: vars.$height-sm;
-    color: vars.$white;
-    font-size: vars.$font-size-base;
-    border-radius: vars.$border-radius-sm;
+  all: unset;
+  height: vars.$height-sm;
+  color: vars.$white;
+  font-size: vars.$font-size-base;
+  border-radius: vars.$border-radius-sm;
+  background-color: vars.$btn-color-dark;
+  width: vars.$width-xxxl;
+  height: vars.$height-sm;
+  text-align: center;
+
+  &:hover{
+    background-color: vars.$btn-color-hover;
+  }
+
+  &:disabled{
+    background-color: rgba(vars.$btn-color-dark, 0.5);
+    cursor: not-allowed;
+  }
+}
+
+@mixin buttons-administration {
+  appearance: none;
+  border-style: solid;
+  border-color: vars.$border-color;
+  border-width: vars.$border-width-xxs;
+  border-radius: vars.$border-radius-md;
+  background-color: vars.$white;
+  color: vars.$black;
+  height: vars.$height-sm;
+  width: vars.$width-xxxxxl;
+  padding: vars.$spacing-padding-xl vars.$spacing-padding-xxl;
+
+  &:hover {
+    background-color: vars.$bg-light-gray;
+    color: vars.$black;
+  }
+}
+
+// Forrige og næste knap
+
+@mixin buttons-pagination {
+  appearance: none;
+  border-style: solid;
+  border-color: vars.$border-color;
+  border-width: vars.$border-width-xxs;
+  border-radius: vars.$border-radius-md;
+  background-color: vars.$white;
+  color: vars.$text-color-gray;
+  width: vars.$width-xxxl;
+  height: vars.$height-sm;
+
+  &:disabled {
+    color: vars.$border-color;
+  }
 }

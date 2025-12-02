@@ -5,5 +5,15 @@
 }
 
 .nav-icon{
-    width: v.$icon-size-lg;
+    width: v.$icon-size-md;
+    fill: v.$text-color-gray;
+}
+
+.sidebar__icon, .sidebar__dropdown-icon{
+    width: v.$icon-size-md;
+    fill: v.$text-color-gray;
+}
+
+.sidebar__icon--open {
+    fill: v.$primary-color-carads-dark;
 }

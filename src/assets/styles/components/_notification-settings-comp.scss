@@ -1,0 +1,58 @@
+@use '../abstracts/variables' as vars;
+
+.notification {
+   &-settings {
+       display: flex;
+       margin-top: vars.$spacing-margin-md;
+
+
+       &__left {
+           display: flex;
+           flex-direction: column;
+           gap: vars.$spacing-gap-lg;
+           flex: 1;
+           min-width: 0;
+           margin-right: vars.$spacing-margin-xxxl;
+       }
+
+
+       &__right {
+           flex: 1;
+           min-width: 0;
+       }
+
+
+       &__section {
+
+
+           &-group {
+               display: flex;
+               flex-direction: column;
+               gap: vars.$spacing-gap-xs;
+               margin-top: vars.$spacing-margin-sm;
+
+
+               &__check {
+                   display: flex;
+
+
+                   & input {
+                       accent-color: #28a745;
+                       margin-left: 0;
+                   }
+               }
+           }
+       }
+   }
+}
+
+.regular {
+    font-size: vars.$font-size-base;
+    font-weight: vars.$font-weight-regular;
+    color: vars.$text-color-gray;
+    margin-right: vars.$spacing-margin-sm;
+}
+
+p, h4, h3 {
+    margin: 0;
+}

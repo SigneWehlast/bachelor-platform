@@ -1,0 +1,37 @@
+@use '../abstracts/mixins' as mix;
+@use '../abstracts/variables' as vars;
+
+.carboost-table {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__rows {
+
+        & input {
+            accent-color: #28a745;
+            margin: 0 vars.$spacing-margin-xs 0 vars.$spacing-margin-xs;
+        }
+    }
+    &__text {
+        &--leftalign {
+            text-align: left !important;
+            margin-left: vars.$spacing-margin-xs;
+        }
+
+        &--center {
+            text-align: center;
+        }
+    }
+
+    &__pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &-button {
+            @include mix.buttons-pagination;
+            margin-left: vars.$spacing-margin-sm;
+        }
+    }
+}

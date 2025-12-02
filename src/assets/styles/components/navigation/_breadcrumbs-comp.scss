@@ -1,0 +1,21 @@
+@use '../../abstracts/variables' as v;
+@use '../../base/typography' as t;
+
+.breadcrumbs {
+    cursor: pointer;
+    
+  &__item {
+    color: v.$text-color-gray;
+    text-decoration: none ;
+
+    &--active {
+      font-weight: bold;
+      color: v.$text-color-gray; 
+    }
+  }
+
+  &__separator {
+    margin: 0 0.25rem;
+    color: v.$text-color-gray;
+  }
+}

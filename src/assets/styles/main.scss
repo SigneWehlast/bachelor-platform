@@ -11,6 +11,10 @@
 @use './components/notification-comp';
 @use './components/sale-choose-company';
 @use './components/sale-table';
+@use './components/settings-navigation';
+@use './components/notification-settings-comp';
+@use './components/base-table';
+
 
 @use './components/dashboard/conversions-data-budget';
 @use './components/dashboard/conversions-data-cars';
@@ -27,14 +31,18 @@
 @use './components/navigation/navigation-comp';
 @use './components/navigation/pagination-comp';
 
+
 // Pages
 @use './pages/administration-view';
 @use './pages/car-boost-view';
 @use './pages/customer-changes';
 @use './pages/dashboard-view';
 @use './pages/login-view';
-@use './pages/notification-settings';
 @use './pages/sales-view';
+@use './pages/notification-settings';
 
 // mixin
 @use './abstracts/mixins';
+
+//app
+@use './app';

@@ -1,0 +1,36 @@
+@use '../abstracts/variables' as vars;
+@use '../abstracts/mixins' as mix;
+
+
+.settings {
+   display: flex;
+   flex-direction: row;
+   margin-top: vars.$spacing-margin-md;   
+
+
+   &-topbar {
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+
+
+       &__btn {
+           @include mix.buttons;
+       }
+   }
+
+
+   &-breadcrumbs {
+       margin-top: vars.$spacing-margin-md;
+   }
+
+
+   &-navigation {
+       flex: 0 0 15%;
+   }
+
+
+   &-content {
+       padding: 0 vars.$spacing-padding-lg 0 vars.$spacing-padding-lg;
+   }
+}

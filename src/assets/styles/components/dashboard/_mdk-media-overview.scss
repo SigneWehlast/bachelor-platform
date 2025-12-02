@@ -1,0 +1,30 @@
+@use '../../abstracts/variables' as vars;
+
+.mdkmedia-overview {
+
+    &__title {
+        margin-bottom: vars.$spacing-margin-md;
+    }
+    
+    &__content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, auto);
+        gap: vars.$spacing-gap-sm;
+
+        &__box {
+            border: 0.0625rem solid vars.$bg-ultra-light-gray;
+            background-color: vars.$bg-ultra-light-gray;
+            border-radius: vars.$border-radius-sm;
+            padding: vars.$spacing-padding-md;
+
+            &-name {
+                text-align: center;
+            }
+
+            &-data {
+                text-align: center;
+            }
+        }
+    }
+}
