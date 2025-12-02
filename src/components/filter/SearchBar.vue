@@ -2,5 +2,5 @@
 </script>
 
 <template>
-        <input class="search-bar text-regular" type="text" placeholder="Søg..."></input>
+        <input class="search-bar text-regular" type="text" placeholder="Søg...">
 </template>
