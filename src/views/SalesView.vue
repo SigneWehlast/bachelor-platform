@@ -1,16 +1,21 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
+
+//Componetns
+import SaleTable from "@/components/SaleTable.vue";
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import CarsInNumbers from "@/components/filter/CarsInNumbers.vue";
 import SearchBar from "@/components/filter/SearchBar.vue";
-import { getCustomers, getSelectedCustomers } from "@/config/customerService";
-import { sortByName } from "@/utils/sort";
-import SaleTable from "@/components/SaleTable.vue";
-import { useGoBack } from "@/utils/goBack";
 import DisplayComp from "@/components/filter/DisplayComp.vue";
 import CalendarComp from "@/components/filter/CalendarComp.vue";
 import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
+
+//Funktions
+import { getCustomers, getSelectedCustomers } from "@/config/customerService";
+import { sortByName } from "@/utils/sort";
+import { useGoBack } from "@/utils/goBack";
+
 
 const showId = ref(false);
 const clicked = ref(false); 
@@ -70,32 +75,30 @@ async function showCustomerData() {
   <div class="SalesView">
     <div class="SalesView__topbar"> <h1>Salg</h1>
 
-  <div class="SalesView__buttons-wrapper">
-    <button v-if="showTable" class="SalesView__button-back" @click="goBack">Tilbage</button>
-    <button v-if="!showTable" class="SalesView__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
-    <button v-if="showTable" class="SalesView__button-anonymize" @click="anonymize">
-      <p v-if="!clicked">Anonymiser</p>
-      <p v-else>Vis data</p>
-    </button>
-  </div>
-
-
+    <div class="SalesView__buttons-wrapper">
+      <button v-if="showTable" class="SalesView__button-back" @click="goBack">Tilbage</button>
+      <button v-if="!showTable" class="SalesView__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
+      <button v-if="showTable" class="SalesView__button-anonymize" @click="anonymize">
+        <p v-if="!clicked">Anonymiser</p>
+        <p v-else>Vis data</p>
+      </button>
+    </div>
   </div>
 
   <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
-<!-- Når showTable er false -->
-<div v-if="!showTable" class="SalesView__filter-section">
-  <CarsInNumbers />
-  <SearchBar />
-</div>
+<!-- Før valgte kunder (false)-->
+  <div v-if="!showTable" class="SalesView__filter-section">
+    <CarsInNumbers />
+    <SearchBar />
+  </div>
 
-<!-- Når showTable er true -->
-<div v-if="showTable" class="SalesView__filter-section">
-  <DisplayComp />
-  <CalendarComp />
-  <CustomerName />
-  <ExportData />
-</div>
+<!-- Efter valgte kunder (true) -->
+  <div v-if="showTable" class="SalesView__filter-section">
+    <DisplayComp />
+    <CalendarComp />
+    <CustomerName />
+    <ExportData />
+  </div>
     <!-- Ikke valgte kunder -->
   <div v-if="!showTable" class="SalesView__wrapper"> 
     <div class="SalesView__customer-list">
@@ -139,6 +142,4 @@ async function showCustomerData() {
 <div>
   <SaleTable v-if="showTable" :carsData="customerTableData" v-model:showId="showId" />
 </div>
-
-
 </template>
