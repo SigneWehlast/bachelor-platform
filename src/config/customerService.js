@@ -78,7 +78,9 @@ export function mapSelectedCustomers(data) {
     leads: c.leads,
     carboostConversions: c.carboost_conversions,
     budgetPerDay: Number((c.total_budget / (c.number_of_cars * 30)).toFixed(1)),
-    conversionPercent: (c.leads / 2)
+    conversionPercent: c.leads > 0 
+      ? Number(((c.carboost_conversions / c.leads) * 100).toFixed(1)) 
+      : 0
   }));
 }
 
