@@ -53,15 +53,20 @@ export async function syncData() {
     }));
 
     //get data from student_leads
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+
     const [leadRows] = await clientConn.query(`
       SELECT companies_id, phone_lead, mail_lead, hard_lead
       FROM student_leads
-    `);
+      WHERE created_year = ? AND created_month = ?
+    `, [currentYear, currentMonth]);
 
     const leadsMapped = leadRows.map(row => ({
       customer_id: row.companies_id,
-      leads: (row.phone_lead || 0) + (row.mail_lead || 0) + (row.hard_lead || 0),
-      carboost_conversions: row.hard_lead || 0
+      leads: (Number(row.phone_lead) || 0) + (Number(row.mail_lead) || 0) + (Number(row.hard_lead) || 0),
+      carboost_conversions: Number(row.hard_lead) || 0
     }));
 
     //get data from student_product_count
