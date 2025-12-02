@@ -11,8 +11,10 @@ import CalendarComp from "@/components/filter/CalendarComp.vue";
 import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
 
-//Functions
+//Express server data import
 import { getCustomers, getSelectedCustomers } from "@/config/customerService";
+
+//Functions
 import { sortByName } from "@/utils/sort";
 import { useGoBack } from "@/utils/goBack";
 
