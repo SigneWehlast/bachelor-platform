@@ -6,6 +6,7 @@ import './cron.js';
 import jwt from "jsonwebtoken";
 
 const server = express();
+server.use(express.json());
 
 const db = mysql.createPool(platformDb);
 
@@ -66,19 +67,12 @@ server.get('/api/customer/carboost', async (req, res) => {
   }
 });
 
-//users
-
-
-// Login endpoint
-server.use(express.json());
-
+// Login
 server.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  console.log("Login attempt:", req.body);
 
   try {
     const [rows] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
-    console.log("DB rows:", rows);
 
     if (rows.length === 0) return res.status(400).send("User not found");
 
@@ -91,8 +85,6 @@ server.post("/login", async (req, res) => {
     res.status(500).send("Database error");
   }
 });
-
-
 
 //customer-group
 server.get("/api/customers-in-groups", async (req, res) => {

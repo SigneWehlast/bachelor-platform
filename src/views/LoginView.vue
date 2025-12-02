@@ -23,10 +23,9 @@ async function login() {
 
     const data = await res.json();
     localStorage.setItem("token", data.token);
-    message.value = "Login successful!";
     window.location.href = "/dashboard";
   } catch (err) {
-    message.value = err.message;
+    console.error("Login error");
   }
 }
 </script>
