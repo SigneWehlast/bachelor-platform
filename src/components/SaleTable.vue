@@ -19,24 +19,24 @@ const props = defineProps({
 
     <BaseTable>
       <template #header>
-        <th>{{ props.showId ? 'ID' : 'Kundenavn' }}</th>
+        <th class="carboost-table__text--leftalign">{{ props.showId ? 'ID' : 'Kundenavn' }}</th>
         <th>Antal biler</th>
         <th>Samlet Budget</th>
         <th>Konverteringer</th>
         <th>Carboost konverteringer</th>
         <th>Budget pr dag</th>
-        <th>Konvertering i procent</th>
+        <th class="carboost-table__text--leftalign">Konvertering i procent</th>
       </template>
 
       <template #rows>
         <tr v-for="item in props.carsData" :key="item.customer_id">
-          <td>{{ showId ? item.id : item.name }}</td>
-          <td>{{ item.numberOfCars }}</td>
-          <td>{{ item.totalBudget }}</td>
-          <td>{{ item.leads }}</td>
-          <td>{{ item.carboostConversions }}</td>
-          <td>{{ item.budgetPerDay }}</td> 
-          <td>{{ item.conversionPercent }}</td>
+          <td class="carboost-table__text--leftalign">{{ showId ? item.id : item.name }}</td>
+          <td class="carboost-table__text--center">{{ item.numberOfCars }}</td>
+          <td class="carboost-table__text--center">{{ item.totalBudget }}</td>
+          <td class="carboost-table__text--center">{{ item.leads }}</td>
+          <td class="carboost-table__text--center">{{ item.carboostConversions }}</td>
+          <td class="carboost-table__text--center">{{ item.budgetPerDay }}</td> 
+          <td class="carboost-table__text--center">{{ item.conversionPercent }}</td>
         </tr>
       </template>
     </BaseTable>
