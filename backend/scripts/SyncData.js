@@ -15,7 +15,7 @@ export async function syncData() {
         customer_id, carboost_conversions, leads, total_budget, number_of_cars, archived_at
       )
       SELECT 
-        customer_id, carboost_conversions, leads, total_budget, number_of_cars, NOW()
+        customer_id, carboost_conversions, leads, total_budget, number_of_cars, CONVERT_TZ(NOW(), 'UTC', 'Europe/Copenhagen')
       FROM customer
     `);
 
