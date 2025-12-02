@@ -4,7 +4,7 @@ export const menuItems = [
     children: [
       {
         label: "Login",
-        path: "/",
+        path: "/login",
         view: () => import("@/views/LoginView.vue"),
         hidden: true,
         meta: { layout: "none" }
