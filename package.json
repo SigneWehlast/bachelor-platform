@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --fix --cache",
-    "sync": "node backend/scripts/SyncData.js",
+    "sync": "node backend/scripts/runSync.js",
     "start": "node backend/server.js"
   },
   "dependencies": {
