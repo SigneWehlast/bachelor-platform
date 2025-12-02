@@ -13,8 +13,10 @@ import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
 
 const showId = ref(false);
+const clicked = ref(false); 
 
 function anonymize() {
+  clicked.value = !clicked.value;
   showId.value = !showId.value;
 }
 
@@ -71,7 +73,10 @@ async function showCustomerData() {
   <div class="SalesView__buttons-wrapper">
     <button v-if="showTable" class="SalesView__button-back" @click="goBack">Tilbage</button>
     <button v-if="!showTable" class="SalesView__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
-    <button v-if="showTable" class="SalesView__button-anonymize" @click="anonymize">Anonymiser</button>
+    <button v-if="showTable" class="SalesView__button-anonymize" @click="anonymize">
+      <p v-if="!clicked">Anonymiser</p>
+      <p v-else>Vis data</p>
+    </button>
   </div>
 
 
