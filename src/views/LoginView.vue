@@ -46,7 +46,7 @@ async function login() {
         </div>
         <div class="login-form__group">
           <button type="submit" class="login-form__btn">Login</button>
-          <p class="medium">{{ message }}</p>
+           <p class="medium">Glemt adgangskode?</p>
         </div>
       </form>
     </div>
