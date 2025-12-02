@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --fix --cache",
-    "sync": "node backend/scripts/SyncData.js",
+    "sync": "node backend/scripts/runSync.js",
     "start": "node backend/server.js"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "cypress": "^15.6.0",
     "express": "^5.1.0",
     "mysql2": "^3.15.3",
+    "node-cron": "^4.2.1",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },

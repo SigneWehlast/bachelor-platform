@@ -45,7 +45,7 @@ function prevPage() {
 
       <template #rows>
         <tr v-for="item in carboostCustomers" :key="item.id" class="carboost-table__rows">
-          <td class="carboost-table__text--leftalign"><input type="checkbox" value="customer-chosen"></input>{{ item.name }}</td>
+          <td class="carboost-table__text--leftalign"><input type="checkbox" value="customer-chosen">{{ item.name }}</td>
           <td class="carboost-table__text--center">{{ item.leads }}</td>
           <td class="carboost-table__text--center">Ændring</td>
           <td class="carboost-table__text--center">Tendens</td>

@@ -9,18 +9,18 @@
                     <h4>Generelle notifikationer</h4>
                     <div class="notification-settings__section-group">
                         <div class="notification-settings__section-group__check">
-                            <input type="checkbox" value="all"></input>
+                            <input type="checkbox" value="all">
                             <p class="regular">Alle notifikationer</p>
                         </div>
                         <p class="light">Når denne funktion er slået fra, modtager du ingen notifikationer fra Slack, e-mail eller platformen - heller ikke hvis du normalt har dem aktiveret. Når den er slået til, genaktiveres alle notifikationer som normalt.</p>
                     </div>
                     <div class="notification-settings__section-group">
                         <div class="notification-settings__section-group__check">
-                            <input type="checkbox" value="email"></input>
+                            <input type="checkbox" value="email">
                             <p class="regular">E-mail</p>
-                            <input class="group-check" type="checkbox" value="slack"></input>
+                            <input class="group-check" type="checkbox" value="slack">
                             <p class="regular">Slack</p>
-                            <input class="group-check" type="checkbox" value="platform"></input>
+                            <input class="group-check" type="checkbox" value="platform">
                             <p class="regular">CarAds platform</p>
                         </div>
                         <p class="light">Når denne funktion er slået fra, modtager du ingen notifikationer fra valgte kommunikationskanaler. Når den er slået til, genaktiveres notifikationer som normalt, på de valgte.</p>
@@ -30,21 +30,21 @@
                     <h4>CarBoost</h4>
                     <div class="notification-settings__section-group">
                         <div class="notification-settings__section-group__check">
-                            <input type="checkbox" value="leads-down"></input>
+                            <input type="checkbox" value="leads-down">
                             <p class="regular">Faldende antal i leads</p>
                         </div>
                         <p class="light">Når denne funktion er slået til, modtager du notifikationer omkring faldende antal af leads blandt kunderne.</p>
                     </div>
                     <div class="notification-settings__section-group">
                         <div class="notification-settings__section-group__check">
-                            <input type="checkbox" value="leads-up"></input>
+                            <input type="checkbox" value="leads-up">
                             <p class="regular">Stigende antal i leads</p>
                         </div>
                         <p class="light">Når denne funktion er slået til, modtager du notifikationer omkring stigende antal af leads blandt kunderne.</p>
                     </div>
                     <div class="notification-settings__section-group">
                         <div class="notification-settings__section-group__check">
-                            <input type="checkbox" value="leads-stop"></input>
+                            <input type="checkbox" value="leads-stop">
                             <p class="regular">Lead stop</p>
                         </div>
                         <p class="light">Når denne funktion er slået til, modtager du notifikationer omkring stop i antal af leads blandt kunderne.</p>
@@ -55,21 +55,21 @@
                 <h4>Kundeændringer</h4>
                 <div class="notification-settings__section-group">
                     <div class="notification-settings__section-group__check">
-                        <input type="checkbox" value="new-customers"></input>
+                        <input type="checkbox" value="new-customers">
                         <p class="regular">Nye kunder</p>
                     </div>
                     <p class="light">Når denne funktion er slået til, modtager du notifikationer om nye kunder.</p>
                 </div>
                 <div class="notification-settings__section-group">
                     <div class="notification-settings__section-group__check">
-                        <input type="checkbox" value="new-subscriptions"></input>
+                        <input type="checkbox" value="new-subscriptions">
                         <p class="regular">Abonnements ændringer</p>
                     </div>
                     <p class="light">Når denne funktion er slået til, modtager du notifikationer om abonnementsændringer hos kunderne.</p>
                 </div>
                 <div class="notification-settings__section-group">
                     <div class="notification-settings__section-group__check">
-                        <input type="checkbox" value="resigned-costumers"></input>
+                        <input type="checkbox" value="resigned-costumers">
                         <p class="regular">Opsagte kunder</p>
                     </div>
                     <p class="light">Når denne funktion er slået til, modtager du notifikationer om opsagte kunder.</p>

@@ -2,6 +2,7 @@ import express from "express";
 import mysql from "mysql2/promise";
 import { platformDb } from "./config/dbConfig.js";
 import cors from "cors"; 
+import './cron.js';
 
 const server = express();
 
@@ -64,8 +65,6 @@ server.get('/api/customer/carboost', async (req, res) => {
   }
 });
 
-
-
 //users
 server.get("/api/users", async (req, res) => {
   try {
@@ -77,10 +76,15 @@ server.get("/api/users", async (req, res) => {
   }
 });
 
-//groups
-server.get("/api/group", async (req, res) => {
+//customer-group
+server.get("/api/customers-in-groups", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM `group`");
+    const [rows] = await db.query(`
+      SELECT g.group_name, COUNT(cg.customer_id) AS customer_count
+      FROM customer_group cg
+      JOIN \`group\` g ON cg.group_id = g.group_id
+      GROUP BY g.group_name
+    `);
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -88,16 +92,6 @@ server.get("/api/group", async (req, res) => {
   }
 });
 
-//customer-group
-server.get("/api/customergroup", async (req, res) => {
-  try {
-    const [rows] = await db.query("SELECT * FROM customer_group");
-    res.json(rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Database error" });
-  }
-});
 
 //history carboost
 server.get("/api/history/carboost", async (req, res) => {
