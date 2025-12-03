@@ -50,10 +50,32 @@ const allDates = Array.from(new Set(
   filteredHistory.map(item => new Date(item.archived_at).toLocaleDateString("da-DK"))
 )).sort((a, b) => new Date(a) - new Date(b));
 
-  const options = {
-    chart: { type: "line", height: 350 },
-    series,
-    xaxis: { categories: allDates },
+const options = {
+  chart: {
+    type: "line",
+    height: 350,
+    toolbar: {
+      show: true,
+      tools: {
+        download: false,
+        selection: false,
+        zoom: false,
+        zoomin: false,
+        zoomout: false,
+        pan: false,
+        reset: false
+      }
+    },
+    zoom: {
+      enabled: false
+    }
+  },
+  series,
+  xaxis: { categories: allDates },
+  legend: {
+    horizontalAlign: 'left',
+  }
+    
   };
 
   if (chart) chart.destroy();
@@ -63,5 +85,7 @@ const allDates = Array.from(new Set(
 </script>
 
 <template>
-  <div id="chart"></div>
+<div class="Carboost-graph">
+  <div id="chart"></div>  
+</div>
 </template>
