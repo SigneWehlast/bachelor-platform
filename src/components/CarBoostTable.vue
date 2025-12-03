@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import BaseTable from './BaseTable.vue';
 import { getCustomersInCarboost } from "@/config/carboostService";
+import Icon from "@/components/Icon.vue"
 
 const carboostCustomers = ref([]);
 const currentPage = ref(1);
@@ -19,8 +20,10 @@ onMounted(() => {
 });
 
 function nextPage() {
-  currentPage.value++;
-  fetchPage(currentPage.value);
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+    fetchPage(currentPage.value);
+  }
 }
 
 function prevPage() {
@@ -30,7 +33,6 @@ function prevPage() {
   }
 }
 </script>
-
 <template>
   <div class="carboost-table">
     <BaseTable>
@@ -45,22 +47,55 @@ function prevPage() {
 
       <template #rows>
         <tr v-for="item in carboostCustomers" :key="item.id" class="carboost-table__rows">
-          <td class="carboost-table__text--leftalign"><input type="checkbox" value="customer-chosen">{{ item.name }}</td>
+          <td class="carboost-table__text--leftalign">
+            <input type="checkbox" value="customer-chosen" /> {{ item.name }}
+          </td>
           <td class="carboost-table__text--center">{{ item.leads }}</td>
-          <td class="carboost-table__text--center">Ændring</td>
-          <td class="carboost-table__text--center">Tendens</td>
-          <td class="carboost-table__text--center">Status</td>
-          <td class="carboost-table__text--leftalign">{{ new Date(item.last_updated).toLocaleDateString() }}</td>
+          <td class="carboost-table__text--center">
+            {{ item.change !== null ? item.change : "-" }}
+          </td>
+          <td class="carboost-table__text--center">
+
+              <Icon v-if="item.tendens === 'up'" name='ArrowUpBold'
+                class="carboost-table__text-icon carboost-table__text-icon--up" 
+            />
+              <Icon v-else-if="item.tendens === 'down'"name='ArrowDownBold'
+                class="carboost-table__text-icon carboost-table__text-icon--down" 
+            />
+            <span v-else-if="item.tendens === '-'">-</span>
+            <span v-else>-</span>
+          </td>
+          <td class="carboost-table__text--center">
+            <Icon 
+              v-if="item.yesterdays_dif > 0 && (item.todays_dif / item.yesterdays_dif) < 0.5" 
+              name='AlertCircle'
+              class="carboost-table__text-icon carboost-table__text-icon-alert--red" 
+            />
+            <Icon 
+              v-else-if="item.yesterdays_dif > 0 && (item.todays_dif / item.yesterdays_dif) < 0.6 && (item.todays_dif / item.yesterdays_dif) > 0.5" 
+              name='Alert'
+              class="carboost-table__text-icon carboost-table__text-icon-alert--yellow" 
+            />
+            <span v-else>-</span>
+          </td>
+
+          <td class="carboost-table__text--leftalign">
+            {{ new Date(item.last_updated).toLocaleDateString() }}
+          </td>
         </tr>
       </template>
     </BaseTable>
+
     <div class="carboost-table__pagination">
-        <div>Viser side {{ currentPage }} ud af {{ totalPages }} </div>
-        <div>
-            <button class="carboost-table__pagination-button" @click="prevPage" :disabled="currentPage === 1">Forrige</button>
-            <button class="carboost-table__pagination-button" @click="nextPage">Næste</button>
-        </div>
+      <div>Viser side {{ currentPage }} ud af {{ totalPages }} </div>
+      <div>
+        <button class="carboost-table__pagination-button" @click="prevPage" :disabled="currentPage === 1">
+          Forrige
+        </button>
+        <button class="carboost-table__pagination-button" @click="nextPage" :disabled="currentPage === totalPages">
+          Næste
+        </button>
+      </div>
     </div>
   </div>
 </template>
-

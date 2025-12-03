@@ -125,4 +125,28 @@ server.get("/api/history/sales", async (req, res) => {
   }
 });
 
+
+//carboost table
+server.get("/api/history/carboost/table", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT 
+        h.customer_id,
+        h.dif_leads AS todays_dif, 
+        prev.dif_leads AS yesterdays_dif,
+        COALESCE(h.dif_leads - prev.dif_leads, 0) AS \`change\`,
+        h.archived_at
+    FROM history h
+    LEFT JOIN history prev 
+        ON h.customer_id = prev.customer_id
+        AND DATE(prev.archived_at) = DATE_SUB(DATE(h.archived_at), INTERVAL 1 DAY)
+    WHERE DATE(h.archived_at) = CURDATE()
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 server.listen(3000, () => console.log("API running on port 3000"));

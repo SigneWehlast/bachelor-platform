@@ -11,12 +11,24 @@ export async function syncData() {
     console.log('Connected successfully\n');
 
     await platformConn.query(`
-      INSERT INTO history (
-        customer_id, carboost_conversions, leads, total_budget, number_of_cars, archived_at
-      )
-      SELECT 
-        customer_id, carboost_conversions, leads, total_budget, number_of_cars, CONVERT_TZ(NOW(), 'UTC', 'Europe/Copenhagen')
-      FROM customer
+        INSERT INTO history (
+          customer_id, carboost_conversions, leads, dif_leads, total_budget, number_of_cars, archived_at
+        )
+        SELECT 
+          c.customer_id,
+          c.carboost_conversions,
+          c.leads,
+          c.leads - IFNULL((
+            SELECT h.leads 
+            FROM history h
+            WHERE h.customer_id = c.customer_id
+            ORDER BY h.archived_at DESC
+            LIMIT 1
+          ), 0) AS dif_leads,
+          c.total_budget,
+          c.number_of_cars,
+          CONVERT_TZ(NOW(), 'UTC', 'Europe/Copenhagen')
+        FROM customer c;
     `);
 
     console.log('Disabling foreign key checks...');
