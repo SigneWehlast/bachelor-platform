@@ -34,7 +34,7 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
 
     // Find navnet fra props.customers
     const customer = props.customers.find(c => c.id === id);
-    const name = customer ? customer.name : `ID ${id}`;
+    const name = filtered.length ? filtered[0].name : `Navn ${id}`;
 
     return {
       name, // vis navnet i stedet for ID
