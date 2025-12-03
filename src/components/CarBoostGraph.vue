@@ -8,7 +8,7 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  customers: {
+  customers: { // tilføj denne prop så vi kan slå navn op
     type: Array,
     default: () => []
   }
@@ -37,7 +37,7 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
     const name = filtered.length ? filtered[0].name : `Navn ${id}`;
 
     return {
-      name,
+      name, // vis navnet i stedet for ID
       data: filtered.map(item => item.leads)
     };
   });
@@ -71,11 +71,10 @@ const options = {
     }
   },
   series,
-  xaxis: { categories: allDates },
-  legend: {
-    horizontalAlign: 'left',
-  }
-    
+    xaxis: { categories: allDates },
+    legend: {
+      horizontalAlign: "left",
+    }
   };
 
   if (chart) chart.destroy();
@@ -86,6 +85,6 @@ const options = {
 
 <template>
 <div class="Carboost-graph">
-  <div id="chart"></div>  
+  <div id="chart"></div>
 </div>
 </template>
