@@ -106,10 +106,16 @@ server.get("/api/customers-in-groups", async (req, res) => {
 //history carboost
 server.get("/api/history/carboost", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT customer_id, leads, last_updated FROM history");
+    const [rows] = await db.query(`
+      SELECT h.customer_id, c.customer_name, h.leads, h.archived_at
+      FROM history h
+      INNER JOIN customer c ON h.customer_id = c.customer_id
+      ORDER BY h.archived_at DESC
+    `);
+
     res.json(rows);
   } catch (err) {
-    console.error(err);
+    console.error("Database error:", err.code, err.sqlMessage, err.sql);
     res.status(500).json({ error: "Database error" });
   }
 });
