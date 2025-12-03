@@ -1,65 +1,66 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import { getHistoryCarboost } from "@/config/historyService";
+import { ref, watch, onMounted } from "vue";
 import ApexCharts from "apexcharts";
+import { getHistoryCarboost } from "@/config/historyService";
+
+const props = defineProps({
+  selectedIds: {
+    type: Array,
+    default: () => []
+  },
+  customers: { // tilføj denne prop så vi kan slå navn op
+    type: Array,
+    default: () => []
+  }
+});
 
 const history = ref([]);
-const totalCount = ref(0);
-const selectedId = ref(8);
 let chart = null;
 
-// Hent historikdata
 onMounted(async () => {
   const result = await getHistoryCarboost();
   history.value = result.history;
-  totalCount.value = result.totalCount;
 });
 
-// Watch history og opret chart når data er klar
-watch([history, selectedId], ([newHistory, id]) => {
-  if (newHistory.length === 0) return;
+// Watch både history og selectedIds
+watch([history, () => props.selectedIds], ([newHistory, ids]) => {
+  if (!newHistory.length || !ids.length) {
+    if (chart) chart.destroy();
+    return;
+  }
 
-  const filtered = newHistory.filter(item => item.id === id);
-  if (filtered.length === 0) return;
+  const series = ids.map(id => {
+    const filtered = newHistory.filter(item => item.id === id);
 
-  const categories = filtered.map(item => {
-    const date = new Date(item.archived_at);
-    const day = date.getDate();
-    const month = date.toLocaleString('da-DK', { month: 'short' });
-    return `${day}.${month}`;
+    // Find navnet fra props.customers
+    const customer = props.customers.find(c => c.id === id);
+    const name = customer ? customer.name : `ID ${id}`;
+
+    return {
+      name, // vis navnet i stedet for ID
+      data: filtered.map(item => item.leads)
+    };
   });
 
-  const data = filtered.map(item => item.leads);
+  // X-aksen: unikke datoer for alle valgte ID'er
+  const allDates = Array.from(new Set(
+    newHistory
+      .filter(item => ids.includes(item.id))
+      .map(item => new Date(item.archived_at).toLocaleDateString("da-DK"))
+  )).sort((a,b) => new Date(a) - new Date(b));
 
   const options = {
     chart: { type: "line", height: 350 },
-    series: [{ name: "Leads", data }],
-    xaxis: { categories },
+    series,
+    xaxis: { categories: allDates },
   };
 
   if (chart) chart.destroy();
   chart = new ApexCharts(document.querySelector("#chart"), options);
   chart.render();
 });
-
 </script>
 
 <template>
-  <div>
-    <h2>Carboost Historik</h2>
-
-    <label>
-      Vælg ID: 
-      <input type="number" v-model="selectedId" min="1" />
-    </label>
-
-    <ul>
-      <li v-for="item in history.filter(i => i.id === selectedId)" :key="item.id">
-        ID: {{ item.id }} | Leads: {{ item.leads }} | Arkiveret: {{ item.archived_at }}
-      </li>
-    </ul>
-  </div>
-
   <div id="chart"></div>
-
 </template>

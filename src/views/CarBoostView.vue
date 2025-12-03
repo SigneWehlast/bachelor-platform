@@ -25,7 +25,7 @@ const showGraph = ref(false);
       <DisplayComp />
       <CalendarComp />
     </div>
-    <CarBoostTable v-if="!showGraph" />
-    <CarBoostGraph v-else />
+    <CarBoostTable v-if="!showGraph" @update:selectedIds="ids => selectedIds = ids" />
+      <CarBoostGraph v-else :selectedIds="selectedIds" />
   </div>
 </template>
