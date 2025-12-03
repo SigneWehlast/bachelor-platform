@@ -43,11 +43,12 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
   });
 
   // X-aksen: unikke datoer for alle valgte ID'er
-  const allDates = Array.from(new Set(
-    newHistory
-      .filter(item => ids.includes(item.id))
-      .map(item => new Date(item.archived_at).toLocaleDateString("da-DK"))
-  )).sort((a,b) => new Date(a) - new Date(b));
+const filteredHistory = newHistory.filter(item => ids.includes(item.id));
+
+// X-aksen: unikke datoer i stigende rækkefølge
+const allDates = Array.from(new Set(
+  filteredHistory.map(item => new Date(item.archived_at).toLocaleDateString("da-DK"))
+)).sort((a, b) => new Date(a) - new Date(b));
 
   const options = {
     chart: { type: "line", height: 350 },
