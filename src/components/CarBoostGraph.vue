@@ -8,7 +8,7 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  customers: { // tilføj denne prop så vi kan slå navn op
+  customers: {
     type: Array,
     default: () => []
   }
@@ -37,7 +37,7 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
     const name = filtered.length ? filtered[0].name : `Navn ${id}`;
 
     return {
-      name, // vis navnet i stedet for ID
+      name,
       data: filtered.map(item => item.leads)
     };
   });
