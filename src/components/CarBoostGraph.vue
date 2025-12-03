@@ -8,7 +8,7 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  customers: { // tilføj denne prop så vi kan slå navn op
+  customers: {
     type: Array,
     default: () => []
   }
@@ -29,52 +29,37 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
     return;
   }
 
+  const filteredHistory = newHistory
+    .filter(item => ids.includes(item.id))
+    .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at));
+
+  const allDates = Array.from(
+    new Set(filteredHistory.map(item => new Date(item.archived_at).toLocaleDateString("da-DK")))
+  );
+
   const series = ids.map(id => {
-    const filtered = newHistory.filter(item => item.id === id);
-
-    // Find navnet fra props.customers
+    const points = filteredHistory.filter(item => item.id === id);
     const customer = props.customers.find(c => c.id === id);
-    const name = filtered.length ? filtered[0].name : `Navn ${id}`;
+    
+    // Bevarer navnet fra historikken, hvis det findes
+    const name = points.length ? points[0].name : (customer ? customer.name : `Navn ${id}`);
+    
+    const data = allDates.map(date => {
+      const point = points.find(p => new Date(p.archived_at).toLocaleDateString("da-DK") === date);
+      return point ? point.leads : 0;
+    });
 
-    return {
-      name, // vis navnet i stedet for ID
-      data: filtered.map(item => item.leads)
-    };
+    return { name, data };
   });
 
-  // X-aksen: unikke datoer for alle valgte ID'er
-const filteredHistory = newHistory.filter(item => ids.includes(item.id));
-
-// X-aksen: unikke datoer i stigende rækkefølge
-const allDates = Array.from(new Set(
-  filteredHistory.map(item => new Date(item.archived_at).toLocaleDateString("da-DK"))
-)).sort((a, b) => new Date(a) - new Date(b));
-
-const options = {
-  chart: {
-    type: "line",
-    height: 350,
-    toolbar: {
-      show: true,
-      tools: {
-        download: false,
-        selection: false,
-        zoom: false,
-        zoomin: false,
-        zoomout: false,
-        pan: false,
-        reset: false
-      }
-    },
-    zoom: {
-      enabled: false
-    }
+  const options = {
+    chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false } },
+    series,
+    stroke: {
+    curve: 'smooth'
   },
-  series,
     xaxis: { categories: allDates },
-    legend: {
-      horizontalAlign: "left",
-    }
+    legend: { horizontalAlign: "left", showForSingleSeries: true }
   };
 
   if (chart) chart.destroy();
@@ -84,7 +69,7 @@ const options = {
 </script>
 
 <template>
-<div class="Carboost-graph">
-  <div id="chart"></div>
-</div>
+  <div class="Carboost-graph">
+    <div id="chart"></div>
+  </div>
 </template>
