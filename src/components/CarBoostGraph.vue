@@ -1,26 +1,75 @@
 <script setup>
-import { onMounted } from 'vue'
-import ApexCharts from 'apexcharts'
+import { ref, watch, onMounted } from "vue";
+import ApexCharts from "apexcharts";
+import { getHistoryCarboost } from "@/config/historyService";
 
-onMounted(() => {
-  const options = {
-    chart: {
-      type: 'line'
-    },
-    series: [{
-      name: 'sales',
-      data: [30,40,35,50,49,60,70,91,125]
-    }],
-    xaxis: {
-      categories: [1991,1992,1993,1994,1995,1996,1997,1998,1999]
-    }
+const props = defineProps({
+  selectedIds: {
+    type: Array,
+    default: () => []
+  },
+  customers: {
+    type: Array,
+    default: () => []
+  }
+});
+
+const history = ref([]);
+let chart = null;
+
+onMounted(async () => {
+  const result = await getHistoryCarboost();
+  history.value = result.history;
+});
+
+// Watch både history og selectedIds
+watch([history, () => props.selectedIds], ([newHistory, ids]) => {
+  if (!newHistory.length || !ids.length) {
+    if (chart) chart.destroy();
+    return;
   }
 
-  const chart = new ApexCharts(document.querySelector("#chart"), options)
-  chart.render()
-})
+  const filteredHistory = newHistory
+    .filter(item => ids.includes(item.id))
+    .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at));
+
+  const allDates = Array.from(
+    new Set(filteredHistory.map(item => new Date(item.archived_at).toLocaleDateString("da-DK")))
+  );
+
+  const series = ids.map(id => {
+    const points = filteredHistory.filter(item => item.id === id);
+    const customer = props.customers.find(c => c.id === id);
+    
+    // Bevarer navnet fra historikken, hvis det findes
+    const name = points.length ? points[0].name : (customer ? customer.name : `Navn ${id}`);
+    
+    const data = allDates.map(date => {
+      const point = points.find(p => new Date(p.archived_at).toLocaleDateString("da-DK") === date);
+      return point ? point.leads : 0;
+    });
+
+    return { name, data };
+  });
+
+  const options = {
+    chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false } },
+    series,
+    stroke: {
+    curve: 'smooth'
+  },
+    xaxis: { categories: allDates },
+    legend: { horizontalAlign: "left", showForSingleSeries: true }
+  };
+
+  if (chart) chart.destroy();
+  chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart.render();
+});
 </script>
 
 <template>
-  <div id="chart"></div>
+  <div class="Carboost-graph">
+    <div id="chart"></div>
+  </div>
 </template>

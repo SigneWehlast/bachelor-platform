@@ -1,0 +1,7 @@
+@use '../abstracts/variables' as vars;
+
+
+.Carboost-graph{
+    border: vars.$border-width-xxs solid vars.$box-shaddow;
+    border-radius: vars.$border-radius-md;
+}
