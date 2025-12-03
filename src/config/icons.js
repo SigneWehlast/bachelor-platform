@@ -1,4 +1,4 @@
-import { mdiCarMultiple, mdiCarWireless, mdiCarWrench, mdiCart, mdiLogout, mdiAccountGroup, mdiCog, mdiMailboxOpenUpOutline, mdiStoreClock, mdiStore, mdiBellOutline, mdiAccount, mdiViewDashboardVariant, mdiWeb, mdiCarSearchOutline, mdiAlert, mdiArrowUpBold, mdiArrowDownBold, mdiCalendar, mdiChartLine, mdiContentSave, mdiAccountDetails, mdiInformationOutline, mdiAlertCircle, mdiEye, mdiEyeOff, mdiCreditCardWireless, mdiChevronRight, mdiChevronDown, mdiChevronUp, mdiCircleSmall} from "@mdi/js";
+import { mdiCarMultiple, mdiCarWireless, mdiCarWrench, mdiCart, mdiLogout, mdiAccountGroup, mdiCog, mdiMailboxOpenUpOutline, mdiStoreClock, mdiStore, mdiBellOutline, mdiAccount, mdiViewDashboardVariant, mdiWeb, mdiCarSearchOutline, mdiAlert, mdiArrowUpBold, mdiArrowDownBold, mdiCalendar, mdiChartLine, mdiContentSave, mdiAccountDetails, mdiInformationOutline, mdiAlertCircle, mdiEye, mdiEyeOff, mdiCreditCardWireless, mdiChevronRight, mdiChevronDown, mdiChevronUp, mdiCircleSmall, mdiArrowDownThin, mdiArrowUpThin} from "@mdi/js";
 
 export const icons = {
 CarMultiple: mdiCarMultiple,
@@ -32,4 +32,6 @@ ChevronRight: mdiChevronRight,
 ChevronDoubleDown: mdiChevronDown,
 ChevronDoubleUp: mdiChevronUp,
 CircleSmall: mdiCircleSmall,
+ArrowDownThin: mdiArrowDownThin,
+ArrowUpThin: mdiArrowUpThin
 };

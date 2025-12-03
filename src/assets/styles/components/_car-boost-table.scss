@@ -2,12 +2,16 @@
 @use '../abstracts/variables' as vars;
 
 .carboost-table {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
+    &__filter {
+        &-title {
+        }
+        
+        &-icon {
+            width: vars.$icon-size-md;
+            fill: vars.$icon-color-tooltip;
+        }
+    }
     &__rows {
-
         & input {
             accent-color: #28a745;
             margin: 0 vars.$spacing-margin-xs 0 vars.$spacing-margin-xs;

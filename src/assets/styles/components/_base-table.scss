@@ -1,5 +1,9 @@
 @use '../abstracts/variables' as vars;
 
+tr {
+  width: 100%;
+}
+
 .base-table {
   width: 100%;
   border-collapse: collapse;
@@ -21,6 +25,5 @@
   }
 
   & th:not(:first-child), td:not(:first-child) {
-  padding-left: vars.$spacing-margin-xxl;
 }
 }
