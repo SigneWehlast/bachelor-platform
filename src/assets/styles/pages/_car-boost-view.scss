@@ -14,6 +14,11 @@
             flex-direction: column;
         }
 
+        &-btn-wrapper{
+            display: flex;
+            gap: vars.$spacing-gap-sm
+        }
+
         &-btn {
             @include mix.buttons;
         }

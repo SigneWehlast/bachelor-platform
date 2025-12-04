@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed  } from 'vue';
+
+//Componetns
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import CarBoostTable from '@/components/CarBoostTable.vue';
 import SearchBar from '@/components/filter/SearchBar.vue';
@@ -7,8 +9,24 @@ import DisplayComp from '@/components/filter/DisplayComp.vue';
 import CalendarComp from '@/components/filter/CalendarComp.vue';
 import CarBoostGraph from '@/components/CarBoostGraph.vue';
 
-const showGraph = ref(false);
+//Functions
+import { useGoBack } from "@/utils/goBack";
 
+
+const { showTable, goBack, show } = useGoBack();
+
+const selectedIds = ref([]);
+const isButtonDisabled = computed(() => selectedIds.value.length === 0);
+
+function showSelected() {
+  if (selectedIds.value.length === 0) return;
+  show();
+}
+
+function goBackAndReset() {
+  goBack();
+  selectedIds.value = []; 
+}
 
 </script>
 <template>  
@@ -18,14 +36,29 @@ const showGraph = ref(false);
         <h1 class="carboost-view__topbar-title">CarBoost</h1>
         <BreadcrumbsComp/> 
       </div>   
-      <button class="carboost-view__topbar-btn" @click="showGraph = !showGraph">Vis valgte</button>
+
+      <div class="carboost-view__topbar-btn-wrapper">
+          <button 
+          class="carboost-view__topbar-btn" @click="showSelected" :disabled="isButtonDisabled" v-if="!showTable">
+          Vis valgte
+        </button>
+
+        <button class="carboost-view__topbar-btn" v-else @click="goBackAndReset">
+          Tilbage
+        </button>
+
+        <button v-if="showTable" class="carboost-view__topbar-btn">
+          Godkend Data
+        </button>
+      </div>
+
     </div>
     <div class="carboost-view__filter">
       <SearchBar />
       <DisplayComp />
       <CalendarComp />
     </div>
-    <CarBoostTable v-if="!showGraph" @update:selectedIds="ids => selectedIds = ids" />
+    <CarBoostTable v-if="!showTable" @update:selectedIds="ids => selectedIds = ids" />
       <CarBoostGraph v-else :selectedIds="selectedIds" />
   </div>
 </template>
