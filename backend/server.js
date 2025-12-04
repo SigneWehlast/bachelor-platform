@@ -51,7 +51,7 @@ server.get('/api/customer/carboost', async (req, res) => {
 
   try {
     const [rows] = await db.query(
-      "SELECT customer_id, customer_name, leads, last_updated FROM customer WHERE customer_name IS NOT NULL ORDER BY customer_name ASC LIMIT ? OFFSET ?",
+      "SELECT customer_id, customer_name, leads, dif_leads, last_updated FROM customer WHERE customer_name IS NOT NULL ORDER BY customer_name ASC LIMIT ? OFFSET ?",
       [limit, offset]
     );
 

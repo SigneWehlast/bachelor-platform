@@ -18,13 +18,13 @@ export async function getHistoryCarboost() {
         grouped[key] = {
           id,
           name: item.customer_name,
-          leads: 0,
+          dif_leads: 0,
           archived_at: item.archived_at
         };
       }
 
       // Læg leads sammen
-      grouped[key].leads += item.leads;
+      grouped[key].dif_leads += item.dif_leads;
     });
 
     const history = Object.values(grouped);
