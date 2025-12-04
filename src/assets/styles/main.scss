@@ -22,10 +22,9 @@
 @use './components/dashboard/mdk-media-overview';
 
 @use './components/filter/calendar-comp';
-@use './components/filter/cars-in-number';
 @use './components/filter/customer-name';
-@use './components/filter/display-comp';
 @use './components/filter/search-bar';
+@use './components/filter/dropdown';
 
 @use './components/navigation/breadcrumbs-comp';
 @use './components/navigation/navigation-comp';

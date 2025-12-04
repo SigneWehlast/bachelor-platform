@@ -16,7 +16,7 @@
         position: relative;
 
         &-icon {
-            padding-left: 12px;
+            padding-left: vars.$spacing-padding-sm;
             width: vars.$icon-size-md;
             fill: vars.$text-color-gray;
         }

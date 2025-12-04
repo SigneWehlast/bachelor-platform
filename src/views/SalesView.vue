@@ -4,9 +4,8 @@ import { ref, computed, onMounted } from "vue";
 //Componetns
 import SaleTable from "@/components/SaleTable.vue";
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
-import CarsInNumbers from "@/components/filter/CarsInNumbers.vue";
+import Dropdown from "@/components/filter/Dropdown.vue";
 import SearchBar from "@/components/filter/SearchBar.vue";
-import DisplayComp from "@/components/filter/DisplayComp.vue";
 import CalendarComp from "@/components/filter/CalendarComp.vue";
 import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
@@ -71,6 +70,31 @@ async function showCustomerData() {
 
   show();
 }
+
+const carsOptions = [
+  "0 - 25 biler",
+  "26 - 50 biler",
+  "51 - 75 biler",
+  "76 - 100 biler",
+  "101 - 125 biler",
+  "126 - 150 biler",
+  "151 - 175 biler",
+  "176 - 200 biler",
+  "201 - 225 biler",
+  "226 - 250 biler",
+  "251 - 275 biler",
+  "275+ biler"
+];
+
+const displayOptions = [
+  "Kundenavn",
+  "Antal biler",
+  "Samlet budget",
+  "Konverteringer",
+  "Carboost konverteringer",
+  "Budget",
+  "antal konverteringer i procent"
+];
 </script>
 
 <template>
@@ -90,13 +114,20 @@ async function showCustomerData() {
   <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
 <!-- Før valgte kunder (false)-->
   <div v-if="!showTable" class="SalesView__filter-section">
-    <CarsInNumbers />
+    <Dropdown
+        :options="carsOptions"
+        label="Antal biler"
+    />    
     <SearchBar />
   </div>
 
 <!-- Efter valgte kunder (true) -->
   <div v-if="showTable" class="SalesView__filter-section">
-    <DisplayComp />
+    <Dropdown
+      :options="displayOptions"
+      label="Visning"
+      :disableOptions="['Kundenavn', 'Antal biler']"
+    />
     <CalendarComp />
     <CustomerName />
     <ExportData />

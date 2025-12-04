@@ -5,7 +5,7 @@ import { ref, computed  } from 'vue';
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import CarBoostTable from '@/components/CarBoostTable.vue';
 import SearchBar from '@/components/filter/SearchBar.vue';
-import DisplayComp from '@/components/filter/DisplayComp.vue';
+import Dropdown from '@/components/filter/Dropdown.vue';
 import CalendarComp from '@/components/filter/CalendarComp.vue';
 import CarBoostGraph from '@/components/CarBoostGraph.vue';
 
@@ -28,6 +28,14 @@ function goBackAndReset() {
   selectedIds.value = []; 
 }
 
+const displayOptions = [
+  "Kundenavn",
+  "Leads",
+  "Ændring",
+  "Tendens",
+  "Status",
+  "Sidst opdateret"
+];
 </script>
 <template>  
   <div class="carboost-view">
@@ -55,7 +63,12 @@ function goBackAndReset() {
     </div>
     <div class="carboost-view__filter">
       <SearchBar />
-      <DisplayComp />
+      <Dropdown
+        :options="displayOptions"
+        :disableOptions="['Kundenavn', 'Leads', 'Tendens', 'Status']"
+        label="Visning"
+        >
+      </Dropdown> 
       <CalendarComp />
     </div>
     <CarBoostTable v-if="!showTable" @update:selectedIds="ids => selectedIds = ids" />
