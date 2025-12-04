@@ -21,10 +21,15 @@ import { useGoBack } from "@/utils/goBack";
 
 const showId = ref(false);
 const clicked = ref(false); 
+const confirm = ref(false);
 
 function anonymize() {
-  clicked.value = !clicked.value;
-  showId.value = !showId.value;
+  if (!clicked.value) {
+    clicked.value = true;
+    showId.value = !showId.value;
+  } else {
+    confirm.value = true;
+  }
 }
 
 const { showTable, goBack, show } = useGoBack();
@@ -107,12 +112,12 @@ const displayOptions = [
       <button v-if="!showTable" class="SalesView__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
       <button v-if="showTable" class="SalesView__button-anonymize" @click="anonymize">
         <p v-if="!clicked">Anonymiser</p>
-        <p v-else>Vis data</p>
+        <p v-else="!confirm">Vis data</p>
       </button>
     </div>
   </div>
 
-  <ConfirmationModal></ConfirmationModal>
+  <ConfirmationModal v-if="confirm" @close="confirm = false" />
 
   <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
 <!-- Før valgte kunder (false)-->
