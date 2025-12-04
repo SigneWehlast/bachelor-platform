@@ -67,7 +67,7 @@ const sortedCustomers = computed(() => {
 
   if (sortTableBy.value === "change") {
     list.sort((a, b) =>
-      sortDirection.value === "asc" ? a.change - b.change : b.change - a.change
+      sortDirection.value === "desc" ? a.change - b.change : b.change - a.change
     );
   }
 
@@ -190,7 +190,7 @@ const toggleSelection = (id) => {
               class="carboost-table__text-icon carboost-table__text-icon-alert--red"
             />
             <Icon
-              v-else-if="item.yesterdays_dif > 0 && (item.todays_dif / item.yesterdays_dif) < 0.3 && (item.todays_dif / item.yesterdays_dif) > 0.5"
+              v-else-if="item.yesterdays_dif > 0 && (item.todays_dif / item.yesterdays_dif) < 0.7"
               name="Alert"
               class="carboost-table__text-icon carboost-table__text-icon-alert--yellow"
             />
