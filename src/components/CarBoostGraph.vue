@@ -46,7 +46,7 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
     
     const data = allDates.map(date => {
       const point = points.find(p => new Date(p.archived_at).toLocaleDateString("da-DK") === date);
-      return point ? point.leads : 0;
+      return point ? point.dif_leads : 0;
     });
 
     return { name, data };

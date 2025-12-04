@@ -51,8 +51,8 @@ server.get('/api/customer/carboost', async (req, res) => {
 
   try {
     const [rows] = await db.query(
-      "SELECT customer_id, customer_name, leads, dif_leads, last_updated FROM customer WHERE customer_name IS NOT NULL ORDER BY customer_name ASC LIMIT ? OFFSET ?",
-      [limit, offset]
+ "SELECT customer_id, customer_name, leads, last_updated FROM customer WHERE customer_name IS NOT NULL ORDER BY customer_name ASC LIMIT ? OFFSET ?",
+       [limit, offset]
     );
 
      const [countRows] = await db.query(
@@ -104,10 +104,16 @@ server.get("/api/customers-in-groups", async (req, res) => {
 
 
 //history carboost
+// history carboost
 server.get("/api/history/carboost", async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT h.customer_id, c.customer_name, h.leads, h.archived_at
+      SELECT 
+        h.customer_id, 
+        c.customer_name, 
+        h.leads, 
+        h.dif_leads, 
+        h.archived_at
       FROM history h
       INNER JOIN customer c ON h.customer_id = c.customer_id
       ORDER BY h.archived_at DESC
