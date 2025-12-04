@@ -9,6 +9,7 @@ import SearchBar from "@/components/filter/SearchBar.vue";
 import CalendarComp from "@/components/filter/CalendarComp.vue";
 import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
+import ConfirmationModal from "@/components/ConfirmationModal.vue";
 
 //Express server data import
 import { getCustomers, getSelectedCustomers } from "@/config/customerService";
@@ -20,10 +21,25 @@ import { useGoBack } from "@/utils/goBack";
 
 const showId = ref(false);
 const clicked = ref(false); 
+const confirm = ref(false);
 
 function anonymize() {
-  clicked.value = !clicked.value;
-  showId.value = !showId.value;
+  if (!clicked.value) {
+    clicked.value = true;
+    showId.value = !showId.value;
+  } else {
+    confirm.value = true;
+  }
+}
+
+function handleModalYes() {
+  clicked.value = false;
+  showId.value = false;
+  confirm.value = false;
+}
+
+function handleModalNo() {
+  confirm.value = false;
 }
 
 const { showTable, goBack, show } = useGoBack();
@@ -106,11 +122,16 @@ const displayOptions = [
       <button v-if="!showTable" class="SalesView__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
       <button v-if="showTable" class="SalesView__button-anonymize" @click="anonymize">
         <p v-if="!clicked">Anonymiser</p>
-        <p v-else>Vis data</p>
+        <p v-else="!confirm">Vis data</p>
       </button>
     </div>
   </div>
 
+  <ConfirmationModal 
+  v-if="confirm" 
+  @yes="handleModalYes" 
+  @no="handleModalNo" 
+/>
   <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
 <!-- Før valgte kunder (false)-->
   <div v-if="!showTable" class="SalesView__filter-section">
