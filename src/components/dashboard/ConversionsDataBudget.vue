@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import Icon from "@/components/Icon.vue"
+import Dropdown from '../filter/Dropdown.vue';
 
 const conversions = ref([
   { name: "Gns konverteringer", data: "120", description: "(+) Stabil" },
@@ -18,38 +18,16 @@ const segmentOptions = [
 ];
 
 const selectedSegment = ref(segmentOptions[0]);
-const dropdownOpen = ref(false);
-
-function toggleDropdown() {
-  dropdownOpen.value = !dropdownOpen.value;
-}
-
-function selectSegment(option) {
-  selectedSegment.value = option;
-  dropdownOpen.value = false;
-}
 </script>
 <template>
     <div class="conversion-data-budget">
         <h1 class="conversion-data-budget__title">Konverteringsdata budget</h1>
-        <div class="conversion-data-budget__dropdown" @click="toggleDropdown">
-            <p class="text-regular">Segment: {{ selectedSegment }}</p>
-            <Icon
-                :name="dropdownOpen ? 'ChevronDoubleUp': 'ChevronDoubleDown'"
-                class="conversion-data-budget__dropdown-icon"
-            />
-        
-            <ul v-if="dropdownOpen" class="conversion-data-budget__dropdown-options">
-                <li
-                    v-for="(option, index) in segmentOptions"
-                    :key="index"
-                    class="conversion-data-budget__dropdown-item"
-                    @click.stop="selectSegment(option)"
-                >
-                    {{ option }}
-                </li>
-            </ul>
-        </div>
+        <Dropdown
+            v-model="selectedSegment"
+            :options="segmentOptions"
+            label="Segment"
+        >
+        </Dropdown>  
         <div class="conversion-data-budget__content">
             <div v-for="(conversion, index) in conversions" :key="index" class="conversion-data-budget__content__box">
                 <div class="conversion-data-budget__content__box-name h3">{{ conversion.name }}</div>
