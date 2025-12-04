@@ -2,52 +2,62 @@
 @use '../abstracts/mixins' as m;
 
 .confirmation-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: vars.$box-shaddow-dark;
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
     background: vars.$box-shaddow-dark;
-  
-    &__overlay {
-        position: absolute;
-        inset: 0;
-        background: vars.$box-shaddow-dark;
+  }
+
+  &__content {
+    position: relative;
+    background: vars.$bg-white;
+    padding: vars.$spacing-padding-xl;
+    border-radius: vars.$border-radius-md;
+    width: 400px;
+    text-align: center;
+    box-shadow: vars.$box-shaddow-dark;
+    z-index: 1;
+  }
+
+  &__buttons-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: vars.$spacing-padding-md;
+    gap: vars.$spacing-gap-md;
+  }
+
+  &__button {
+    @include m.buttons;
+
+    &--yes {
+      background-color: vars.$primary-color-carads-light;
+
+      &:hover {
+        background-color: vars.$primary-color-carads-dark;
       }
-  
-    &__content {
-      position: relative;
-      background: #fff;
-      padding: vars.$spacing-padding-xl;
-      border-radius: vars.$border-radius-md;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 5px 30px vars.$box-shaddow-dark;;
-      z-index: 1;
-    }
-
-    &__buttonsWrapper{
-        display: flex;
-        justify-content: center;
-        padding: vars.$spacing-padding-md;
-        gap: vars.$spacing-gap-md;
-    }
-  
-    &__buttons {
-        @include m.buttons;
-
-        &-yes{
-            @include m.buttons;
-            background-color: vars.$primary-color-carads-light;
-        }
-        &-yes:hover{
-            background-color: vars.$primary-color-carads-dark;
-        }
     }
   }
-  
+
+  &__icon-wrapper {
+    display: flex;
+    justify-content: end;
+    margin-bottom: vars.$spacing-gap-md;
+  }
+
+  &__icon {
+    cursor: pointer;
+    width: vars.$icon-size-lg;
+  }
+}

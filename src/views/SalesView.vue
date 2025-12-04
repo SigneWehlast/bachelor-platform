@@ -32,6 +32,16 @@ function anonymize() {
   }
 }
 
+function handleModalYes() {
+  clicked.value = false;
+  showId.value = false;
+  confirm.value = false;
+}
+
+function handleModalNo() {
+  confirm.value = false;
+}
+
 const { showTable, goBack, show } = useGoBack();
 
 const customerTableData = ref([]);
@@ -117,8 +127,11 @@ const displayOptions = [
     </div>
   </div>
 
-  <ConfirmationModal v-if="confirm" @close="confirm = false" />
-
+  <ConfirmationModal 
+  v-if="confirm" 
+  @yes="handleModalYes" 
+  @no="handleModalNo" 
+/>
   <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
 <!-- Før valgte kunder (false)-->
   <div v-if="!showTable" class="SalesView__filter-section">
