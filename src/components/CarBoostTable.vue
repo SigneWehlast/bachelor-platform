@@ -15,7 +15,22 @@ const sortDirection = ref("asc");
 
 const emit = defineEmits(["update:selectedIds"]);
 
-async function fetchAll() {
+const props = defineProps({
+  highlightedIds: {
+    type: Array,
+    default: () => []
+  },
+  showOnlySelected: {
+    type: Boolean,
+    default: false
+  },
+  hidePagination: {
+    type: Boolean,
+    default: false
+  }
+});
+
+const fetchAll = async() => {
   const { customers } = await getCustomersInCarboost(1, 99999);
   carboostCustomers.value = customers;
   totalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
@@ -23,7 +38,7 @@ async function fetchAll() {
 
 onMounted(fetchAll);
 
-function sortBy(col) {
+const sortBy = (col) => {
   if (sortTableBy.value === col) {
     sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
   } else {
@@ -63,25 +78,32 @@ const sortedCustomers = computed(() => {
         ? order[a.tendens] - order[b.tendens]
         : order[b.tendens] - order[a.tendens]
     );
+  } 
+  
+  if (props.showOnlySelected && props.highlightedIds.length > 0) {
+    list = list.filter(item => props.highlightedIds.includes(item.id));
   }
 
   return list;
 });
 
 const paginatedCustomers = computed(() => {
+  if (props.hidePagination) {
+    return sortedCustomers.value;
+  }
   const start = (currentPage.value - 1) * pageSize;
   return sortedCustomers.value.slice(start, start + pageSize);
 });
 
-function nextPage() {
+const nextPage = () => {
   if (currentPage.value < totalPages.value) currentPage.value++;
 }
 
-function prevPage() {
+const prevPage = () => {
   if (currentPage.value > 1) currentPage.value--;
 }
 
-function toggleSelection(id) {
+const toggleSelection = (id) => {
   if (selectedIds.value.includes(id)) {
     selectedIds.value = selectedIds.value.filter(i => i !== id);
   } else {
@@ -137,7 +159,7 @@ function toggleSelection(id) {
       <template #rows>
         <tr v-for="item in paginatedCustomers" :key="item.id" class="carboost-table__rows">
           <td class="carboost-table__text--leftalign">
-            <input 
+            <input
               type="checkbox" 
               :value="item.id" 
               :checked="selectedIds.includes(item.id)" 
@@ -181,7 +203,7 @@ function toggleSelection(id) {
       </template>
     </BaseTable>
 
-    <div class="carboost-table__pagination">
+    <div v-if="!props.hidePagination" class="carboost-table__pagination">
       <div>Viser side {{ currentPage }} ud af {{ totalPages }}</div>
       <div>
         <button class="carboost-table__pagination-button" @click="prevPage" :disabled="currentPage === 1">

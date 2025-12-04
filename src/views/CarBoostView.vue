@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed  } from 'vue';
 
-//Componetns
+//Components
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import CarBoostTable from '@/components/CarBoostTable.vue';
 import SearchBar from '@/components/filter/SearchBar.vue';
@@ -18,12 +18,15 @@ const { showTable, goBack, show } = useGoBack();
 const selectedIds = ref([]);
 const isButtonDisabled = computed(() => selectedIds.value.length === 0);
 
-function showSelected() {
+const selectedOnly = computed(() => selectedIds.value);
+
+
+const showSelected = () => {
   if (selectedIds.value.length === 0) return;
   show();
 }
 
-function goBackAndReset() {
+const goBackAndReset =() => {
   goBack();
   selectedIds.value = []; 
 }
@@ -58,7 +61,19 @@ function goBackAndReset() {
       <DisplayComp />
       <CalendarComp />
     </div>
-    <CarBoostTable v-if="!showTable" @update:selectedIds="ids => selectedIds = ids" />
-      <CarBoostGraph v-else :selectedIds="selectedIds" />
+
+    <CarBoostTable 
+      v-if="!showTable" 
+      @update:selectedIds="ids => selectedIds = ids" 
+      :hidePaginaiton="false"
+    />
+    <div v-else>
+      <CarBoostGraph :selectedIds="selectedOnly" />
+      <CarBoostTable 
+        :highlightedIds="selectedOnly" 
+        :showOnlySelected="true"
+        :hidePagination="true"
+      />
+      </div>
   </div>
 </template>
