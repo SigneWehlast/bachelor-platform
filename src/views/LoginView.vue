@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from "vue";
+import logo from '@/assets/images/Carads_logo_dark_text.svg';
 
 const email = ref("");
 const password = ref("");
-const message = ref("");
 
 async function login() {
   try {
@@ -33,22 +33,26 @@ async function login() {
 <template>
   <div class="login">
     <div class="login__blank"></div>
-    <div class="login__form">
-      <h1>Log på CarAds platform</h1>
-      <form class="login-form" @submit.prevent="login">
-        <div class="login-form__group h3">
-          <label>Email</label>
-          <input v-model="email" type="email" required class="login-form__input">
-        </div>
-        <div class="login-form__group h3">
-          <label>Adgangskode</label>
-          <input v-model="password" type="password" required class="login-form__input">
-        </div>
-        <div class="login-form__group">
-          <button type="submit" class="login-form__btn">Login</button>
-           <p class="medium">Glemt adgangskode?</p>
-        </div>
-      </form>
+    <div class="login__right"> 
+      <div  class="login__logo">
+      <img :src="logo" alt="Carads Logo" class="login__logo" /></div>
+      <div class="login__form">
+        <h1>Log på CarAds platform</h1>
+        <form class="login__form-formular" @submit.prevent="login">
+          <div class="login__form-group h3">
+            <label>Email</label>
+            <input v-model="email" type="email" required class="login__form-input">
+          </div>
+          <div class="login__form-group h3">
+            <label>Adgangskode</label>
+            <input v-model="password" type="password" required class="login__form-input">
+          </div>
+          <div class="login__form-group">
+            <button type="submit" class="login__form-btn">Login</button>
+            <p class="medium">Glemt adgangskode?</p>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
+  </div>     
 </template>
