@@ -9,7 +9,7 @@ import SearchBar from "@/components/filter/SearchBar.vue";
 import CalendarComp from "@/components/filter/CalendarComp.vue";
 import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
-import ConfirmationModal from "@/components/ConfirmationModal.vue";
+import ConfirmationModal from "@/components/modals/ConfirmationModal.vue";
 
 //Express server data import
 import { getCustomers, getSelectedCustomers } from "@/config/customerService";

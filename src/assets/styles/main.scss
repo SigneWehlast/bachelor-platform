@@ -14,7 +14,9 @@
 @use './components/settings-navigation';
 @use './components/notification-settings-comp';
 @use './components/base-table';
-@use './components/confirmation-modal';
+
+@use './components/modals/confirmation-modal';
+@use './components/modals/show-customer-car-boost-modal';
 
 @use './components/dashboard/conversions-data-budget';
 @use './components/dashboard/conversions-data-cars';
