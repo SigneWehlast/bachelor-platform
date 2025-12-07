@@ -1,0 +1,64 @@
+@use '../../abstracts/variables' as vars;
+@use '../../abstracts/mixins' as mix;
+
+.show-customer-carboost-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: vars.$box-shaddow-dark;
+
+  &__content {
+    background: vars.$bg-white;
+    padding: vars.$spacing-padding-xl;
+    border-radius: vars.$border-radius-md;
+    box-shadow: vars.$box-shaddow-dark;
+    z-index: 1;
+    width: 1000px;
+  }
+
+  &__topbar {    
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+
+    &-icon {
+      cursor: pointer;
+      width: vars.$icon-size-lg;
+    }
+
+    &-dropdowns {
+        display: flex;
+        gap: 24px;
+        justify-content: flex-end;
+        margin: 24px 0 12px 0;
+    }
+
+    &-alert {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: vars.$text-color-gray;
+
+        &__text {
+            color: vars.$text-color-gray;
+        }
+
+        &__icon {
+            width: vars.$icon-size-lg;
+            fill: vars.$icon-color-warning;
+        }
+    }
+  }
+
+  &__last-updated {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
