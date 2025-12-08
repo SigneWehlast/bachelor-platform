@@ -13,10 +13,13 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
     const customers = customersData
       .filter(c => c.customer_name)
       .map(c => {
-        const history = historyData.find(h => h.customer_id === c.customer_id) || {};
-        const change = history.change || 0;
-        const todays_dif = history.todays_dif || 0;
-        const yesterdays_dif = history.yesterdays_dif || 0;
+        const customerHistory = historyData.filter(h => h.customer_id === c.customer_id);
+        const latestHistory = customerHistory[customerHistory.length - 1] || {};
+        
+        const change = latestHistory.change || 0;
+        const todays_dif = latestHistory.todays_dif || 0;
+        const yesterdays_dif = latestHistory.yesterdays_dif || 0;
+
 
         let tendens = '-';
         if (change > 0) tendens = 'up';
@@ -30,7 +33,8 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
           tendens: tendens,
           todays_dif: todays_dif,
           yesterdays_dif: yesterdays_dif,
-          last_updated: c.last_updated
+          last_updated: c.last_updated,
+          history: customerHistory,
         };
 
       });
