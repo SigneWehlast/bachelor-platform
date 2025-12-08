@@ -36,10 +36,6 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  hideCheckbox: {
-    type: Boolean,
-    default: false
-  },
   tableInModal: {
     type: Boolean,
     default: false
@@ -55,22 +51,18 @@ function getMonthlyLeads(history) {
     const year = date.getFullYear();
     const key = `${year}-${month.toString().padStart(2, '0')}`;
 
-    if (!grouped[key]) {
+    if (!grouped[key] || new Date(item.archived_at) > new Date(grouped[key].archived_at)) {
       grouped[key] = {
         archived_at: item.archived_at,
-        leads: item.leads || 0,
+        monthlyLeads: item.leads || 0,
         period: date.toLocaleDateString("da-DK", { month: "long", year: "numeric" })
       };
-    } else {
-      grouped[key].leads += item.leads || 0;
-      if (new Date(item.archived_at) > new Date(grouped[key].archived_at)) {
-        grouped[key].archived_at = item.archived_at;
-      }
     }
   });
 
   return Object.values(grouped);
 }
+
 
 const fetchAll = async () => {
   try {
@@ -323,14 +315,9 @@ const openModalWithCustomer = (customer) => {
           </template>
           <template v-else>
             <td class="carboost-table__text--leftalign">
-              <input v-if="!props.hideCheckbox"
-                type="checkbox" 
-                :value="item.id" 
-                :checked="selectedIds.includes(item.id)" 
-                @change="toggleSelection(item.id)" 
-              />  {{ item.period }}
+              {{ item.period }}
             </td>
-            <td class="carboost-table__text--center">{{ item.leads }}</td>
+            <td class="carboost-table__text--center">{{ item.monthlyLeads }}</td>
             <td class="carboost-table__text--center">
               {{ item.change ?? "-" }}
             </td>

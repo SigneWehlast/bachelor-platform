@@ -78,8 +78,6 @@ const lastUpdated = computed(() => {
 
   return new Date(points[0].archived_at).toLocaleDateString("da-DK");
 });
-
-
 </script>
 <template>
   <div class="show-customer-carboost-modal">
