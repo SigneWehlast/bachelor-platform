@@ -52,7 +52,7 @@ watch([history, () => props.customer], ([newHistory, customer]) => {
   ];
 
   const options = {
-    chart: { type: "line", height: 350, toolbar: { show: true } },
+    chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false }  },
     series,
     stroke: { curve: "smooth" },
     xaxis: { categories: dates },

@@ -55,7 +55,9 @@ function getMonthlyLeads(history) {
       grouped[key] = {
         archived_at: item.archived_at,
         monthlyLeads: item.leads || 0,
-        period: date.toLocaleDateString("da-DK", { month: "long", year: "numeric" })
+        period: date
+        .toLocaleDateString("da-DK", { month: "long", year: "numeric" })
+        .replace(/^\w/, c => c.toUpperCase())
       };
     }
   });
@@ -228,40 +230,16 @@ const openModalWithCustomer = (customer) => {
           <th class="carboost-table__text--leftalign">Sidst opdateret</th>
         </template>
         <template v-else>
-          <th @click="sortBy('period')" class="carboost-table__filter-title carboost-table__text--leftalign">
-            <Icon
-              :name="sortTableBy === 'period' 
-                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
-                      : 'ArrowUpThin'" 
-              class="carboost-table__filter-icon"
-            />          
+          <th class="carboost-table__filter-title carboost-table__text--leftalign">          
             Periode
           </th>
-          <th @click="sortBy('leads')" class="carboost-table__filter-title">
-            <Icon
-              :name="sortTableBy === 'leads' 
-                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
-                      : 'ArrowUpThin'" 
-              class="carboost-table__filter-icon"
-            />          
+          <th class="carboost-table__filter-title">         
             Leads
           </th>
-          <th @click="sortBy('change')" class="carboost-table__filter-title">
-            <Icon
-              :name="sortTableBy === 'change' 
-                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
-                      : 'ArrowUpThin'" 
-              class="carboost-table__filter-icon"
-            />          
+          <th class="carboost-table__filter-title">
             Ændring
           </th>
-          <th @click="sortBy('tendens')" class="carboost-table__filter-title">
-            <Icon
-              :name="sortTableBy === 'tendens' 
-                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
-                      : 'ArrowUpThin'" 
-              class="carboost-table__filter-icon"
-            />
+          <th class="carboost-table__filter-title">
             Tendens
           </th>
           <th>Status</th>
@@ -273,10 +251,10 @@ const openModalWithCustomer = (customer) => {
             <td class="carboost-table__text--leftalign carboost-table__text-name">
               <input
                 type="checkbox" 
-                :value="item.id" 
+                :value="item.id"
                 :checked="selectedIds.includes(item.id)" 
                 @change="toggleSelection(item.id)" 
-              /> 
+              />
               <p @click="openModalWithCustomer(item)"> {{ item.name }} </p>
             </td>
             <td class="carboost-table__text--center">{{ item.leads }}</td>
@@ -311,7 +289,7 @@ const openModalWithCustomer = (customer) => {
             </td>
             <td class="carboost-table__text--leftalign">
               {{ new Date(item.last_updated).toLocaleDateString() }}
-            </td>        
+            </td>
           </template>
           <template v-else>
             <td class="carboost-table__text--leftalign">
@@ -356,7 +334,6 @@ const openModalWithCustomer = (customer) => {
       :customer="selectedCustomer"
       @close="showModal = false"
     />
-
     <div v-if="!props.hidePagination" class="carboost-table__pagination">
       <div>Viser side {{ currentPage }} ud af {{ totalPages }}</div>
       <div>
