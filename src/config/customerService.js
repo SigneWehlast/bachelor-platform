@@ -18,7 +18,7 @@ export function filterValidCustomers(customers) {
 
 //Transformér til ønsket format
 export function mapCustomers(customers) {
-  return customers.map(c => ({ id: c.customer_id, name: c.customer_name }));
+  return customers.map(c => ({ id: c.customer_id, name: c.customer_name, numberOfCars: c.number_of_cars }));
 }
 
 //Sortér kunder

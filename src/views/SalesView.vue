@@ -52,8 +52,26 @@ const selectedCustomers = ref([]);
 
 const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
 
+const selectedCarsFilter = ref(null);
+
+const filteredCustomers = computed(() => {
+  if (!selectedCarsFilter.value || selectedCarsFilter.value === "Alle") return salesCustomers.value;
+
+  const [min, maxText] = selectedCarsFilter.value.split(" - ");
+  const minNum = parseInt(min);
+  const maxNum = maxText.includes("+")
+    ? Infinity
+    : parseInt(maxText.replace(" biler", ""));
+
+  return salesCustomers.value.filter(c => {
+    return c.numberOfCars >= minNum && c.numberOfCars <= maxNum;
+  });
+});
+
 onMounted(async () => {
   salesCustomers.value = await getCustomers();
+  console.log("Første kunde:", salesCustomers.value[10]);
+
 });
 
 function moveToSelected(customer) {
@@ -61,11 +79,19 @@ function moveToSelected(customer) {
   selectedCustomers.value.push(customer);
   sortByName(selectedCustomers.value);
 }
-
 function selectAllCustomers() {
-  selectedCustomers.value.push(...salesCustomers.value);
-  salesCustomers.value = [];
+  const toSelect = filteredCustomers.value.filter(
+    c => !selectedCustomers.value.some(s => s.id === c.id)
+  );
+
+  selectedCustomers.value.push(...toSelect);
+  salesCustomers.value = salesCustomers.value.filter(
+    c => !toSelect.some(s => s.id === c.id)
+  );
+
+  sortByName(selectedCustomers.value);
 }
+
 
 function removeAllCustomers() {
   salesCustomers.value.push(...selectedCustomers.value);
@@ -88,6 +114,7 @@ async function showCustomerData() {
 }
 
 const carsOptions = [
+  "Alle",
   "0 - 25 biler",
   "26 - 50 biler",
   "51 - 75 biler",
@@ -136,9 +163,10 @@ const displayOptions = [
 <!-- Før valgte kunder (false)-->
   <div v-if="!showTable" class="SalesView__filter-section">
     <Dropdown
-        :options="carsOptions"
-        label="Antal biler"
-    />    
+    :options="carsOptions"
+    label="Antal biler"
+    v-model="selectedCarsFilter"
+  />  
     <SearchBar />
   </div>
 
@@ -162,15 +190,15 @@ const displayOptions = [
       </div>
 
       <ul>
-        <li
-          v-for="item in salesCustomers"
-          :key="item.id"
-          class="SalesView__customer-item h3"
-          @click="moveToSelected(item)"
-        >
-        {{ item.name}}
-        </li>
-      </ul>
+  <li
+    v-for="item in filteredCustomers"
+    :key="item.id"
+    class="SalesView__customer-item h3"
+    @click="moveToSelected(item)"
+  >
+    {{ item.name }}
+  </li>
+</ul>
     </div>
 
     <!-- Valgte kunder -->
@@ -179,16 +207,16 @@ const displayOptions = [
       <p class="text-medium">Valgte kunder</p>
       <button class="SalesView__button" @click="removeAllCustomers">Fjern alle</button>
     </div>
-      <ul>
-        <li
-          v-for="item in selectedCustomers"
-          :key="item.id"
-          class="SalesView__customer-item h3"
-          @click="moveToAvailable(item)"
-        >
-        {{ item.name }}
-        </li>
-      </ul>
+    <ul>
+  <li
+    v-for="item in selectedCustomers"
+    :key="item.id"
+    class="SalesView__customer-item h3"
+    @click="moveToAvailable(item)"
+  >
+    {{ item.name }}
+  </li>
+</ul>
     </div>
   </div>
 </div>
