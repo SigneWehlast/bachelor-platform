@@ -128,14 +128,14 @@ const sortedCustomers = computed(() => {
 
   if (sortTableBy.value === "change") {
     list.sort((a, b) =>
-      sortDirection.value === "desc" ? a.change - b.change : b.change - a.change
+      sortDirection.value === "asc" ? a.change - b.change : b.change - a.change
     );
   }
 
   if (sortTableBy.value === "tendens") {
     const order = { up: 2, "-": 1, down: 0 };
     list.sort((a, b) =>
-      sortDirection.value === "desc"
+      sortDirection.value === "asc"
         ? order[a.tendens] - order[b.tendens]
         : order[b.tendens] - order[a.tendens]
     );
