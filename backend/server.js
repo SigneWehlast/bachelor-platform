@@ -17,7 +17,7 @@ server.use(cors({
 //customers sale
 server.get("/api/customer", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT customer_id, customer_name FROM customer");
+    const [rows] = await db.query("SELECT customer_id, customer_name, number_of_cars FROM customer");
     res.json(rows);
   } catch (err) {
     console.error(err);
