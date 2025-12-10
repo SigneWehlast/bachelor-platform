@@ -3,7 +3,7 @@
     import Dropdown from "../filter/Dropdown.vue";
     import { getCustomerStats } from "@/config/customerStatsService";
     
-    // Data til visning
+    // Data til visning med dynamiske beskrivelser
     const conversionsCars = ref([
       { name: "Gns konverteringer", data: "-", description: "" },
       { name: "Gns CarBoost konverteringer", data: "-", description: "" },
@@ -37,27 +37,43 @@
       return { min, max };
     }
     
-    // Funktion til at opdatere konverteringsdata baseret på segment
+    // Opdater konverteringsdata baseret på segment
     function updateConversions() {
       const { min, max } = parseSegment(selectedSegment.value);
       const filtered = customerData.value.filter(c => c.numberOfCars >= min && c.numberOfCars <= max);
     
       if (filtered.length === 0) {
-        conversionsCars.value = conversionsCars.value.map(c => ({ ...c, data: "0" }));
+        conversionsCars.value.forEach(c => { c.data = "0"; c.description = "Ingen data"; });
         return;
       }
     
-      const totalLeads = filtered.reduce((acc, c) => acc + c.leads, 0);
-      const totalCarBoost = filtered.reduce((acc, c) => acc + c.carboostConversions, 0);
-      const totalCars = filtered.reduce((acc, c) => acc + c.numberOfCars, 0);
-      const totalBudget = filtered.reduce((acc, c) => acc + c.totalBudget, 0);
+      // Segment totals
+      const segmentTotalLeads = filtered.reduce((acc, c) => acc + c.leads, 0);
+      const segmentTotalCarBoost = filtered.reduce((acc, c) => acc + c.carboostConversions, 0);
+      const segmentTotalCars = filtered.reduce((acc, c) => acc + c.numberOfCars, 0);
     
-      conversionsCars.value = [
-        { name: "Gns konverteringer", data: (totalLeads / filtered.length).toFixed(0), description: "" },
-        { name: "Gns CarBoost konverteringer", data: (totalCarBoost / filtered.length).toFixed(2), description: "" },
-        { name: "Gns Pris pr. bil pr. dag", data: totalCars ? (totalBudget / (totalCars *30)).toFixed(1) : "0", description: "" },
-        { name: "Gns antal biler", data: (totalCars / filtered.length).toFixed(0), description: "" }
-      ];
+      // Overordnede totals
+      const overallTotalCarBoost = customerData.value.reduce((acc, c) => acc + c.carboostConversions, 0);
+    
+      // Beregn pris pr. bil pr. dag per kunde og gennemsnit
+      const budgetPerDayArray = filtered.map(c => 
+  c.numberOfCars > 0 ? Number((c.totalBudget / (c.numberOfCars * 30)).toFixed(1)) : 0
+);
+const avgBudgetPerDay = (budgetPerDayArray.reduce((acc, val) => acc + val, 0) / budgetPerDayArray.length).toFixed(1);
+    
+      // Opdater data
+      conversionsCars.value[0].data = (segmentTotalLeads / filtered.length).toFixed(0);
+      conversionsCars.value[1].data = (segmentTotalCarBoost / filtered.length).toFixed(0);
+      conversionsCars.value[2].data = avgBudgetPerDay;
+      conversionsCars.value[3].data = (segmentTotalCars / filtered.length).toFixed(0);
+    
+      // Dynamiske beskrivelser
+      conversionsCars.value[0].description = (segmentTotalLeads / filtered.length) > 50 ? "Høj konvertering" : "Stabil";
+      conversionsCars.value[1].description = overallTotalCarBoost > 0
+        ? ((segmentTotalCarBoost / overallTotalCarBoost) * 100).toFixed(1) + "% af totalen"
+        : "0% af totalen";
+      conversionsCars.value[2].description = avgBudgetPerDay < 10 ? "Lav - god økonomi" : "Høj - tjek budget";
+      conversionsCars.value[3].description = (segmentTotalCars / filtered.length) > 100 ? "Stort segment" : "Mindre segment";
     }
     
     // Hent data når komponenten mountes
@@ -71,11 +87,12 @@
       }
     });
     
-    // Watcher på selectedSegment så data opdateres når dropdown ændres
+    // Watcher på selectedSegment
     watch(selectedSegment, () => {
       updateConversions();
     });
     </script>
+    
     
     
     <template>
