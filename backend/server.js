@@ -161,4 +161,15 @@ server.get("/api/history/carboost/table", async (req, res) => {
   }
 });
 
+// Kunde-statistik til segment-beregninge
+server.get("/api/customer/stats", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions FROM customer");
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
 server.listen(3000, () => console.log("API running on port 3000"));
