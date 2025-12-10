@@ -161,24 +161,13 @@ server.get("/api/history/carboost/table", async (req, res) => {
   }
 });
 
-// Kunde-statistik til segment-beregninger
+// Kunde-statistik til segment-beregninge
 server.get("/api/customer/stats", async (req, res) => {
   try {
-    const [rows] = await db.query(`
-      SELECT 
-        customer_id,
-        customer_name,
-        number_of_cars,
-        total_budget,
-        leads,
-        carboost_conversions
-      FROM customer
-      WHERE customer_name IS NOT NULL
-    `);
-
+    const [rows] = await db.query("SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions FROM customer");
     res.json(rows);
   } catch (err) {
-    console.error("Fejl i /api/customer/stats:", err);
+    console.error(err);
     res.status(500).json({ error: "Database error" });
   }
 });

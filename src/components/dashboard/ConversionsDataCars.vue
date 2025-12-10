@@ -1,7 +1,7 @@
 <script setup>
     import { ref, onMounted, watch } from "vue";
     import Dropdown from "../filter/Dropdown.vue";
-    import { getCustomers } from "@/config/customerService";
+    import { getCustomerStats } from "@/config/customerStatsService";
     
     // Data til visning
     const conversionsCars = ref([
@@ -24,97 +24,79 @@
       "200+ biler"
     ];
     
+    // Valgt segment
     const selectedSegment = ref(segmentOptions[0]);
     
-    // Data fra API
-    const customers = ref([]);
+    // State til data fra API
+    const customerData = ref([]);
     
-    // ------ SEGMENT PARSER ------
-    function segmentRange(segment) {
-      const trimmed = (segment || "").toString().trim();
-      if (trimmed.includes("+")) return { min: 200, max: 9999 };
-    
-      const parts = trimmed.replace(" biler", "").split("-");
-      if (parts.length !== 2) return { min: 0, max: 9999 }; // fallback
-    
-      const min = Number(parts[0].trim());
-      const max = Number(parts[1].trim());
+    // Funktion til at parse segmenttekst til min/max værdier
+    function parseSegment(segment) {
+      if (segment === "200+ biler") return { min: 201, max: Infinity };
+      const [min, max] = segment.split("-").map(s => parseInt(s.trim()));
       return { min, max };
     }
     
-    // ------ FILTER ------
-    function filterBySegment() {
-      const { min, max } = segmentRange(selectedSegment.value);
-      const filtered = customers.value.filter(c => c.numberOfCars >= min && c.numberOfCars <= max);
+    // Funktion til at opdatere konverteringsdata baseret på segment
+    function updateConversions() {
+      const { min, max } = parseSegment(selectedSegment.value);
+      const filtered = customerData.value.filter(c => c.numberOfCars >= min && c.numberOfCars <= max);
     
-      // Debug log
-      console.log("Selected segment:", selectedSegment.value);
-      console.log("Segment range:", min, max);
-      console.log("Filtered customers:", filtered);
-    
-      return filtered;
-    }
-    
-    // ------ CALCULATE AVERAGES ------
-    function calculateAverages() {
-      const list = filterBySegment();
-    
-      if (list.length === 0) {
-        conversionsCars.value[0].data = "0";
-        conversionsCars.value[1].data = "0";
-        conversionsCars.value[2].data = "0 kr.";
-        conversionsCars.value[3].data = "0";
+      if (filtered.length === 0) {
+        conversionsCars.value = conversionsCars.value.map(c => ({ ...c, data: "0" }));
         return;
       }
     
-      const totalConversions = list.reduce((sum, c) => sum + c.carboostConversions, 0);
-      const totalLeads = list.reduce((sum, c) => sum + c.leads, 0);
-      const totalCars = list.reduce((sum, c) => sum + c.numberOfCars, 0);
-      const totalBudget = list.reduce((sum, c) => sum + c.totalBudget, 0);
+      const totalLeads = filtered.reduce((acc, c) => acc + c.leads, 0);
+      const totalCarBoost = filtered.reduce((acc, c) => acc + c.carboostConversions, 0);
+      const totalCars = filtered.reduce((acc, c) => acc + c.numberOfCars, 0);
+      const totalBudget = filtered.reduce((acc, c) => acc + c.totalBudget, 0);
     
-      conversionsCars.value[0].data = (totalConversions / list.length).toFixed(1);
-      conversionsCars.value[1].data = (totalLeads / list.length).toFixed(1);
-      conversionsCars.value[2].data = (totalBudget / (totalCars * 30)).toFixed(2) + " kr.";
-      conversionsCars.value[3].data = Math.round(totalCars / list.length);
+      conversionsCars.value = [
+        { name: "Gns konverteringer", data: (totalLeads / filtered.length).toFixed(0), description: "" },
+        { name: "Gns CarBoost konverteringer", data: (totalCarBoost / filtered.length).toFixed(2), description: "" },
+        { name: "Gns Pris pr. bil pr. dag", data: totalCars ? (totalBudget / (totalCars *30)).toFixed(1) : "0", description: "" },
+        { name: "Gns antal biler", data: (totalCars / filtered.length).toFixed(0), description: "" }
+      ];
     }
     
-    // ------ FETCH DATA ------
-onMounted(async () => {
-  const raw = await getCustomers();
-
-  // Brug allerede eksisterende fields
-  customers.value = raw.map(c => ({
-    ...c,
-    numberOfCars: Number(c.numberOfCars) || 0,
-    totalBudget: Number(c.total_budget) || 0,
-    leads: Number(c.leads) || 0,
-    carboostConversions: Number(c.carboost_conversions) || 0
-  }));
-
-  console.log("Processed customers:", customers.value);
-
-  calculateAverages();
-});
+    // Hent data når komponenten mountes
+    onMounted(async () => {
+      try {
+        const data = await getCustomerStats();
+        customerData.value = data;
+        updateConversions();
+      } catch (err) {
+        console.error("Fejl ved hentning af stats:", err);
+      }
+    });
     
-    // Beregn igen når segment skiftes
-    watch(selectedSegment, calculateAverages);
+    // Watcher på selectedSegment så data opdateres når dropdown ændres
+    watch(selectedSegment, () => {
+      updateConversions();
+    });
     </script>
     
-<template>
-    <div class="conversion-data-cars">
+    
+    <template>
+      <div class="conversion-data-cars">
         <h1 class="conversion-data-cars__title">Konverteringsdata biler</h1>
         <Dropdown
-            v-model="selectedSegment"
-            :options="segmentOptions"
-            label="Segment"
-        >
-        </Dropdown>     
+          v-model="selectedSegment"
+          :options="segmentOptions"
+          label="Segment"
+        />
         <div class="conversion-data-cars__content">
-            <div v-for="(conversion, index) in conversionsCars" :key="index" class="conversion-data-cars__content__box">
-                <div class="conversion-data-cars__content__box-name h3">{{ conversion.name }}</div>
-                <div class="conversion-data-cars__content__box-data h1">{{ conversion.data }}</div>
-                <div class="conversion-data-cars__content__box-description">{{ conversion.description }}</div>
-            </div>
+          <div
+            v-for="(conversion, index) in conversionsCars"
+            :key="index"
+            class="conversion-data-cars__content__box"
+          >
+            <div class="conversion-data-cars__content__box-name h3">{{ conversion.name }}</div>
+            <div class="conversion-data-cars__content__box-data h1">{{ conversion.data }}</div>
+            <div class="conversion-data-cars__content__box-description">{{ conversion.description }}</div>
+          </div>
         </div>
-    </div>
-</template>
+      </div>
+    </template>
+    
