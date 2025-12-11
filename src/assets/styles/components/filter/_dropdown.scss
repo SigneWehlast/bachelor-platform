@@ -2,55 +2,62 @@
 @use '../../abstracts/mixins' as mix;
 
 .dropdown {
-    @include mix.input;
-    display: inline-flex;
-    width: max-content;
-    align-items: center;
-    padding: 0 vars.$spacing-padding-xs 0 vars.$spacing-padding-xs;
+  @include mix.input;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 vars.$spacing-padding-xs;
+  cursor: pointer;
+  position: relative;
+  justify-content: space-between;
+  z-index: 999;
+
+  p {
+    color: vars.$text-color-gray;
+    white-space: nowrap;
+  }
+
+  &-icon {
+    padding-left: vars.$spacing-padding-sm;
+    width: vars.$icon-size-md;
+    fill: vars.$text-color-gray;
+  }
+
+  &-options {
+    position: absolute;
+    list-style: none;
+    padding: 0;
+    margin: vars.$spacing-margin-xs 0 vars.$spacing-margin-sm 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    top: 100%;
+    left: 0;
+    width: auto;
+    min-width: 100%;
+    white-space: nowrap;
+    background-color: vars.$bg-white;
+    border-radius: vars.$border-radius-sm;
+    overflow: hidden;
+    color: vars.$text-color-gray;
+  }
+
+  &-item {
+    padding: vars.$spacing-padding-sm;
     cursor: pointer;
-    position: relative;
-    justify-content: space-between;
-    z-index: 999;
-    
-    p {
-        color: vars.$text-color-gray;
-        white-space: nowrap;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+    background-color: vars.$bg-white;
+
+    &:hover {
+      background: vars.$bg-light-gray;
     }
 
-    &-icon {
-        padding-left: vars.$spacing-padding-sm;
-        width: vars.$icon-size-md;
-        fill: vars.$text-color-gray;
+    &--disabled {
+      color: vars.$bg-navigation-gray;
+      cursor: not-allowed;
+      &:hover {
+        background: vars.$bg-white;
+      }
     }
-
-    &-options {
-        position: absolute;
-        @include mix.input;
-        height: auto;
-        list-style: none;
-        padding: 0;
-        margin: vars.$spacing-margin-xs 0 vars.$spacing-margin-sm 0;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        top: 100%;
-        left: 0;
-        min-width: 100%;
-        width: max-content;
-        white-space: nowrap;
-        color: vars.$text-color-gray;          
-    }
-
-    &-item {
-        padding: vars.$spacing-padding-sm;
-        cursor: pointer;
-        width: max-content;
-        white-space: nowrap;  
-
-        &:hover {
-            background: vars.$bg-light-gray;
-        }
-
-        &--disabled {
-            color: vars.$bg-navigation-gray;
-        }
-    }
+  }
 }

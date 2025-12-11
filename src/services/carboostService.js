@@ -47,7 +47,7 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
 
 export const getCustomersInCarboostByDate = async (month) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/customer/carboost/date?month=${month}`);
+    const res = await fetch(`${BASE_URL}/api/customer/carboost/date?month=${month}`);
     if (!res.ok) throw new Error("Server error");
 
     const data = await res.json(); 
