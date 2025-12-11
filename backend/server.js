@@ -9,9 +9,6 @@ const __dirname = path.dirname(__filename);
 // Load .env
 dotenv.config({ path: path.join(__dirname, ".env") });
 
-// Debug
-console.log("DB_USER:", process.env.DB_USER);
-
 import app from "./app.js";
 import "./cron/dailySync.js";
 
