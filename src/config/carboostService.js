@@ -1,4 +1,6 @@
 import { sortByName } from "@/utils/sort";
+import { pushNotification } from "@/stores/notificationStore.js";
+pushNotification("Lead-fald", "Kunde X har faldet 40%", "warning");
 
 export async function getCustomersInCarboost(page = 1, limit = 10) {
   try {

@@ -6,6 +6,7 @@ import { menuItems } from "@/config/menuItems"
 import Icon from "@/components/Icon.vue"
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
 import { UserTracking } from "@/utils/tracking"
+import NotificationBell from "../NotificationBell.vue";
 
 // Router
 const route = useRoute()
@@ -31,7 +32,8 @@ const toggleDropdown = (label) => {
     <!-- Top section -->
       <div class="sidebar__top">
         <img :src="logo" alt="Carads Logo" class="sidebar__logo" />
-        <Icon name="BellOutline" class="sidebar__icon" />
+        <NotificationBell class="sidebar__icon"/>
+        
       </div>
 
       <!--Menu secttion-->
