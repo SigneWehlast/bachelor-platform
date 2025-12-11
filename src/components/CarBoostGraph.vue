@@ -69,7 +69,7 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
 </script>
 
 <template>
-  <div class="Carboost-graph">
+  <div class="carboost-graph">
     <div id="chart"></div>
   </div>
 </template>

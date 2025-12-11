@@ -14,7 +14,7 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
     const customers = customersData
       .filter(c => c.customer_name)
       .map(c => {
-        const history = historyData.find(h => h.customer_id === c.customer_id) || {};
+        const history = historyData.find(h => h.customer_id === c.customer_id) || {};        
         const change = history.change || 0;
         const todays_dif = history.todays_dif || 0;
         const yesterdays_dif = history.yesterdays_dif || 0;
@@ -23,18 +23,18 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
         if (change > 0) tendens = 'up';
         else if (change < 0) tendens = 'down';
 
-        return {
-          id: c.customer_id,
-          name: c.customer_name,
-          leads: todays_dif,
-          change: change,
-          tendens: tendens,
-          todays_dif: todays_dif,
-          yesterdays_dif: yesterdays_dif,
-          last_updated: c.last_updated
-        };
-
-      });
+       return {
+        id: c.customer_id,
+        name: c.customer_name,
+        leads: todays_dif,
+        monthlyLeads: c.leads,
+        change: change,
+        tendens: tendens,
+        todays_dif: todays_dif,
+        yesterdays_dif: yesterdays_dif,
+        last_updated: c.last_updated,
+      };
+    });
 
     sortByName(customers);
     return { customers, totalCount };

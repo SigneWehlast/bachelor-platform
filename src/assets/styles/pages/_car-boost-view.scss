@@ -2,8 +2,9 @@
 @use '../abstracts/mixins' as mix;
 
 .carboost-view {
-
-    min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 
     &__topbar {
         display: flex;
