@@ -102,6 +102,7 @@ const avgBudgetPerDay = (budgetPerDayArray.reduce((acc, val) => acc + val, 0) / 
           v-model="selectedSegment"
           :options="segmentOptions"
           label="Segment"
+          selected-prefix="Segment"
         />
         <div class="conversion-data-cars__content">
           <div

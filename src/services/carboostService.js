@@ -50,7 +50,7 @@ export const getCustomersInCarboostByDate = async (month) => {
     if (!res.ok) throw new Error("Server error");
 
     const data = await res.json(); 
-    const rows = data.rows || data.customers || [];
+    const rows = data || [];
 
     const customers = rows.map(r => ({
       id: r.customer_id,
@@ -62,9 +62,7 @@ export const getCustomersInCarboostByDate = async (month) => {
       last_updated: r.archived_at,
       tendens: r.dif_leads > 0 ? 'up' : r.dif_leads < 0 ? 'down' : '-'
     }));
-
     return { customers };
-
   } catch (err) {
     console.error("Fejl i getCustomersInCarboostByDate:", err);
     return { customers: [] };

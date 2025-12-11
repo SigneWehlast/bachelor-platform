@@ -15,6 +15,10 @@ const props = defineProps({
   disableOptions: {
     type: Array,
     default: () => []
+  },
+  selectedPrefix: {
+    type: String,
+    default: "" 
   }
 });
 
@@ -47,26 +51,26 @@ function getLabel(option) {
 <template>
   <div class="dropdown" @click="toggle">
     <p class="text-regular">
-      {{ label }}
-      <span v-if="modelValue">
-        {{ 
+      <span v-if="!modelValue">{{ label }}</span>
+
+      <span v-else>
+        {{ selectedPrefix ? selectedPrefix + ": " : "" }}
+        {{
           (options.find(o =>
-             (typeof o === 'object' && 'value' in o ? o.value : o) === modelValue
+            (typeof o === 'object' && 'value' in o ? o.value : o) === modelValue
           ) 
           ? getLabel(options.find(o =>
-             (typeof o === 'object' && 'value' in o ? o.value : o) === modelValue
+            (typeof o === 'object' && 'value' in o ? o.value : o) === modelValue
           )) 
-          : modelValue
-          ) 
+          : modelValue)
         }}
       </span>
-    </p>
 
+    </p>
     <Icon
       :name="open ? 'ChevronDoubleUp' : 'ChevronDoubleDown'"
       class="dropdown-icon"
     />
-
     <ul v-if="open" class="dropdown-options" @click.stop>
       <li
         v-for="(option, index) in options"

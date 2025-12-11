@@ -220,7 +220,7 @@ server.get("/api/customer/carboost/date", async (req, res) => {
       ORDER BY c.customer_name ASC;
     `, [month]);
 
-    res.json({ customers: rows });
+    res.json(rows);
   } catch (err) {
     console.error("Fejl i /customer/carboost/date:", err);
     res.status(500).json({ error: "Server error" });
