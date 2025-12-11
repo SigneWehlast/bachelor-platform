@@ -20,6 +20,8 @@ const isButtonDisabled = computed(() => selectedIds.value.length === 0);
 
 const selectedOnly = computed(() => selectedIds.value);
 
+const selectedMonth = ref(null);
+
 
 const showSelected = () => {
   if (selectedIds.value.length === 0) return;
@@ -72,13 +74,14 @@ const displayOptions = [
         label="Visning"
         >
       </Dropdown> 
-      <CalendarComp />
+      <CalendarComp v-model="selectedMonth" />
     </div>
 
     <CarBoostTable 
       v-if="!showTable" 
       @update:selectedIds="ids => selectedIds = ids" 
       :hidePaginaiton="false"
+      :selectedMonth="selectedMonth"
     />
     <div v-else>
       <CarBoostGraph :selectedIds="selectedOnly" />

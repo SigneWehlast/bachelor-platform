@@ -96,11 +96,11 @@ watch(selectedSegment, updateConversionsBudget);
     <div class="conversion-data-budget">
         <h1 class="conversion-data-budget__title">Konverteringsdata budget</h1>
         <Dropdown
-            v-model="selectedSegment"
-            :options="segmentOptions"
-            label="Segment"
-        >
-        </Dropdown>  
+          v-model="selectedSegment"
+          :options="segmentOptions"
+          label="Segment"
+          selectedPrefix="Segment"
+        /> 
         <div class="conversion-data-budget__content">
             <div v-for="(conversion, index) in conversions" :key="index" class="conversion-data-budget__content__box">
                 <div class="conversion-data-budget__content__box-name h3">{{ conversion.name }}</div>

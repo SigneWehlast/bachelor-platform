@@ -3,7 +3,7 @@ import { ref } from "vue";
 import Icon from "../Icon.vue";
 
 const props = defineProps({
-  modelValue: String,
+  modelValue: [String, Number],
   options: {
     type: Array,
     required: true
@@ -15,6 +15,10 @@ const props = defineProps({
   disableOptions: {
     type: Array,
     default: () => []
+  },
+  selectedPrefix: {
+    type: String,
+    default: "" 
   }
 });
 
@@ -26,31 +30,62 @@ function toggle() {
 }
 
 function select(option) {
-  if (!props.disableOptions.includes(option)) {
-    emit("update:modelValue", option);
+  const val = typeof option === 'object' && option !== null && 'value' in option
+    ? option.value
+    : option;
+
+  if (!props.disableOptions.includes(val)) {
+    emit("update:modelValue", val);
     open.value = false;
   }
+}
+
+function getLabel(option) {
+  if (typeof option === 'object' && option !== null && 'label' in option) {
+    return option.label;
+  }
+  return String(option);
 }
 </script>
 
 <template>
   <div class="dropdown" @click="toggle">
-    <p class="text-regular">{{ label }} {{ modelValue }}</p>
+    <p class="text-regular">
+      <span v-if="!modelValue">{{ label }}</span>
 
+      <span v-else>
+        {{ selectedPrefix ? selectedPrefix + ": " : "" }}
+        {{
+          (options.find(o =>
+            (typeof o === 'object' && 'value' in o ? o.value : o) === modelValue
+          ) 
+          ? getLabel(options.find(o =>
+            (typeof o === 'object' && 'value' in o ? o.value : o) === modelValue
+          )) 
+          : modelValue)
+        }}
+      </span>
+
+    </p>
     <Icon
-        :name="open ? 'ChevronDoubleUp' : 'ChevronDoubleDown'"
-        class="dropdown-icon"
+      :name="open ? 'ChevronDoubleUp' : 'ChevronDoubleDown'"
+      class="dropdown-icon"
     />
-
     <ul v-if="open" class="dropdown-options" @click.stop>
       <li
         v-for="(option, index) in options"
         :key="index"
         class="dropdown-item"
-        :class="{ 'dropdown-item--disabled': disableOptions.includes(option) }"
+        :class="{ 'dropdown-item--disabled':
+                  disableOptions.includes(
+                    typeof option === 'object' && 'value' in option
+                      ? option.value
+                      : option
+                  )
+               }"
         @click="select(option)"
       >
-        {{ option }}
+        {{ getLabel(option) }}
       </li>
     </ul>
   </div>

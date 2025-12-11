@@ -5,7 +5,8 @@ import {
   getCarboostList,
   getCustomerChanges,
   getCustomersInGroups,
-  getCustomerStats
+  getCustomerStats,
+  getCustomersByDate,
 } from "../controllers/customerController.js";
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get("/carboost", getCarboostList);
 router.get("/changes", getCustomerChanges);
 router.get("/customers-in-groups", getCustomersInGroups);
 router.get("/stats", getCustomerStats);
+router.get("/date", getCustomersByDate);
 
 export default router;
