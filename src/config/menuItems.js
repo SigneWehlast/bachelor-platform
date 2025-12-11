@@ -11,13 +11,13 @@ export const menuItems = [
       },
       {
         label: "Administration",
-        path: "/Administration",
+        path: "/administration",
         icon: "Cog",
         view: () => import("@/views/AdministrationView.vue"),
         children: [
           {
             label: "Lead-view",
-            path: "/Lead-view",
+            path: "/lead-view",
             view: () => import("@/views/CarBoostView.vue"),
             section: "Carboost",
             iconAdministration: "ChartLine",
@@ -26,7 +26,7 @@ export const menuItems = [
           
           {
             label: "Kundedata",
-            path: "/Kundedata",
+            path: "/kundedata",
             view: () => import("@/views/SalesView.vue"),
             section: "Salg",
             iconAdministration: "AccountGroup",
@@ -34,7 +34,7 @@ export const menuItems = [
           },
             {
             label: "indstillinger",
-            path: "/Diverse/Notificationsettings",
+            path: "/diverse/notificationsettings",
             view: () => import("@/views/SettingsView.vue"),
             section: "Generelle indstillinger",
             iconAdministration: "Cog",
@@ -44,13 +44,13 @@ export const menuItems = [
       },
       {
         label: "Dashboard",
-        path: "/Dashboard",
+        path: "/dashboard",
         icon: "ViewDashboardVariant",
         view: () => import("@/views/DashboardView.vue"),
         children: [
           {
             label: "Kundeændringer",
-            path: "/Dashboard/Customerchanges",
+            path: "/dashboard/customerchanges",
             view: () => import("@/views/CustomerChanges.vue"),
           },
         ]
@@ -66,12 +66,12 @@ export const menuItems = [
       {
         label: "Diverse",
         icon: "AccountDetails",
-        path: "/Diverse",
+        path: "/diverse",
         view: () => import("@/views/SettingsView.vue"),
         children: [
           {
             label: "Notifikationsindstillinger",
-            path: "/Notificationsettings",
+            path: "/notificationsettings",
             view: () => import("@/views/NotificationSettings.vue"),
           },
         ]

@@ -171,4 +171,19 @@ server.get("/api/customer/stats", async (req, res) => {
   }
 });
 
+//customer changes
+server.get("/api/customer/changes", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT customer_id, customer_name, create_date 
+      FROM customer
+      ORDER BY create_date DESC
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({error: "Database error"});
+  }
+});
+
 server.listen(3000, () => console.log("API running on port 3000"));

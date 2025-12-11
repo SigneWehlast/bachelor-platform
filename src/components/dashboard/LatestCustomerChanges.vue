@@ -6,8 +6,8 @@
         <div class="latest-customer-changes__topbar">
            <h1>Seneste kundeændringer</h1>
            <!--icon-->
-           <button class="latest-customer-changes__topbar-btn">Vis alle</button>
+           <RouterLink to="/dashboard/customerchanges" class="latest-customer-changes__topbar-btn">Vis alle</RouterLink>
         </div>           
-        <latest-customer-changes-content layout="space-between" />
+        <latest-customer-changes-content :customer-limit="5"/>
     </div>
 </template>
