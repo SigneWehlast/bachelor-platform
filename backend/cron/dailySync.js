@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import { syncData } from "../scripts/SyncData.js";
 
 cron.schedule(
-  '0 11 * * *',
+  '0 12 * * *',
   async () => {
     console.log('Starter daglig sync/arkivering kl. 12 (CET)...');
     try {
