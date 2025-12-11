@@ -1,6 +1,8 @@
+const BASE_URL = import.meta.env.VITE_BASE_URL 
+
 export async function getMonths() {
   try {
-    const res = await fetch("http://localhost:3000/api/months");
+    const res = await fetch(`${BASE_URL}/api/history/months`);
     if (!res.ok) throw new Error("Error while fetching months");
     const data = await res.json();
 
