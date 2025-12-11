@@ -3,8 +3,8 @@
 
 .dropdown {
     @include mix.input;
-    display: flex;
-    width: 168px;
+    display: inline-flex;
+    width: max-content;
     align-items: center;
     padding: 0 vars.$spacing-padding-xs 0 vars.$spacing-padding-xs;
     cursor: pointer;
@@ -14,6 +14,7 @@
     
     p {
         color: vars.$text-color-gray;
+        white-space: nowrap;
     }
 
     &-icon {
@@ -32,13 +33,17 @@
         box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         top: 100%;
         left: 0;
-        width: 100%;
+        min-width: 100%;
+        width: max-content;
+        white-space: nowrap;
         color: vars.$text-color-gray;          
     }
 
     &-item {
         padding: vars.$spacing-padding-sm;
         cursor: pointer;
+        width: max-content;
+        white-space: nowrap;  
 
         &:hover {
             background: vars.$bg-light-gray;
