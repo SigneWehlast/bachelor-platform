@@ -1,9 +1,10 @@
 import { sortByName } from "@/utils/sort";
+const BASE_URL = import.meta.env.VITE_BASE_URL 
 
 //Hent rå data fra API
 export async function fetchCustomersRaw() {
   try {
-    const res = await fetch("http://localhost:3000/api/customer");
+    const res = await fetch(`${BASE_URL}/api/customer`);
     return await res.json();
   } catch (err) {
     console.error("Fejl ved hentning af kunder:", err);

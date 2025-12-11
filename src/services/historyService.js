@@ -1,6 +1,8 @@
+const BASE_URL = import.meta.env.VITE_BASE_URL 
+
 export async function getHistoryCarboost() {
   try {
-    const res = await fetch("http://localhost:3000/api/history/carboost");
+    const res = await fetch(`${BASE_URL}/api/history/carboost`);
     const result = await res.json();
 
     const data = Array.isArray(result) ? result : [];
