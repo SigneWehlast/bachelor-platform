@@ -6,14 +6,14 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load .env først
+// Load .env
 dotenv.config({ path: path.join(__dirname, ".env") });
 
 // Debug
 console.log("DB_USER:", process.env.DB_USER);
 
 import app from "./app.js";
-import "./cron/dailySync.js"; // Cron importeres her
+import "./cron/dailySync.js";
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`API running on port ${PORT}`));
