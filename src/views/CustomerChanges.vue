@@ -9,10 +9,9 @@ import SearchBar from '@/components/filter/SearchBar.vue';
     <BreadcrumbsComp />
     <div>
       <SearchBar />
-      <!--kalender-->
     </div>
     <div class="customer-changes__content">
-      <latest-customer-changes-content layout="gap" />
+      <latest-customer-changes-content />
     </div>
   </div>
 </template>

@@ -1,13 +1,14 @@
 import { sortByName } from "@/utils/sort";
+const BASE_URL = import.meta.env.VITE_BASE_URL 
 
 export async function getCustomersInCarboost(page = 1, limit = 10) {
   try {
-    const resCustomers = await fetch(`http://localhost:3000/api/customer/carboost?page=${page}&limit=${limit}`);
+    const resCustomers = await fetch(`${BASE_URL}/api/customer/carboost?page=${page}&limit=${limit}`);
     const resultCustomers = await resCustomers.json();
     const customersData = resultCustomers.data;
     const totalCount = resultCustomers.totalCount;
 
-    const resHistory = await fetch(`http://localhost:3000/api/history/carboost/table`);
+    const resHistory = await fetch(`${BASE_URL}/api/history/carboost/table`);
     const historyData = await resHistory.json();
 
     const customers = customersData
