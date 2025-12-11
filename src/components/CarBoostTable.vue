@@ -40,6 +40,10 @@ const props = defineProps({
   tableInModal: {
     type: Boolean,
     default: false
+  },
+  selectedMonth: {
+    type: String,
+    default: null,
   }
 });
 
@@ -65,39 +69,22 @@ function getMonthlyLeads(history) {
 
   return Object.values(grouped);
 }
-  selectedMonth: {
-    type: String,
-    default: null,
-  }
-});
 
 const fetchAll = async () => {
   try {
     let response;
 
+    // Hent data baseret på selectedMonth
     if (!props.selectedMonth) {
       response = await getCustomersInCarboost(1, 99999);
     } else {
       response = await getCustomersInCarboostByDate(props.selectedMonth);
     }
 
-    carboostCustomers.value = response.customers || [];
-    totalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
-  } catch (err) {
-    console.error("fetchAll error:", err);
-    carboostCustomers.value = [];
-    totalPages.value = 1;
-  }
-};
-
-
-const fetchAll = async () => {
-  try {
-    const response = await getCustomersInCarboost(1, 99999);
     const customers = response.customers || [];
-
     const result = [];
 
+    // Udvid historik til månedlige leads
     customers.forEach(customer => {
       if (customer.history && customer.history.length > 0) {
         const monthly = getMonthlyLeads(customer.history);
@@ -118,7 +105,9 @@ const fetchAll = async () => {
     totalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
 
   } catch (err) {
-    console.error("Error fetching customers:", err);
+    console.error("fetchAll error:", err);
+    carboostCustomers.value = [];
+    totalPages.value = 1;
   }
 };
 
@@ -212,7 +201,6 @@ watch(() => props.selectedMonth, async () => {
   selectedIds.value = [];
   await fetchAll();
 });
-</script>
 
 const openModalWithCustomer = (customer) => {
   selectedCustomer.value = customer;
