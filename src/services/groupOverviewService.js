@@ -1,6 +1,6 @@
 export async function getCustomersInGroups() {
   try {
-    const res = await fetch(`http://localhost:3000/api/customers-in-groups`);
+    const res = await fetch(`http://localhost:3000/api/customer/customers-in-groups`);
     const data = await res.json();
 
     return data.map(item => ({
