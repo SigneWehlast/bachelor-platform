@@ -4,7 +4,7 @@ import Icon from "@/components/Icon.vue";
 import CalendarComp from "../filter/CalendarComp.vue";
 import ExportData from "../filter/ExportData.vue";
 import ApexCharts from "apexcharts";
-import { getHistoryCarboost } from "@/config/historyService";
+import { getHistoryCarboost } from "@/services/historyService";
 import CarBoostTable from "../CarBoostTable.vue";
 
 const props = defineProps({
