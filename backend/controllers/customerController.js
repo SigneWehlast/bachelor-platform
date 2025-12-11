@@ -71,3 +71,31 @@ export async function getCustomerChanges(req, res) {
     res.status(500).json({ error: "Database error" });
   }
 }
+
+export async function getCustomersInGroups(req, res) {
+  try {
+    const [rows] = await db.query(`
+      SELECT g.group_name, COUNT(cg.customer_id) AS customer_count
+      FROM customer_group cg
+      JOIN \`group\` g ON cg.group_id = g.group_id
+      GROUP BY g.group_name
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
+export async function getCustomerStats(req, res) {
+  try {
+    const [rows] = await db.query(`
+      SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions
+      FROM customer
+    `);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+}
