@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted, computed, defineEmits  } from "vue";
+import { ref, onMounted, computed, defineEmits, watch  } from "vue";
 import BaseTable from './BaseTable.vue';
 import { getCustomersInCarboost } from "@/services/carboostService";
 import Icon from "@/components/Icon.vue";
 import ShowCustomerCarBoostModal from "./modals/ShowCustomerCarBoostModal.vue";
+import { getCustomersInCarboostByDate } from "@/services/carboostService"; 
 
 const carboostCustomers = ref([]);
 const selectedIds = ref([]);
@@ -64,6 +65,30 @@ function getMonthlyLeads(history) {
 
   return Object.values(grouped);
 }
+  selectedMonth: {
+    type: String,
+    default: null,
+  }
+});
+
+const fetchAll = async () => {
+  try {
+    let response;
+
+    if (!props.selectedMonth) {
+      response = await getCustomersInCarboost(1, 99999);
+    } else {
+      response = await getCustomersInCarboostByDate(props.selectedMonth);
+    }
+
+    carboostCustomers.value = response.customers || [];
+    totalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
+  } catch (err) {
+    console.error("fetchAll error:", err);
+    carboostCustomers.value = [];
+    totalPages.value = 1;
+  }
+};
 
 
 const fetchAll = async () => {
@@ -113,12 +138,14 @@ const sortedCustomers = computed(() => {
   let list = [...carboostCustomers.value];
 
   if (sortTableBy.value === "name") {
-    list.sort((a, b) =>
-      sortDirection.value === "asc"
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name)
-    );
-  }
+  list.sort((a, b) => {
+    const nameA = a.name || "";
+    const nameB = b.name || "";
+    return sortDirection.value === "asc"
+      ? nameA.localeCompare(nameB)
+      : nameB.localeCompare(nameA);
+  });
+}
 
   if (sortTableBy.value === "leads") {
     list.sort((a, b) =>
@@ -179,6 +206,13 @@ const toggleSelection = (id) => {
   }
   emit("update:selectedIds", selectedIds.value);
 }
+
+watch(() => props.selectedMonth, async () => {
+  currentPage.value = 1; 
+  selectedIds.value = [];
+  await fetchAll();
+});
+</script>
 
 const openModalWithCustomer = (customer) => {
   selectedCustomer.value = customer;
