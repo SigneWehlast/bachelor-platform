@@ -10,6 +10,7 @@
     cursor: pointer;
     position: relative;
     justify-content: space-between;
+    z-index: 999;
     
     p {
         color: vars.$text-color-gray;

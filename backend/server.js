@@ -186,4 +186,45 @@ server.get("/api/customer/changes", async (req, res) => {
   }
 });
 
+server.get("/api/months", async (req, res) => {
+  try {
+    const [rows] = await db.query(`
+      SELECT DISTINCT DATE_FORMAT(archived_at, '%Y-%m') AS month
+      FROM history
+      ORDER BY month DESC
+    `);
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+server.get("/api/customer/carboost/date", async (req, res) => {
+  const month = req.query.month;
+  
+  try {
+    const [rows] = await db.query(`
+      SELECT h.customer_id, c.customer_name, h.leads, h.dif_leads, h.archived_at
+      FROM history h
+      JOIN customer c ON h.customer_id = c.customer_id
+      INNER JOIN (
+          SELECT customer_id, MAX(archived_at) AS latest_date
+          FROM history
+          WHERE DATE_FORMAT(archived_at, '%Y-%m') = ?
+          GROUP BY customer_id
+      ) latest
+      ON h.customer_id = latest.customer_id AND h.archived_at = latest.latest_date
+      WHERE c.customer_name IS NOT NULL
+      ORDER BY c.customer_name ASC;
+    `, [month]);
+
+    res.json({ customers: rows });
+  } catch (err) {
+    console.error("Fejl i /customer/carboost/date:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 server.listen(3000, () => console.log("API running on port 3000"));

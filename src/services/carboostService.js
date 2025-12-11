@@ -43,3 +43,30 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
     return { customers: [], totalCount: 0 };
   }
 }
+
+export const getCustomersInCarboostByDate = async (month) => {
+  try {
+    const res = await fetch(`http://localhost:3000/api/customer/carboost/date?month=${month}`);
+    if (!res.ok) throw new Error("Server error");
+
+    const data = await res.json(); 
+    const rows = data.rows || data.customers || [];
+
+    const customers = rows.map(r => ({
+      id: r.customer_id,
+      name: r.customer_name,
+      leads: r.leads,
+      change: r.dif_leads || 0,
+      todays_dif: r.dif_leads || 0,
+      yesterdays_dif: 0,
+      last_updated: r.archived_at,
+      tendens: r.dif_leads > 0 ? 'up' : r.dif_leads < 0 ? 'down' : '-'
+    }));
+
+    return { customers };
+
+  } catch (err) {
+    console.error("Fejl i getCustomersInCarboostByDate:", err);
+    return { customers: [] };
+  }
+};
