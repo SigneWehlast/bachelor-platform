@@ -100,8 +100,13 @@ export async function getCustomerStats(req, res) {
   }
 }
 
-export async function getCustomersByDate(req, res){
+export async function getCustomersByDate(req, res) {
   try {
+    const { month } = req.query;
+    if (!month) {
+      return res.status(400).json({ error: "Missing month parameter" });
+    }
+
     const [rows] = await db.query(`
       SELECT h.customer_id, c.customer_name, h.leads, h.dif_leads, h.archived_at
       FROM history h
@@ -116,6 +121,7 @@ export async function getCustomersByDate(req, res){
       WHERE c.customer_name IS NOT NULL
       ORDER BY c.customer_name ASC;
     `, [month]);
+
     res.json(rows);
   } catch (err) {
     console.error("Fejl i /customer/carboost/date:", err);

@@ -54,3 +54,18 @@ export async function getCarboostDailyTable(req, res) {
     res.status(500).json({ error: "Database error" });
   }
 }
+
+export async function getMonths(req, res) {
+  try {
+    const [rows] = await db.query(`
+      SELECT DISTINCT DATE_FORMAT(archived_at, '%Y-%m') AS month
+      FROM history
+      ORDER BY month DESC
+    `);
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+};
