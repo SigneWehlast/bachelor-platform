@@ -1,11 +1,10 @@
-// customerStatsService.js
 export async function fetchCustomerStats() {
     try {
       const res = await fetch("http://localhost:3000/api/customer/stats");
-      if (!res.ok) throw new Error("Netværksfejl");
+      if (!res.ok) throw new Error("Network error");
       return await res.json();
     } catch (err) {
-      console.error("Fejl ved hentning af customer stats:", err);
+      console.error("Error while getting customer stats", err);
       return [];
     }
   }

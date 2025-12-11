@@ -104,7 +104,6 @@ server.get("/api/customers-in-groups", async (req, res) => {
 
 
 //history carboost
-// history carboost
 server.get("/api/history/carboost", async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -161,7 +160,7 @@ server.get("/api/history/carboost/table", async (req, res) => {
   }
 });
 
-// Kunde-statistik til segment-beregninge
+// customer statistics for dashboard
 server.get("/api/customer/stats", async (req, res) => {
   try {
     const [rows] = await db.query("SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions FROM customer");
