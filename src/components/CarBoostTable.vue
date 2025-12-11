@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed, defineEmits  } from "vue";
 import BaseTable from './BaseTable.vue';
-import { getCustomersInCarboost } from "@/config/carboostService";
+import { getCustomersInCarboost } from "@/services/carboostService";
 import Icon from "@/components/Icon.vue";
 
 const carboostCustomers = ref([]);

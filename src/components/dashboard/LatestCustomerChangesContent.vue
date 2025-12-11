@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
-import { fetchCustomerChanges } from "@/config/customerChangesService";
+import { fetchCustomerChanges } from "@/services/customerChangesService";
 
 const props = defineProps({
   customerLimit: {

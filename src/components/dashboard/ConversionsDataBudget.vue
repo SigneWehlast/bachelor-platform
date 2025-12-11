@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import Dropdown from "../filter/Dropdown.vue";
-import { getCustomerStats } from "@/config/customerStatsService";
+import { getCustomerStats } from "@/services/customerStatsService";
 
 const conversions = ref([
   { name: "Gns konverteringer", data: "-", description: "" },

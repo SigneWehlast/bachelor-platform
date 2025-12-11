@@ -1,7 +1,7 @@
 <script setup>
     import { ref, onMounted, watch } from "vue";
     import Dropdown from "../filter/Dropdown.vue";
-    import { getCustomerStats } from "@/config/customerStatsService";
+    import { getCustomerStats } from "@/services/customerStatsService";
     
     // Data til visning med dynamiske beskrivelser
     const conversionsCars = ref([

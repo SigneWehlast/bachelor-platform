@@ -12,7 +12,7 @@ import ExportData from "@/components/filter/ExportData.vue";
 import ConfirmationModal from "@/components/modals/ConfirmationModal.vue";
 
 //Express server data import
-import { getCustomers, getSelectedCustomers } from "@/config/customerService";
+import { getCustomers, getSelectedCustomers } from "@/services/customerService";
 
 //Functions
 import { sortByName } from "@/utils/sort";
