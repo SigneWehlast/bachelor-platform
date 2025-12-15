@@ -54,7 +54,7 @@ export async function fetchSelectedCustomers(idsArray) {
 
   const ids = buildIdsQuery(idsArray);
   try {
-    const res = await fetch(`${BASE_URL}api/customer/sale?ids=${ids}`);
+    const res = await fetch(`${BASE_URL}/api/customer/sale?ids=${ids}`);
 
     if (!res.ok) {
       const text = await res.text();
