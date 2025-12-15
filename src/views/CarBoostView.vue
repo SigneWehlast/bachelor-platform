@@ -12,6 +12,7 @@ import CarBoostGraph from '@/components/CarBoostGraph.vue';
 //Functions
 import { useGoBack } from "@/utils/goBack";
 
+const searchQuery = ref("");
 
 const { showTable, goBack, show } = useGoBack();
 
@@ -67,7 +68,7 @@ const displayOptions = [
 
     </div>
     <div class="carboost-view__filter">
-      <SearchBar />
+      <SearchBar v-model="searchQuery" />
       <Dropdown
         :options="displayOptions"
         :disableOptions="['Kundenavn', 'Leads', 'Tendens', 'Status']"
@@ -78,9 +79,10 @@ const displayOptions = [
     </div>
 
     <CarBoostTable 
-      v-if="!showTable" 
-      @update:selectedIds="ids => selectedIds = ids" 
-      :hidePaginaiton="false"
+      v-if="!showTable"
+      v-model:search="searchQuery"
+      @update:selectedIds="ids => selectedIds = ids"
+      :hidePagination="false"
       :selectedMonth="selectedMonth"
     />
     <div v-else>
