@@ -6,44 +6,6 @@
         margin-bottom: vars.$spacing-margin-md;
     }
     
-    &__dropdown {
-        @include mix.input;
-        display: flex;
-        width: fit-content;
-        align-items: center;
-        padding: 0 vars.$spacing-padding-xs 0 vars.$spacing-padding-xs;
-        cursor: pointer;
-        position: relative;
-
-        &-icon {
-            padding-left: vars.$spacing-padding-sm;
-            width: vars.$icon-size-md;
-            fill: vars.$text-color-gray;
-        }
-
-        &-options {
-            position: absolute;
-            @include mix.input;
-            height: auto;
-            list-style: none;
-            padding: 0;
-            margin: vars.$spacing-margin-xs 0 vars.$spacing-margin-sm 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            top: 100%;
-            left: 0;
-            width: 100%;          
-        }
-
-        &-item {
-            padding: vars.$spacing-padding-sm;
-            cursor: pointer;
-
-            &:hover {
-                background: #eaeaea;
-            }
-        }
-    }
-
     &__content {
         display: grid;
         grid-template-columns: repeat(2, 1fr);

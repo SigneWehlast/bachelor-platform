@@ -1,4 +1,4 @@
- @use '../../abstracts/variables' as vars;
+@use '../../abstracts/variables' as vars;
 @use '../../abstracts/mixins' as mix;
 
 .dropdown {
@@ -10,6 +10,7 @@
   position: relative;
   justify-content: space-between;
   z-index: 999;
+  width: 162px;
 
   p {
     color: vars.$text-color-gray;

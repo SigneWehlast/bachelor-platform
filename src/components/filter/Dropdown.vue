@@ -83,6 +83,7 @@ function getLabel(option) {
           {{ label }}
         </span>
         <span v-else>
+          {{ selectedPrefix ? selectedPrefix + ": " : "" }}
           <template v-if="Array.isArray(modelValue)">
             {{ modelValue
               .map(v => {

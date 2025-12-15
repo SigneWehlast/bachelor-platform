@@ -58,14 +58,24 @@ const carsOptions = [
 ];
 
 const displayOptions = [
-  "Kundenavn",
-  "Antal biler",
-  "Samlet budget",
-  "Konverteringer",
-  "Carboost konverteringer",
-  "Budget",
-  "antal konverteringer i procent"
+  { label: 'Kundenavn', value: 'name' },
+  { label: 'Antal biler', value: 'numberOfCars' },
+  { label: 'Samlet budget', value: 'totalBudget' },
+  { label: 'Konverteringer', value: 'conversions' },
+  { label: 'Carboost konverteringer', value: 'carboostConversions' },
+  { label: 'Budget', value: 'budget' },
+  { label: 'Antal konverteringer i procent', value: 'conversionsPercent' },
 ];
+
+const visibleColumns = ref ([
+  'name',
+  'numberOfCars',
+  'totalBudget',
+  'conversions',
+  'carboostConversions',
+  'budget',
+  'conversionsInProcent'
+])
 
 // Functions
 function anonymize() {
@@ -164,7 +174,10 @@ onMounted(async () => {
     <Dropdown
       :options="displayOptions"
       label="Visning"
-      :disableOptions="['Kundenavn', 'Antal biler']"
+      :disableOptions="['name', 'numberOfCars']"
+      v-model="visibleColumns"
+      multiple
+      :alwaysShowLabel="true"
     />
     <CalendarComp />
     <CustomerName />
@@ -211,6 +224,6 @@ onMounted(async () => {
 </div>
 
 <div>
-  <SaleTable v-if="showTable" :carsData="customerTableData" v-model:showId="showId" />
+  <SaleTable v-if="showTable" :carsData="customerTableData" v-model:showId="showId" :visibleColumns="visibleColumns" />
 </div>
 </template>
