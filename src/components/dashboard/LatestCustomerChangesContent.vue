@@ -50,6 +50,18 @@ const nextPage = () => {
 const prevPage = () => {
   if (currentPage.value > 1) currentPage.value--;
 };
+
+defineExpose({
+  customers,
+  showPagination,
+  showCustomers,
+  totalPages,
+  paginatedCustomers,
+  currentPage,
+  nextPage,
+  prevPage
+});
+
 </script>
 <template>
   <table class="latest-customer-changes__content">

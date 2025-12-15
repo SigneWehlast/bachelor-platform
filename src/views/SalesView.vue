@@ -70,7 +70,6 @@ const filteredCustomers = computed(() => {
 
 onMounted(async () => {
   salesCustomers.value = await getCustomers();
-  console.log("Første kunde:", salesCustomers.value[10]);
 
 });
 

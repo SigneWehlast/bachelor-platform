@@ -1,7 +1,7 @@
 import { mount, flushPromises } from "@vue/test-utils";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { nextTick } from "vue";
-import Component from "@/components/CarBoostTable.vue";
+import CarboostTable from "@/components/CarBoostTable.vue";
 
 vi.mock("@/components/modals/ShowCustomerCarBoostModal.vue", () => ({
   default: { template: "<div class='modal'></div>" }
@@ -18,7 +18,7 @@ import {
 } from "@/services/carboostService";
 
 const mountComp = (props = {}) =>
-  mount(Component, {
+  mount(CarboostTable, {
     props: {
       customers: [],
       highlightedIds: [],
@@ -29,10 +29,17 @@ const mountComp = (props = {}) =>
     }
   });
 
-
 describe("CarboostTable.vue", () => {
-  beforeEach(() => {
+    beforeEach(() => {
     vi.clearAllMocks();
+
+    getCustomersInCarboost.mockResolvedValue({
+      customers: []
+    });
+
+    getCustomersInCarboostByDate.mockResolvedValue({
+      customers: []
+    });
   });
 
   it("getMonthlyLeads grupperer korrekt og tager seneste dato pr. måned", () => {
@@ -57,7 +64,7 @@ describe("CarboostTable.vue", () => {
 
   it("fetchAll henter alle kunder når selectedMonth = null", async () => {
     getCustomersInCarboost.mockResolvedValueOnce({
-      customers: [{ id: 1, name: "Kunde 1", history: [] }]
+      customers: [{ id: 1, name: "Bjarnes biler", history: [] }]
     });
 
     const wrapper = mountComp();
@@ -69,7 +76,7 @@ describe("CarboostTable.vue", () => {
 
   it("fetchAll henter kunder efter dato når selectedMonth != null", async () => {
     getCustomersInCarboostByDate.mockResolvedValueOnce({
-      customers: [{ id: 3, name: "Kunde 3", history: [] }]
+      customers: [{ id: 3, name: "CarBoost", history: [] }]
     });
 
     const wrapper = mountComp({ selectedMonth: "2025-11" });
@@ -159,7 +166,7 @@ describe("CarboostTable.vue", () => {
   it("openModalWithCustomer sætter kunden og viser modal", () => {
     const wrapper = mountComp();
 
-    const customer = { id: 10, name: "Kunde 10" };
+    const customer = { id: 10, name: "Test kunde 10" };
     wrapper.vm.openModalWithCustomer(customer);
 
     expect(wrapper.vm.selectedCustomer).toEqual(customer);

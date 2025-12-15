@@ -2,13 +2,12 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import ApexCharts from "apexcharts";
 
-vi.mock("@/components/Icon.vue", () => ({ default: { template: "<div></div>" } }));
-vi.mock("../filter/CalendarComp.vue", () => ({ default: { template: "<div></div>" } }));
-vi.mock("../filter/ExportData.vue", () => ({ default: { template: "<div></div>" } }));
-vi.mock("../CarBoostTable.vue", () => ({
+vi.mock("@components/filter/CalendarComp.vue", () => ({ default: { template: "<div></div>" } }));
+
+vi.mock("@/components/CarBoostTable.vue", () => ({
   default: {
     name: "CarBoostTable",
-    props: ["highlightedIds", "showOnlySelected", "hidePagination", "hideCheckbox", "tableInModal"],
+    props: ["highlightedIds", "showOnlySelected", "hidePagination", "tableInModal"],
     template: "<div class='carboost-table'></div>"
   }
 }));
@@ -29,7 +28,7 @@ describe("ShowCustomerCarboostModal.vue", () => {
   const mountComp = (props = {}) =>
     mount(ShowCustomerCarboostModal, {
       props: {
-        customer: { id: 1, name: "Kunde 1", tendens: "up" },
+        customer: { id: 1, name: "Bjarnes biler", tendens: "up" },
         ...props
       }
     });
@@ -43,7 +42,7 @@ describe("ShowCustomerCarboostModal.vue", () => {
 
   it("onMounted henter history og sætter en værdi", async () => {
     getHistoryCarboost.mockResolvedValueOnce({
-      history: [{ id: 1, name: "Kunde 1", archived_at: "2025-12-01", dif_leads: 10 }]
+      history: [{ id: 1, name: "Bjarnes biler", archived_at: "2025-12-01", dif_leads: 10 }]
     });
 
     const wrapper = mountComp();
@@ -64,8 +63,8 @@ describe("ShowCustomerCarboostModal.vue", () => {
   it("viser chart med korrekt data", async () => {
     getHistoryCarboost.mockResolvedValueOnce({
       history: [
-        { id: 1, name: "Kunde 1", archived_at: "2025-12-01", dif_leads: 5 },
-        { id: 1, name: "Kunde 1", archived_at: "2025-12-02", dif_leads: 10 }
+        { id: 1, name: "Bjarnes biler", archived_at: "2025-12-01", dif_leads: 5 },
+        { id: 1, name: "Bjarnes biler", archived_at: "2025-12-02", dif_leads: 10 }
       ]
     });
 
@@ -80,20 +79,20 @@ describe("ShowCustomerCarboostModal.vue", () => {
   });
 
   it("tendensDown er true hvis customer.tendens = 'down'", () => {
-    const wrapper = mountComp({ customer: { id: 1, name: "Kunde 1", tendens: "down" } });
+    const wrapper = mountComp({ customer: { id: 1, name: "Bjarnes biler", tendens: "down" } });
     expect(wrapper.vm.tendensDown).toBe(true);
   });
 
   it("tendensDown er false hvis customer.tendens != 'down'", () => {
-    const wrapper = mountComp({ customer: { id: 1, name: "Kunde 1", tendens: "up" } });
+    const wrapper = mountComp({ customer: { id: 1, name: "Bjarnes biler", tendens: "up" } });
     expect(wrapper.vm.tendensDown).toBe(false);
   });
 
   it("lastUpdated returnerer korrekt dato", async () => {
     getHistoryCarboost.mockResolvedValueOnce({
       history: [
-        { id: 1, name: "Kunde 1", archived_at: "2025-12-02", dif_leads: 10 },
-        { id: 1, name: "Kunde 1", archived_at: "2025-12-01", dif_leads: 5 }
+        { id: 1, name: "Bjarnes biler", archived_at: "2025-12-02", dif_leads: 10 },
+        { id: 1, name: "Bjarnes biler", archived_at: "2025-12-01", dif_leads: 5 }
       ]
     });
 
@@ -103,19 +102,19 @@ describe("ShowCustomerCarboostModal.vue", () => {
   });
 
   it("lastUpdated returnerer '-' hvis history er tom", () => {
-    const wrapper = mountComp({ customer: { id: 1, name: "Kunde 1" } });
+    const wrapper = mountComp({ customer: { id: 1, name: "Bjarnes biler" } });
     wrapper.vm.history = [];
     expect(wrapper.vm.lastUpdated).toBe("-");
   });
 
   it("viser alert når tendensDown = true", async () => {
-    const wrapper = mountComp({ customer: { id: 1, name: "Kunde 1", tendens: "down" } });
+    const wrapper = mountComp({ customer: { id: 1, name: "Bjarnes biler", tendens: "down" } });
     await wrapper.vm.$nextTick();
     expect(wrapper.find(".show-customer-carboost-modal__topbar-alert").exists()).toBe(true);
   });
 
   it("viser ikke alert når tendensDown = false", async () => {
-    const wrapper = mountComp({ customer: { id: 1, name: "Kunde 1", tendens: "up" } });
+    const wrapper = mountComp({ customer: { id: 1, name: "Bjarnes biler", tendens: "up" } });
     await wrapper.vm.$nextTick();
     expect(wrapper.find(".show-customer-carboost-modal__topbar-alert").exists()).toBe(false);
   });
@@ -127,7 +126,6 @@ describe("ShowCustomerCarboostModal.vue", () => {
     expect(table.props("highlightedIds")).toEqual([1]);
     expect(table.props("showOnlySelected")).toBe(true);
     expect(table.props("hidePagination")).toBe(true);
-    expect(table.props("hideCheckbox")).toBe(true);
     expect(table.props("tableInModal")).toBe(true);
   });
 });

@@ -1,5 +1,5 @@
 import { mount, flushPromises } from "@vue/test-utils";
-import Component from "@/components/CarBoostGraph.vue";
+import CarBoostGraph from "@/components/CarBoostGraph.vue";
 import ApexCharts from "apexcharts";
 import { getHistoryCarboost } from "@/services/historyService";
 import { describe, it, expect, vi } from "vitest";
@@ -23,7 +23,7 @@ describe("CarBoostGraph.vue", () => {
         history: [{ id: 1, name: "Kunde 1", archived_at: "2025-11-30", dif_leads: 5 }]
     });
     
-    const wrapper = mount(Component, {
+    const wrapper = mount(CarBoostGraph, {
         props: { selectedIds: [1], customers: [{ id:1, name:"Kunde 1" }] }
     });
 
