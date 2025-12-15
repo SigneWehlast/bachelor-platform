@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed  } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 //Components
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
@@ -35,13 +35,23 @@ const goBackAndReset =() => {
 }
 
 const displayOptions = [
-  "Kundenavn",
-  "Leads",
-  "Ændring",
-  "Tendens",
-  "Status",
-  "Sidst opdateret"
+  { label: 'Kundenavn', value: 'name' },
+  { label: 'Leads', value: 'leads' },
+  { label: 'Ændring', value: 'change' },
+  { label: 'Tendens', value: 'tendens' },
+  { label: 'Status', value: 'status' },
+  { label: 'Sidst opdateret', value: 'lastUpdated' }
 ];
+
+const visibleColumns = ref([
+  'name',
+  'leads',
+  'change',
+  'tendens',
+  'status',
+  'lastUpdated'
+]);
+
 </script>
 <template>  
   <div class="carboost-view">
@@ -70,28 +80,35 @@ const displayOptions = [
     <div class="carboost-view__filter">
       <SearchBar v-model="searchQuery" />
       <Dropdown
+        v-model="visibleColumns"
         :options="displayOptions"
-        :disableOptions="['Kundenavn', 'Leads', 'Tendens', 'Status']"
+        :disableOptions="[
+          'name',
+          'leads',
+          'tendens',
+          'status'
+        ]"
         label="Visning"
-        >
-      </Dropdown> 
+        multiple
+        :alwaysShowLabel="true"
+      />
       <CalendarComp v-model="selectedMonth" />
     </div>
-
-    <CarBoostTable 
+    <CarBoostTable
       v-if="!showTable"
       v-model:search="searchQuery"
       @update:selectedIds="ids => selectedIds = ids"
-      :hidePagination="false"
       :selectedMonth="selectedMonth"
+      :visibleColumns="visibleColumns"
     />
     <div v-else>
       <CarBoostGraph :selectedIds="selectedOnly" />
-      <CarBoostTable 
-        :highlightedIds="selectedOnly" 
+      <CarBoostTable
+        :highlightedIds="selectedOnly"
         :showOnlySelected="true"
         :hidePagination="true"
+        :visibleColumns="visibleColumns"
       />
-      </div>
+    </div>
   </div>
 </template>
