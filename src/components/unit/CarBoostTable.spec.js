@@ -3,14 +3,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { nextTick } from "vue";
 import Component from "@/components/CarBoostTable.vue";
 
-vi.mock("@/components/Icon.vue", () => ({
-  default: { template: "<div></div>" }
-}));
-
-vi.mock("@/components/BaseTable.vue", () => ({
-  default: { template: "<table><slot name='header'></slot><slot name='rows'></slot></table>" }
-}));
-
 vi.mock("@/components/modals/ShowCustomerCarBoostModal.vue", () => ({
   default: { template: "<div class='modal'></div>" }
 }));
