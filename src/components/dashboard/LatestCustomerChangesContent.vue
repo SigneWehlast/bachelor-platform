@@ -35,11 +35,15 @@
     return Math.max(1, Math.ceil(filteredItems.value.length / pageSize));
   });
   
-  const paginatedCustomers = computed(() => {
-    if (!showPagination.value) return filteredItems.value;
-    const start = (currentPage.value - 1) * pageSize;
-    return filteredItems.value.slice(start, start + pageSize);
-  });
+const paginatedCustomers = computed(() => {
+  if (props.customerLimit !== null) {
+    return filteredItems.value.slice(0, props.customerLimit);
+  }
+  
+  const start = (currentPage.value - 1) * pageSize;
+  return filteredItems.value.slice(start, start + pageSize);
+});
+
   
   watch(totalPages, (tp) => {
     if (currentPage.value > tp) currentPage.value = tp;
@@ -53,7 +57,7 @@
   const prevPage = () => {
     if (currentPage.value > 1) currentPage.value--;
   };
-  </script>
+</script>
   
   
 <template>

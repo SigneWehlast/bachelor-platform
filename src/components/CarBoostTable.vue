@@ -50,6 +50,10 @@ const props = defineProps({
     search: {
     type: String,
     default: ""
+  },
+  visibleColumns: {
+    type: Array,
+    required: true
   }
 });
 
@@ -257,7 +261,7 @@ watch(filteredItems, () => {
             />          
             Leads
           </th>
-          <th @click="sortBy('change')" class="carboost-table__filter-title">
+          <th v-if="props.visibleColumns.includes('change')" @click="sortBy('change')" class="carboost-table__filter-title">
             <Icon
               :name="sortTableBy === 'change' 
                       ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
@@ -276,7 +280,7 @@ watch(filteredItems, () => {
             Tendens
           </th>
           <th>Status</th>
-          <th class="carboost-table__text--leftalign">Sidst opdateret</th>
+          <th v-if="props.visibleColumns.includes('lastUpdated')" class="carboost-table__text--leftalign">Sidst opdateret</th>
         </template>
         <template v-else>
           <th class="carboost-table__filter-title carboost-table__text--leftalign">          
@@ -307,7 +311,7 @@ watch(filteredItems, () => {
               <p @click="openModalWithCustomer(item)"> {{ item.name }} </p>
             </td>
             <td class="carboost-table__text--center">{{ item.leads }}</td>
-            <td class="carboost-table__text--center">
+            <td v-if="props.visibleColumns.includes('change')" class="carboost-table__text--center">
               {{ item.change ?? "-" }}
             </td>
             <td class="carboost-table__text--center">
@@ -336,7 +340,7 @@ watch(filteredItems, () => {
               />
               <span v-else>-</span>
             </td>
-            <td class="carboost-table__text--leftalign">
+            <td v-if="props.visibleColumns.includes('lastUpdated')" class="carboost-table__text--leftalign">
               {{ new Date(item.last_updated).toLocaleDateString() }}
             </td>
           </template>
