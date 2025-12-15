@@ -5,6 +5,8 @@ import { getCustomersInCarboost } from "@/services/carboostService";
 import Icon from "@/components/Icon.vue";
 import ShowCustomerCarBoostModal from "./modals/ShowCustomerCarBoostModal.vue";
 import { getCustomersInCarboostByDate } from "@/services/carboostService"; 
+import { useSearchFilter } from "@/utils/searchFilter";
+
 
 const carboostCustomers = ref([]);
 const selectedIds = ref([]);
@@ -44,6 +46,10 @@ const props = defineProps({
   selectedMonth: {
     type: String,
     default: null,
+  },
+    search: {
+    type: String,
+    default: ""
   }
 });
 
@@ -124,7 +130,7 @@ const sortBy = (col) => {
 }
 
 const sortedCustomers = computed(() => {
-  let list = [...carboostCustomers.value];
+  let list = [...filteredItems.value];
 
   if (sortTableBy.value === "name") {
   list.sort((a, b) => {
@@ -206,6 +212,27 @@ const openModalWithCustomer = (customer) => {
   selectedCustomer.value = customer;
   showModal.value = true;
 };
+
+const { searchQuery, filteredItems } = useSearchFilter(
+  carboostCustomers,
+  "name"
+);
+watch(
+  () => props.search,
+  (val) => {
+    searchQuery.value = val;
+    currentPage.value = 1;
+  },
+  { immediate: true }
+);
+
+watch(filteredItems, () => {
+  totalPages.value = Math.max(
+    1,
+    Math.ceil(filteredItems.value.length / pageSize)
+  );
+  currentPage.value = 1;
+});
 </script>
 <template>
   <div class="carboost-table">

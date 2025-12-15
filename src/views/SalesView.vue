@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 
-//Componetns
+// Components
 import SaleTable from "@/components/SaleTable.vue";
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import Dropdown from "@/components/filter/Dropdown.vue";
@@ -11,107 +11,36 @@ import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
 import ConfirmationModal from "@/components/modals/ConfirmationModal.vue";
 
-//Express server data import
+// Services
 import { getCustomers, getSelectedCustomers } from "@/services/customerService";
 
-//Functions
+// Utils
 import { sortByName } from "@/utils/sort";
 import { useGoBack } from "@/utils/goBack";
+import { useSearchFilter } from "@/utils/searchFilter";
 
-
+// State
 const showId = ref(false);
-const clicked = ref(false); 
+const clicked = ref(false);
 const confirm = ref(false);
-
-function anonymize() {
-  if (!clicked.value) {
-    clicked.value = true;
-    showId.value = !showId.value;
-  } else {
-    confirm.value = true;
-  }
-}
-
-function handleModalYes() {
-  clicked.value = false;
-  showId.value = false;
-  confirm.value = false;
-}
-
-function handleModalNo() {
-  confirm.value = false;
-}
-
-const { showTable, goBack, show } = useGoBack();
-
+const salesCustomers = ref([]);
+const selectedCustomers = ref([]);
 const customerTableData = ref([]);
 
-const salesCustomers = ref([]);
+// Composable for search & filter
+const { searchQuery, filterValue: selectedCarsFilter, filteredItems: filteredCustomers } = useSearchFilter(
+  salesCustomers,
+  "name",          // søgefelt
+  "numberOfCars"   // filterfelt
+);
 
-const selectedCustomers = ref([]);
+// Go back utility
+const { showTable, goBack, show } = useGoBack();
 
+// Buttons
 const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
 
-const selectedCarsFilter = ref(null);
-
-const filteredCustomers = computed(() => {
-  if (!selectedCarsFilter.value || selectedCarsFilter.value === "Alle") return salesCustomers.value;
-
-  const [min, maxText] = selectedCarsFilter.value.split(" - ");
-  const minNum = parseInt(min);
-  const maxNum = maxText.includes("+")
-    ? Infinity
-    : parseInt(maxText.replace(" biler", ""));
-
-  return salesCustomers.value.filter(c => {
-    return c.numberOfCars >= minNum && c.numberOfCars <= maxNum;
-  });
-});
-
-onMounted(async () => {
-  salesCustomers.value = await getCustomers();
-
-});
-
-function moveToSelected(customer) {
-  salesCustomers.value = salesCustomers.value.filter(c => c.id !== customer.id);
-  selectedCustomers.value.push(customer);
-  sortByName(selectedCustomers.value);
-}
-function selectAllCustomers() {
-  const toSelect = filteredCustomers.value.filter(
-    c => !selectedCustomers.value.some(s => s.id === c.id)
-  );
-
-  selectedCustomers.value.push(...toSelect);
-  salesCustomers.value = salesCustomers.value.filter(
-    c => !toSelect.some(s => s.id === c.id)
-  );
-
-  sortByName(selectedCustomers.value);
-}
-
-
-function removeAllCustomers() {
-  salesCustomers.value.push(...selectedCustomers.value);
-  selectedCustomers.value = [];
-}
-
-function moveToAvailable(customer) {
-  selectedCustomers.value = selectedCustomers.value.filter(c => c.id !== customer.id);
-  salesCustomers.value.push(customer);
-  sortByName(salesCustomers.value);
-}
-
-async function showCustomerData() {
-  if (selectedCustomers.value.length === 0) return;
-  const idsArray = selectedCustomers.value.map(c => c.id);
-  const data = await getSelectedCustomers(idsArray);
-  customerTableData.value = data;
-
-  show();
-}
-
+// Options
 const carsOptions = [
   "Alle",
   "0 - 25 biler",
@@ -137,7 +66,68 @@ const displayOptions = [
   "Budget",
   "antal konverteringer i procent"
 ];
+
+// Functions
+function anonymize() {
+  if (!clicked.value) {
+    clicked.value = true;
+    showId.value = !showId.value;
+  } else {
+    confirm.value = true;
+  }
+}
+
+function handleModalYes() {
+  clicked.value = false;
+  showId.value = false;
+  confirm.value = false;
+}
+
+function handleModalNo() {
+  confirm.value = false;
+}
+
+function moveToSelected(customer) {
+  salesCustomers.value = salesCustomers.value.filter(c => c.id !== customer.id);
+  selectedCustomers.value.push(customer);
+  sortByName(selectedCustomers.value);
+}
+
+function selectAllCustomers() {
+  const toSelect = filteredCustomers.value.filter(
+    c => !selectedCustomers.value.some(s => s.id === c.id)
+  );
+  selectedCustomers.value.push(...toSelect);
+  salesCustomers.value = salesCustomers.value.filter(
+    c => !toSelect.some(s => s.id === c.id)
+  );
+  sortByName(selectedCustomers.value);
+}
+
+function removeAllCustomers() {
+  salesCustomers.value.push(...selectedCustomers.value);
+  selectedCustomers.value = [];
+}
+
+function moveToAvailable(customer) {
+  selectedCustomers.value = selectedCustomers.value.filter(c => c.id !== customer.id);
+  salesCustomers.value.push(customer);
+  sortByName(salesCustomers.value);
+}
+
+async function showCustomerData() {
+  if (selectedCustomers.value.length === 0) return;
+  const idsArray = selectedCustomers.value.map(c => c.id);
+  customerTableData.value = await getSelectedCustomers(idsArray);
+  show();
+}
+
+// Fetch customers
+onMounted(async () => {
+  salesCustomers.value = await getCustomers();
+});
 </script>
+
 
 <template>
   <div class="SalesView">
@@ -166,8 +156,8 @@ const displayOptions = [
     label="Antal biler"
     v-model="selectedCarsFilter"
   />  
-    <SearchBar />
-  </div>
+  <SearchBar v-model="searchQuery" />
+</div>
 
 <!-- Efter valgte kunder (true) -->
   <div v-if="showTable" class="SalesView__filter-section">

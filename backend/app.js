@@ -7,6 +7,7 @@ import customerRoutes from "./routes/customerRoutes.js";
 import historyRoutes from "./routes/historyRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 import { platformDb } from "./config/dbConfig.js";
 
@@ -24,5 +25,6 @@ app.use("/api/customer", customerRoutes);
 app.use("/api/history", historyRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/stats", statsRoutes);
+app.use("/api/user", userRoutes);
 
 export default app;
