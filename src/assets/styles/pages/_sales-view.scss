@@ -3,7 +3,8 @@
 
 
 .SalesView {
-
+  display: flex;
+  flex-direction: column;
 
   &__wrapper{
    display: flex;
@@ -95,4 +96,15 @@
     }
    
   }
+
+  &__pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-button {
+        @include m.buttons-pagination;
+        margin-left: v.$spacing-margin-sm;
+    }
+}
 }
