@@ -13,7 +13,8 @@
     "test:unit": "vitest",
     "lint": "eslint . --fix --cache",
     "sync": "node backend/scripts/runSync.js",
-    "start": "node backend/server.js"
+    "start": "node backend/server.js",
+    "cron": "node backend/cron/dailySync.js"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
