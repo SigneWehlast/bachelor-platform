@@ -139,7 +139,7 @@ onMounted(async () => {
   salesCustomers.value = await getCustomers();
 });
 
-const pageSize = 10; // eller hvad du ønsker
+const pageSize = 10;
 
 const {
   currentPage: selectedCurrentPage,
@@ -158,6 +158,7 @@ const paginatedTableData = computed(() => {
     )
     .filter(Boolean);
 });
+
 </script>
 
 
