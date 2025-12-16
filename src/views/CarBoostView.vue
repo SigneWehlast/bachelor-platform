@@ -78,7 +78,7 @@ const visibleColumns = ref([
 
     </div>
     <div class="carboost-view__filter">
-      <SearchBar v-model="searchQuery" />
+      <SearchBar v-if="!showTable" v-model="searchQuery" />
       <Dropdown
         v-model="visibleColumns"
         :options="displayOptions"
