@@ -15,12 +15,9 @@ const props = defineProps({
     required: true
   }
 });
-
 </script>
-
 <template>
   <div>
-
     <BaseTable>
       <template #header>
         <th class="carboost-table__text--leftalign">{{ props.showId ? 'ID' : 'Kundenavn' }}</th>
