@@ -84,7 +84,6 @@ const fetchAll = async () => {
   try {
     let response;
 
-    // Hent data baseret på selectedMonth
     if (!props.selectedMonth) {
       response = await getCustomersInCarboost(1, 99999);
     } else {
@@ -94,7 +93,6 @@ const fetchAll = async () => {
     const customers = response.customers || [];
     const result = [];
 
-    // Udvid historik til månedlige leads
     customers.forEach(customer => {
       if (customer.history && customer.history.length > 0) {
         const monthly = getMonthlyLeads(customer.history);
