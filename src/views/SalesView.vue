@@ -142,15 +142,6 @@ onMounted(async () => {
 const pageSize = 10; // eller hvad du ønsker
 
 const {
-  currentPage: availableCurrentPage,
-  totalPages: availableTotalPages,
-  paginatedItems: paginatedAvailableCustomers,
-  nextPage: nextAvailablePage,
-  prevPage: prevAvailablePage,
-  resetPage: resetAvailablePage
-} = usePagination(filteredCustomers, pageSize);
-
-const {
   currentPage: selectedCurrentPage,
   totalPages: selectedTotalPages,
   paginatedItems: paginatedSelectedCustomers,
@@ -159,6 +150,14 @@ const {
   resetPage: resetSelectedPage
 } = usePagination(selectedCustomers, pageSize);
 
+
+const paginatedTableData = computed(() => {
+  return paginatedSelectedCustomers.value
+    .map(sel =>
+      customerTableData.value.find(row => row.id === sel.id)
+    )
+    .filter(Boolean);
+});
 </script>
 
 
@@ -249,7 +248,7 @@ const {
 <div>
   <SaleTable
   v-if="showTable"
-  :carsData="paginatedSelectedCustomers"
+  :carsData="paginatedTableData"
   v-model:showId="showId"
   :visibleColumns="visibleColumns"
 />
@@ -259,5 +258,9 @@ const {
   <span>Side {{ selectedCurrentPage }} af {{ selectedTotalPages }}</span>
   <button @click="nextSelectedPage" :disabled="selectedCurrentPage === selectedTotalPages">Næste</button>
 </div>
+
+
 </div>
 </template>
+
+
