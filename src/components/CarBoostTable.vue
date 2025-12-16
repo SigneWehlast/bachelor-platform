@@ -6,21 +6,23 @@ import Icon from "@/components/Icon.vue";
 import ShowCustomerCarBoostModal from "./modals/ShowCustomerCarBoostModal.vue";
 import { getCustomersInCarboostByDate } from "@/services/carboostService"; 
 import { useSearchFilter } from "@/utils/searchFilter";
-
+import { usePagination } from "@/utils/pagination";
 
 const carboostCustomers = ref([]);
 const selectedIds = ref([]);
-const currentPage = ref(1);
-const pageSize = 10;
-const totalPages = ref(1);
-
 const showModal = ref(false);
 const selectedCustomer = ref(null);
+const pageSize = 10;
 
 const sortTableBy = ref("name");
 const sortDirection = ref("asc");
 
 const emit = defineEmits(["update:selectedIds"]);
+
+const { searchQuery, filteredItems } = useSearchFilter(
+  carboostCustomers,
+  "name"
+);
 
 const props = defineProps({
   customers: {
@@ -179,22 +181,6 @@ const sortedCustomers = computed(() => {
   return list;
 });
 
-const paginatedCustomers = computed(() => {
-  if (props.hidePagination) {
-    return sortedCustomers.value;
-  }
-  const start = (currentPage.value - 1) * pageSize;
-  return sortedCustomers.value.slice(start, start + pageSize);
-});
-
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) currentPage.value++;
-}
-
-const prevPage = () => {
-  if (currentPage.value > 1) currentPage.value--;
-}
-
 const toggleSelection = (id) => {
   if (selectedIds.value.includes(id)) {
     selectedIds.value = selectedIds.value.filter(i => i !== id);
@@ -204,8 +190,19 @@ const toggleSelection = (id) => {
   emit("update:selectedIds", selectedIds.value);
 }
 
+const {
+  currentPage,
+  totalPages,
+  paginatedItems: paginatedCustomers,
+  nextPage,
+  prevPage,
+  resetPage
+} = usePagination(sortedCustomers, 10, {
+  disable: computed(() => props.hidePagination)
+});
+
 watch(() => props.selectedMonth, async () => {
-  currentPage.value = 1; 
+  resetPage();
   selectedIds.value = [];
   await fetchAll();
 });
@@ -215,15 +212,11 @@ const openModalWithCustomer = (customer) => {
   showModal.value = true;
 };
 
-const { searchQuery, filteredItems } = useSearchFilter(
-  carboostCustomers,
-  "name"
-);
 watch(
   () => props.search,
   (val) => {
     searchQuery.value = val;
-    currentPage.value = 1;
+    resetPage();
   },
   { immediate: true }
 );
@@ -233,7 +226,7 @@ watch(filteredItems, () => {
     1,
     Math.ceil(filteredItems.value.length / pageSize)
   );
-  currentPage.value = 1;
+  resetPage();
 });
 </script>
 <template>
