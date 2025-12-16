@@ -6,9 +6,10 @@ import { menuItems } from "@/config/menuItems"
 import Icon from "@/components/Icon.vue"
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
 import { UserTracking } from "@/utils/tracking"
-import { getUsers } from "@/services/userService.js";
+import { getUsers, getUserRole } from "@/services/userService.js";
 
 const user = ref(null);
+const role = ref(null);
 
 // Router
 const route = useRoute()
@@ -21,6 +22,11 @@ onMounted(async () => {
   const users = await getUsers();
   if (users.length > 0) {
     user.value = users[0];
+
+    const userRole = await getUserRole(user.value.id);
+    if (userRole) {
+      role.value = userRole.name;
+    }
   }
 });
 
@@ -114,7 +120,7 @@ const toggleDropdown = (label) => {
     <p class="sidebar__bottom-username text-medium">
       {{ user.firstName }} {{ user.lastName }}
     </p>
-    <p class="sidebar__bottom-role text-medium">Studendermedhjælper</p> <!--HArdcode-->
+    <p class="sidebar__bottom-role text-medium"> {{ role }}</p>
   </div>
 </div>
   </nav>
