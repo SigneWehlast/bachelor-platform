@@ -44,6 +44,8 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to) => {
   UserTracking(to.path)
+  document.title = to.meta.title || 'CarAds';
+
 })
 
 export default router
