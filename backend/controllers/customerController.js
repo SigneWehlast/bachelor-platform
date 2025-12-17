@@ -13,10 +13,6 @@ export async function getAllCustomers(req, res) {
 }
 
 export async function getSaleCustomers(req, res) {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
-
   const ids = req.query.ids.split(",").map(Number);
 
   try {
@@ -25,8 +21,7 @@ export async function getSaleCustomers(req, res) {
       FROM customer
       WHERE customer_id IN (?)
       ORDER BY customer_name ASC
-      LIMIT ? OFFSET ?
-    `, [ids, limit, offset]);
+    `, [ids]);
 
     res.json(rows);
   } catch (err) {
