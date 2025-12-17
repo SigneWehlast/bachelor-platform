@@ -1,0 +1,23 @@
+@use '../abstracts/variables' as vars;
+
+.sale-table {
+    &-title {
+        width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &-name {
+            width: 222px;
+        }
+    }
+    &__text {
+        &--leftalign {
+            text-align: left !important;
+            margin-left: vars.$spacing-margin-xs;
+        }
+        &--center {
+            text-align: center;
+        }
+    }
+}

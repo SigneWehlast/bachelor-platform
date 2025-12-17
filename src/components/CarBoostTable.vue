@@ -234,7 +234,7 @@ watch(filteredItems, () => {
     <BaseTable>
       <template #header>
         <template v-if="!props.tableInModal">
-          <th @click="sortBy('name')" class="carboost-table__filter-title carboost-table__text--leftalign">
+          <th @click="sortBy('name')" class="carboost-table__filter-title-name carboost-table__text--leftalign">
             <Icon
               :name="sortTableBy === 'name' 
                       ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
@@ -270,8 +270,8 @@ watch(filteredItems, () => {
             />
             Tendens
           </th>
-          <th>Status</th>
-          <th v-if="props.visibleColumns.includes('lastUpdated')" class="carboost-table__text--leftalign">Sidst opdateret</th>
+          <th class="carboost-table__filter-title">Status</th>
+          <th v-if="props.visibleColumns.includes('lastUpdated')" class="carboost-table__text--leftalign carboost-table__filter-title">Sidst opdateret</th>
         </template>
         <template v-else>
           <th class="carboost-table__filter-title carboost-table__text--leftalign">          
