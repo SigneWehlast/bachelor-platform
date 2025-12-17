@@ -109,7 +109,6 @@ const visibleColumns = ref([
         :hidePagination="true"
         :visibleColumns="visibleColumns"
       />
-      <p>hej</p>
     </div>
   </div>
 </template>
