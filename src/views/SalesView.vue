@@ -17,6 +17,8 @@ import { getCustomers, getSelectedCustomers } from "@/services/customerService";
 import { sortByName } from "@/utils/sort";
 import { useGoBack } from "@/utils/goBack";
 import { useSearchFilter } from "@/utils/searchFilter";
+import { usePagination } from "@/utils/pagination";
+
 
 // State
 const showId = ref(false);
@@ -135,6 +137,27 @@ async function showCustomerData() {
 onMounted(async () => {
   salesCustomers.value = await getCustomers();
 });
+
+const pageSize = 10;
+
+const {
+  currentPage: selectedCurrentPage,
+  totalPages: selectedTotalPages,
+  paginatedItems: paginatedSelectedCustomers,
+  nextPage: nextSelectedPage,
+  prevPage: prevSelectedPage,
+  resetPage: resetSelectedPage
+} = usePagination(selectedCustomers, pageSize);
+
+
+const paginatedTableData = computed(() => {
+  return paginatedSelectedCustomers.value
+    .map(sel =>
+      customerTableData.value.find(row => row.id === sel.id)
+    )
+    .filter(Boolean);
+});
+
 </script>
 
 
@@ -223,6 +246,23 @@ onMounted(async () => {
 </div>
 
 <div>
-  <SaleTable v-if="showTable" :carsData="customerTableData" v-model:showId="showId" :visibleColumns="visibleColumns" />
+  <SaleTable
+  v-if="showTable"
+  :carsData="paginatedTableData"
+  v-model:showId="showId"
+  :visibleColumns="visibleColumns"
+/>
+
+<div class="SalesView__pagination" v-if="showTable">  
+  <span>Viser side {{ selectedCurrentPage }} ud af {{ selectedTotalPages }}</span>
+  <div>
+    <button class="SalesView__pagination-button" @click="prevSelectedPage" :disabled="selectedCurrentPage === 1">Forrige</button>
+    <button class="SalesView__pagination-button" @click="nextSelectedPage" :disabled="selectedCurrentPage === selectedTotalPages">Næste</button>
+  </div>
+</div>
+
+
 </div>
 </template>
+
+
