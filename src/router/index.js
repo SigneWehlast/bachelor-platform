@@ -30,16 +30,13 @@ const router = createRouter({
   routes
 });
 
-// Router guard
 router.beforeEach((to, from, next) => {
   const isLoggedIn = !!localStorage.getItem("token");
 
 if (!isLoggedIn && to.path !== "/login") {
   return next("/login");
 }
-
 next();
-
 });
 
 router.afterEach((to) => {

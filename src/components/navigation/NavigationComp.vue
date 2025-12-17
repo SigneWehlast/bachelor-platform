@@ -7,6 +7,7 @@ import Icon from "@/components/Icon.vue"
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
 import { UserTracking } from "@/utils/tracking"
 import { getUsers, getUserRole } from "@/services/userService.js";
+import NotifikacationBell from "./NotifikacationBell.vue";
 
 const user = ref(null);
 const role = ref(null);
@@ -48,7 +49,7 @@ const toggleDropdown = (label) => {
     <!-- Top section -->
       <div class="sidebar__top">
         <img :src="logo" alt="Carads Logo" class="sidebar__logo" />
-        <Icon name="BellOutline" class="sidebar__icon" />
+        <NotifikacationBell/>
       </div>
 
       <!--Menu secttion-->
