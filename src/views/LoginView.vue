@@ -1,13 +1,15 @@
 <script setup>
 import { ref } from "vue";
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
+const BASE_URL = import.meta.env.VITE_BASE_URL 
+
 
 const email = ref("");
 const password = ref("");
 
 async function login() {
   try {
-    const res = await fetch("http://localhost:3000/login", {
+    const res = await fetch(`${BASE_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -17,17 +19,19 @@ async function login() {
     });
 
     if (!res.ok) {
-      const error = await res.text();
-      throw new Error(error);
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Login failed");
     }
 
     const data = await res.json();
     localStorage.setItem("token", data.token);
+
     window.location.href = "/dashboard";
   } catch (err) {
-    console.error("Login error");
+    console.error("Login error:", err.message);
   }
 }
+
 </script>
 
 <template>
