@@ -20,6 +20,7 @@
     
     <template>
 <div class="notificationBell">
+    <p>hej</p>
   <Icon
     name="BellOutline"
     class="notificationBell__icon"
