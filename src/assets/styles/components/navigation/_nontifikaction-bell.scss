@@ -1,0 +1,13 @@
+@use '../../abstracts/variables' as v;
+@use '../icon' as i;
+
+.nontificationBell__icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .nontificationBell {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
