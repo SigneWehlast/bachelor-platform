@@ -31,7 +31,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
-
+/*
 router.beforeEach((to, from, next) => {
   const isLoggedIn = !!localStorage.getItem("token")
 
@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
   }
 
   next()
-})
+})*/
 
 router.afterEach((to) => {
   UserTracking(to.path)
