@@ -20,7 +20,6 @@
     
     <template>
 <div class="notificationBell">
-    <p>test igen</p>
   <Icon
     name="BellOutline"
     class="notificationBell__icon"
