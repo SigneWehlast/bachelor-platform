@@ -1,28 +1,82 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 
-//Componetns
+// Components
 import SaleTable from "@/components/SaleTable.vue";
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import Dropdown from "@/components/filter/Dropdown.vue";
 import SearchBar from "@/components/filter/SearchBar.vue";
 import CalendarComp from "@/components/filter/CalendarComp.vue";
-import CustomerName from "@/components/filter/CustomerName.vue";
 import ExportData from "@/components/filter/ExportData.vue";
 import ConfirmationModal from "@/components/modals/ConfirmationModal.vue";
 
-//Express server data import
-import { getCustomers, getSelectedCustomers } from "@/config/customerService";
+// Services
+import { getCustomers, getSelectedCustomers } from "@/services/customerService";
 
-//Functions
+// Utils
 import { sortByName } from "@/utils/sort";
 import { useGoBack } from "@/utils/goBack";
+import { useSearchFilter } from "@/utils/searchFilter";
 
-
+// State
 const showId = ref(false);
-const clicked = ref(false); 
+const clicked = ref(false);
 const confirm = ref(false);
+const salesCustomers = ref([]);
+const selectedCustomers = ref([]);
+const customerTableData = ref([]);
 
+// Composable for search & filter
+const { searchQuery, filterValue: selectedCarsFilter, filteredItems: filteredCustomers } = useSearchFilter(
+  salesCustomers,
+  "name",          // søgefelt
+  "numberOfCars"   // filterfelt
+);
+
+// Go back utility
+const { showTable, goBack, show } = useGoBack();
+
+// Buttons
+const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
+
+// Options
+const carsOptions = [
+  "Alle",
+  "0 - 25 biler",
+  "26 - 50 biler",
+  "51 - 75 biler",
+  "76 - 100 biler",
+  "101 - 125 biler",
+  "126 - 150 biler",
+  "151 - 175 biler",
+  "176 - 200 biler",
+  "201 - 225 biler",
+  "226 - 250 biler",
+  "251 - 275 biler",
+  "275+ biler"
+];
+
+const displayOptions = [
+  { label: 'Kundenavn', value: 'name' },
+  { label: 'Antal biler', value: 'numberOfCars' },
+  { label: 'Samlet budget', value: 'totalBudget' },
+  { label: 'Konverteringer', value: 'conversions' },
+  { label: 'Carboost konverteringer', value: 'carboostConversions' },
+  { label: 'Budget', value: 'budget' },
+  { label: 'Antal konverteringer i procent', value: 'conversionsPercent' },
+];
+
+const visibleColumns = ref ([
+  'name',
+  'numberOfCars',
+  'totalBudget',
+  'conversions',
+  'carboostConversions',
+  'budget',
+  'conversionsInProcent'
+])
+
+// Functions
 function anonymize() {
   if (!clicked.value) {
     clicked.value = true;
@@ -42,56 +96,22 @@ function handleModalNo() {
   confirm.value = false;
 }
 
-const { showTable, goBack, show } = useGoBack();
-
-const customerTableData = ref([]);
-
-const salesCustomers = ref([]);
-
-const selectedCustomers = ref([]);
-
-const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
-
-const selectedCarsFilter = ref(null);
-
-const filteredCustomers = computed(() => {
-  if (!selectedCarsFilter.value || selectedCarsFilter.value === "Alle") return salesCustomers.value;
-
-  const [min, maxText] = selectedCarsFilter.value.split(" - ");
-  const minNum = parseInt(min);
-  const maxNum = maxText.includes("+")
-    ? Infinity
-    : parseInt(maxText.replace(" biler", ""));
-
-  return salesCustomers.value.filter(c => {
-    return c.numberOfCars >= minNum && c.numberOfCars <= maxNum;
-  });
-});
-
-onMounted(async () => {
-  salesCustomers.value = await getCustomers();
-  console.log("Første kunde:", salesCustomers.value[10]);
-
-});
-
 function moveToSelected(customer) {
   salesCustomers.value = salesCustomers.value.filter(c => c.id !== customer.id);
   selectedCustomers.value.push(customer);
   sortByName(selectedCustomers.value);
 }
+
 function selectAllCustomers() {
   const toSelect = filteredCustomers.value.filter(
     c => !selectedCustomers.value.some(s => s.id === c.id)
   );
-
   selectedCustomers.value.push(...toSelect);
   salesCustomers.value = salesCustomers.value.filter(
     c => !toSelect.some(s => s.id === c.id)
   );
-
   sortByName(selectedCustomers.value);
 }
-
 
 function removeAllCustomers() {
   salesCustomers.value.push(...selectedCustomers.value);
@@ -107,38 +127,16 @@ function moveToAvailable(customer) {
 async function showCustomerData() {
   if (selectedCustomers.value.length === 0) return;
   const idsArray = selectedCustomers.value.map(c => c.id);
-  const data = await getSelectedCustomers(idsArray);
-  customerTableData.value = data;
-
+  customerTableData.value = await getSelectedCustomers(idsArray);
   show();
 }
 
-const carsOptions = [
-  "Alle",
-  "0 - 25 biler",
-  "26 - 50 biler",
-  "51 - 75 biler",
-  "76 - 100 biler",
-  "101 - 125 biler",
-  "126 - 150 biler",
-  "151 - 175 biler",
-  "176 - 200 biler",
-  "201 - 225 biler",
-  "226 - 250 biler",
-  "251 - 275 biler",
-  "275+ biler"
-];
-
-const displayOptions = [
-  "Kundenavn",
-  "Antal biler",
-  "Samlet budget",
-  "Konverteringer",
-  "Carboost konverteringer",
-  "Budget",
-  "antal konverteringer i procent"
-];
+// Fetch customers
+onMounted(async () => {
+  salesCustomers.value = await getCustomers();
+});
 </script>
+
 
 <template>
   <div class="SalesView">
@@ -167,15 +165,18 @@ const displayOptions = [
     label="Antal biler"
     v-model="selectedCarsFilter"
   />  
-    <SearchBar />
-  </div>
+  <SearchBar v-model="searchQuery" />
+</div>
 
 <!-- Efter valgte kunder (true) -->
   <div v-if="showTable" class="SalesView__filter-section">
     <Dropdown
       :options="displayOptions"
       label="Visning"
-      :disableOptions="['Kundenavn', 'Antal biler']"
+      :disableOptions="['name', 'numberOfCars']"
+      v-model="visibleColumns"
+      multiple
+      :alwaysShowLabel="true"
     />
     <CalendarComp />
     <CustomerName />
@@ -222,6 +223,6 @@ const displayOptions = [
 </div>
 
 <div>
-  <SaleTable v-if="showTable" :carsData="customerTableData" v-model:showId="showId" />
+  <SaleTable v-if="showTable" :carsData="customerTableData" v-model:showId="showId" :visibleColumns="visibleColumns" />
 </div>
 </template>

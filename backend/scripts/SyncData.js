@@ -1,5 +1,5 @@
 import mysql from "mysql2/promise";
-import { clientDb, platformDb } from "../config/dbConfig.js";
+import { clientDb, platformDb } from "../config/dbConfig.js"; 
 
 export async function syncData() {
   let clientConn, platformConn;

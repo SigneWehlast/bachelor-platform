@@ -3,47 +3,55 @@
 
 .latest-customer-changes {
     width: 100%;
+
     &__topbar {
         display: flex;
         justify-content: space-between;
-        margin-bottom: vars.$spacing-margin-md;
+        margin-bottom: vars.$spacing-margin-sm;
 
         &-btn {
-            all: unset;
-            background-color: vars.$btn-color-dark;
-            height: vars.$height-sm;
             @include mix.buttons;
+            align-items: center;
+            background-color: vars.$btn-color-dark; 
+            display: flex;
+            height: vars.$height-sm;
+            justify-content: center;
             text-align: center;
             width: vars.$width-xxxl;
         }
     }
 
     &__content {
-        display: flex;
-
-        &-names {
-            display: flex;
-            flex-direction: column;
-            gap: vars.$spacing-gap-md;
-        }
-
-        &-dates {
-            display: flex;
-            flex-direction: column;
-            gap: vars.$spacing-gap-md;
-        }
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
 
         &-title {
-            margin-bottom: vars.$spacing-margin-sm-minus;
+            text-align: left;
+        }
+
+        tbody tr + tr:not(.recent-change) td{
+            padding-top: vars.$spacing-padding-md;
+        }
+        tbody tr.recent-change td {
+            padding-left: 6px;
+        }
+    }
+
+    &__pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: vars.$spacing-gap-md;
+
+        &-button {
+            @include mix.buttons-pagination;
+            margin-left: vars.$spacing-margin-sm;
         }
     }
 }
 
-.layout-space-between {
-  justify-content: space-between;
-}
-
-.layout-gap {
-  gap: vars.$spacing-gap-xxxl;
-  justify-content: flex-start;
+.recent-change {
+    background-color: rgba(vars.$icon-color-positive, 0.2);
+    border: 1px solid vars.$icon-color-positive;
 }

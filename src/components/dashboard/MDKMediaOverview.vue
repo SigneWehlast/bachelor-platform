@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getCustomersInGroups } from '@/config/groupOverviewService';
+import { getCustomersInGroups } from '@/services/groupOverviewService';
 
 const overviews = ref([]);
 

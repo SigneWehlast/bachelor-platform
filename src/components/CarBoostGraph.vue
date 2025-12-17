@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import ApexCharts from "apexcharts";
-import { getHistoryCarboost } from "@/config/historyService";
+import { getHistoryCarboost } from "@/services/historyService";
 
 const props = defineProps({
   selectedIds: {
@@ -69,7 +69,7 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
 </script>
 
 <template>
-  <div class="Carboost-graph">
+  <div class="carboost-graph">
     <div id="chart"></div>
   </div>
 </template>

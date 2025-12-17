@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed  } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 //Components
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
@@ -12,6 +12,7 @@ import CarBoostGraph from '@/components/CarBoostGraph.vue';
 //Functions
 import { useGoBack } from "@/utils/goBack";
 
+const searchQuery = ref("");
 
 const { showTable, goBack, show } = useGoBack();
 
@@ -19,6 +20,8 @@ const selectedIds = ref([]);
 const isButtonDisabled = computed(() => selectedIds.value.length === 0);
 
 const selectedOnly = computed(() => selectedIds.value);
+
+const selectedMonth = ref(null);
 
 
 const showSelected = () => {
@@ -32,13 +35,23 @@ const goBackAndReset =() => {
 }
 
 const displayOptions = [
-  "Kundenavn",
-  "Leads",
-  "Ændring",
-  "Tendens",
-  "Status",
-  "Sidst opdateret"
+  { label: 'Kundenavn', value: 'name' },
+  { label: 'Leads', value: 'leads' },
+  { label: 'Ændring', value: 'change' },
+  { label: 'Tendens', value: 'tendens' },
+  { label: 'Status', value: 'status' },
+  { label: 'Sidst opdateret', value: 'lastUpdated' }
 ];
+
+const visibleColumns = ref([
+  'name',
+  'leads',
+  'change',
+  'tendens',
+  'status',
+  'lastUpdated'
+]);
+
 </script>
 <template>  
   <div class="carboost-view">
@@ -65,28 +78,37 @@ const displayOptions = [
 
     </div>
     <div class="carboost-view__filter">
-      <SearchBar />
+      <SearchBar v-if="!showTable" v-model="searchQuery" />
       <Dropdown
+        v-model="visibleColumns"
         :options="displayOptions"
-        :disableOptions="['Kundenavn', 'Leads', 'Tendens', 'Status']"
+        :disableOptions="[
+          'name',
+          'leads',
+          'tendens',
+          'status'
+        ]"
         label="Visning"
-        >
-      </Dropdown> 
-      <CalendarComp />
+        multiple
+        :alwaysShowLabel="true"
+      />
+      <CalendarComp v-model="selectedMonth" />
     </div>
-
-    <CarBoostTable 
-      v-if="!showTable" 
-      @update:selectedIds="ids => selectedIds = ids" 
-      :hidePaginaiton="false"
+    <CarBoostTable
+      v-if="!showTable"
+      v-model:search="searchQuery"
+      @update:selectedIds="ids => selectedIds = ids"
+      :selectedMonth="selectedMonth"
+      :visibleColumns="visibleColumns"
     />
     <div v-else>
       <CarBoostGraph :selectedIds="selectedOnly" />
-      <CarBoostTable 
-        :highlightedIds="selectedOnly" 
+      <CarBoostTable
+        :highlightedIds="selectedOnly"
         :showOnlySelected="true"
         :hidePagination="true"
+        :visibleColumns="visibleColumns"
       />
-      </div>
+    </div>
   </div>
 </template>

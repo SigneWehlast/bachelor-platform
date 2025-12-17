@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted } from "vue"
 import { useRoute } from "vue-router"
 
 import { menuItems } from "@/config/menuItems"
@@ -7,12 +7,29 @@ import Icon from "@/components/Icon.vue"
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
 import { UserTracking } from "@/utils/tracking"
 import NotificationBell from "../NotificationBell.vue";
+import { getUsers, getUserRole } from "@/services/userService.js";
+
+const user = ref(null);
+const role = ref(null);
 
 // Router
 const route = useRoute()
 
 // State: Holder styr på hvilken dropdown er åben
 const openDropdowns = ref({})
+
+
+onMounted(async () => {
+  const users = await getUsers();
+  if (users.length > 0) {
+    user.value = users[0];
+
+    const userRole = await getUserRole(user.value.id);
+    if (userRole) {
+      role.value = userRole.name;
+    }
+  }
+});
 
 // MenuDropdown 
 const toggleDropdown = (label) => {
@@ -99,12 +116,14 @@ const toggleDropdown = (label) => {
     </div>
 
     <!--Bottom section -->
-    <div class="sidebar__bottom">
-      <p class="sidebar__bottom-icon">KN</p> <!-- Hardcode -->
-      <div class="sidebar__bottom-userdetails">
-        <p class="sidebar__bottom-username text-medium">Kasper. H. Nielsen</p> <!-- Hardcode -->
-        <p class="sidebar__bottom-role text-medium">Studendermedhjælper</p> <!-- Hardcode -->
-      </div>
-    </div>
+<div class="sidebar__bottom" v-if="user">
+  <p class="sidebar__bottom-icon">{{ user.initials }}</p>
+  <div class="sidebar__bottom-userdetails">
+    <p class="sidebar__bottom-username text-medium">
+      {{ user.firstName }} {{ user.lastName }}
+    </p>
+    <p class="sidebar__bottom-role text-medium"> {{ role }}</p>
+  </div>
+</div>
   </nav>
 </template>
