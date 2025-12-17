@@ -254,10 +254,12 @@ const paginatedTableData = computed(() => {
   :visibleColumns="visibleColumns"
 />
 
-<div class="SalesView__pagination" v-if="showTable">
-  <button class="SalesView__pagination-button" @click="prevSelectedPage" :disabled="selectedCurrentPage === 1">Forrige</button>
-  <span>Side {{ selectedCurrentPage }} af {{ selectedTotalPages }}</span>
-  <button class="SalesView__pagination-button" @click="nextSelectedPage" :disabled="selectedCurrentPage === selectedTotalPages">Næste</button>
+<div class="SalesView__pagination" v-if="showTable">  
+  <span>Viser side {{ selectedCurrentPage }} ud af {{ selectedTotalPages }}</span>
+  <div>
+    <button class="SalesView__pagination-button" @click="prevSelectedPage" :disabled="selectedCurrentPage === 1">Forrige</button>
+    <button class="SalesView__pagination-button" @click="nextSelectedPage" :disabled="selectedCurrentPage === selectedTotalPages">Næste</button>
+  </div>
 </div>
 
 
