@@ -13,6 +13,7 @@ const selectedIds = ref([]);
 const showModal = ref(false);
 const selectedCustomer = ref(null);
 const pageSize = 10;
+const localTotalPages = ref(1);
 
 const sortTableBy = ref("name");
 const sortDirection = ref("asc");
@@ -112,12 +113,12 @@ const fetchAll = async () => {
     });
 
     carboostCustomers.value = result;
-    totalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
+    localTotalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
 
   } catch (err) {
     console.error("fetchAll error:", err);
     carboostCustomers.value = [];
-    totalPages.value = 1;
+    localTotalPages.value = 1;
   }
 };
 
@@ -222,7 +223,7 @@ watch(
 );
 
 watch(filteredItems, () => {
-  totalPages.value = Math.max(
+  localTotalPages.value = Math.max(
     1,
     Math.ceil(filteredItems.value.length / pageSize)
   );
@@ -379,7 +380,7 @@ watch(filteredItems, () => {
       @close="showModal = false"
     />
     <div v-if="!props.hidePagination" class="carboost-table__pagination">
-      <div>Viser side {{ currentPage }} ud af {{ totalPages }}</div>
+      <div>Viser side {{ currentPage }} ud af {{ localTotalPages }}</div>
       <div>
         <button class="carboost-table__pagination-button" @click="prevPage" :disabled="currentPage === 1">
           Forrige

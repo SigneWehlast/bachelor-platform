@@ -24,7 +24,7 @@ export async function getCarboostHistory(req, res) {
 export async function getSalesHistory(req, res) {
   try {
     const [rows] = await db.query(`
-      SELECT customer_id, carboost_conversions, total_budget, number_of_cars, leads 
+      SELECT customer_id, carboost_conversions, total_budget, number_of_cars, leads, archived_at 
       FROM history
     `);
     res.json(rows);
