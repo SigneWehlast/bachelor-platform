@@ -240,7 +240,7 @@ watch(filteredItems, () => {
                       ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
                       : 'ArrowUpThin'" 
               class="carboost-table__filter-icon"
-            />          
+            />
             Kundenavn
           </th>
           <th @click="sortBy('leads')" class="carboost-table__filter-title">

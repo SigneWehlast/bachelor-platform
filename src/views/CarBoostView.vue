@@ -107,6 +107,7 @@ const visibleColumns = ref([
         :highlightedIds="selectedOnly"
         :showOnlySelected="true"
         :hidePagination="true"
+        :selectedMonth="selectedMonth"
         :visibleColumns="visibleColumns"
       />
     </div>
