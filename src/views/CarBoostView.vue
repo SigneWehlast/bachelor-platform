@@ -101,9 +101,13 @@ const visibleColumns = ref([
       :selectedMonth="selectedMonth"
       :visibleColumns="visibleColumns"
     />
-    <div v-else>
-      <CarBoostGraph :selectedIds="selectedOnly" />
-      <CarBoostTable
+    <div v-else class="carboost-view__show-selected-customers">
+    <CarBoostGraph 
+      :selectedIds="selectedOnly" 
+      :selectedMonth="selectedMonth" 
+      :customers="customersList"
+    />      
+    <CarBoostTable
         :highlightedIds="selectedOnly"
         :showOnlySelected="true"
         :hidePagination="true"
