@@ -4,10 +4,7 @@ export async function getHistoryCarboost() {
   try {
     const res = await fetch(`${BASE_URL}/api/history/carboost`);
     const result = await res.json();
-
     const data = Array.isArray(result) ? result : [];
-
-    // --- GRUPPÉR OG SUM LEADS PR. KUNDE + DATO ---
     const grouped = {};
 
     data.forEach(item => {
@@ -24,8 +21,6 @@ export async function getHistoryCarboost() {
           archived_at: item.archived_at
         };
       }
-
-      // Læg leads sammen
       grouped[key].dif_leads += item.dif_leads;
     });
 

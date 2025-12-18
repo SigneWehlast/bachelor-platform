@@ -1,11 +1,12 @@
 <script setup>
-import { defineProps, defineEmits, ref, watch, onMounted,computed } from "vue";
+import { defineProps, defineEmits, ref, watch, onMounted, computed } from "vue";
 import Icon from "@/components/Icon.vue";
 import CalendarComp from "../filter/CalendarComp.vue";
 import ExportData from "../filter/ExportData.vue";
 import ApexCharts from "apexcharts";
-import { getHistoryCarboost } from "@/services/historyService";
 import CarBoostTable from "../CarBoostTable.vue";
+import { getHistoryCarboost } from "@/services/historyService";
+import CarBoostGraph from "../CarBoostGraph.vue";
 
 const props = defineProps({
   customer: { type: Object, default: null }
@@ -14,70 +15,77 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 function handleClose() { emit("close"); }
 
+const today = new Date();
+const selectedMonth = ref(`${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2,"0")}`);
+
 const history = ref([]);
+const customerData = ref([]);
 let chart = null;
 
-onMounted(async () => {
-  const result = await getHistoryCarboost();
-  history.value = result.history;
-});
+const fetchCustomerData = () => {
+  if (!props.customer || !history.value.length) return;
 
-watch([history, () => props.customer], ([newHistory, customer]) => {
-  
-  if (!newHistory.length || !customer) {
-    if (chart) chart.destroy();
+  const [year, monthNum] = selectedMonth.value.split("-").map(Number);
+
+  const customerHistory = history.value
+    .filter(h => h.id === props.customer.id)
+    .filter(h => {
+      const d = new Date(h.archived_at);
+      return d.getFullYear() === year && (d.getMonth() + 1) === monthNum;
+    });
+
+  if (!customerHistory.length) {
+    customerData.value = [];
+    if(chart) chart.destroy();
     return;
   }
 
-  const points = newHistory
-    .filter(h => h.id === customer.id)
-    .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at));
+  const lastDay = customerHistory
+    .sort((a, b) => new Date(b.archived_at) - new Date(a.archived_at))[0];
 
-  if (!points.length) {
-    if (chart) chart.destroy();
-    return;
-  }
+  customerData.value = [{
+    id: props.customer.id,
+    name: props.customer.name,
+    leads: lastDay.leads,
+    change: lastDay.change || 0,
+    tendens: lastDay.leads > 0 ? 'up' : lastDay.leads < 0 ? 'down' : '-',
+    period: new Date(selectedMonth.value + "-01").toLocaleDateString("da-DK", { month: "long", year: "numeric" }),
+    last_updated: lastDay.archived_at
+  }];
 
-  const dates = points.map(
-    p => new Date(p.archived_at).toLocaleDateString("da-DK")
-  );
+  const dates = customerHistory
+    .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at))
+    .map(p => new Date(p.archived_at).toLocaleDateString("da-DK"));
 
-  const data = points.map(p => p.dif_leads);
+  const data = customerHistory
+    .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at))
+    .map(p => p.dif_leads);
 
-  const series = [
-    {
-      name: customer.name,
-      data
-    }
-  ];
-
-  const options = {
-    chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false }  },
-    series,
+  if(chart) chart.destroy();
+  chart = new ApexCharts(document.querySelector("#chart"), {
+    chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false } },
+    series: [{ name: props.customer.name, data }],
     stroke: { curve: "smooth" },
     xaxis: { categories: dates },
     legend: { show: false }
-  };
-
-  if (chart) chart.destroy();
-
-  chart = new ApexCharts(document.querySelector("#chart"), options);
+  });
   chart.render();
-});
+};
 
 const tendensDown = computed(() => props.customer?.tendens === 'down');
 
-const lastUpdated = computed(() => {
-  if (!props.customer || !history.value.length) return "-";
-
-  const points = history.value
-    .filter(h => h.id === props.customer.id)
-    .sort((a, b) => new Date(b.archived_at) - new Date(a.archived_at));
-
-  if (!points.length) return "-";
-
-  return new Date(points[0].archived_at).toLocaleDateString("da-DK");
+onMounted(async () => {
+  const result = await getHistoryCarboost();
+  history.value = result.history || [];
 });
+
+watch(
+  [selectedMonth, () => props.customer, history],
+  ([month, customer, hist]) => {
+    if(hist.length && customer) fetchCustomerData();
+  },
+  { immediate: true }
+);
 </script>
 <template>
   <div class="show-customer-carboost-modal">
@@ -88,7 +96,7 @@ const lastUpdated = computed(() => {
                 <h1 class="show-customer-carboost-modal__topbar-title">{{ customer?.name }}</h1>
             </div>
             <div class="show-customer-carboost-modal__topbar-dropdowns">
-                <CalendarComp />
+                <CalendarComp v-model="selectedMonth" :isModal="true" />
                 <ExportData />
             </div>
             <div v-if="tendensDown" class="show-customer-carboost-modal__topbar-alert">
@@ -96,9 +104,9 @@ const lastUpdated = computed(() => {
                 <p class="text-regular show-customer-carboost-modal__topbar-alert__text">OBS. tendens er faldende</p>
             </div>
         </div>
-        <div class="carboost-graph" id="chart"></div>
-        <p class="text-regular show-customer-carboost-modal__last-updated">
-            Sidst opdateret: {{ lastUpdated }}
+          <CarBoostGraph />        
+          <p class="text-regular show-customer-carboost-modal__last-updated">
+            Sidst opdateret: {{ customerData[0]?.last_updated ? new Date(customerData[0].last_updated).toLocaleDateString("da-DK") : "-" }}
         </p>
         <CarBoostTable 
           :highlighted-ids="[customer?.id]"
@@ -106,6 +114,8 @@ const lastUpdated = computed(() => {
           :hide-pagination="true"
           :hide-checkbox="true"
           :table-in-modal="true"
+          :visible-columns="['change', 'lastUpdated', 'tendens', 'period']"
+          :selected-month="selectedMonth"
         />
     </div>
   </div>

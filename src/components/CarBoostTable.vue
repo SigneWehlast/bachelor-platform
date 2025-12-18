@@ -5,6 +5,7 @@ import { getCustomersInCarboost } from "@/services/carboostService";
 import Icon from "@/components/Icon.vue";
 import ShowCustomerCarBoostModal from "./modals/ShowCustomerCarBoostModal.vue";
 import { getCustomersInCarboostByDate } from "@/services/carboostService"; 
+import { getCustomersCarboostChange } from "@/services/carboostService";
 import { useSearchFilter } from "@/utils/searchFilter";
 import { usePagination } from "@/utils/pagination";
 
@@ -60,65 +61,36 @@ const props = defineProps({
   }
 });
 
-function getMonthlyLeads(history) {
-  const grouped = {};
-
-  history.forEach(item => {
-    const date = new Date(item.archived_at);
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const key = `${year}-${month.toString().padStart(2, '0')}`;
-
-    if (!grouped[key] || new Date(item.archived_at) > new Date(grouped[key].archived_at)) {
-      grouped[key] = {
-        archived_at: item.archived_at,
-        monthlyLeads: item.leads || 0,
-        period: date
-        .toLocaleDateString("da-DK", { month: "long", year: "numeric" })
-        .replace(/^\w/, c => c.toUpperCase())
-      };
-    }
-  });
-
-  return Object.values(grouped);
-}
-
 const fetchAll = async () => {
   try {
-    let response;
+    let customers = [];
 
     if (!props.selectedMonth) {
-      response = await getCustomersInCarboost(1, 99999);
+      const res = await getCustomersInCarboost(1, 99999);
+      customers = res.customers || [];
     } else {
-      response = await getCustomersInCarboostByDate(props.selectedMonth);
+      const { customers: leadsData = [] } = await getCustomersInCarboostByDate(props.selectedMonth);
+      const { customers: changeData = [] } = await getCustomersCarboostChange(props.selectedMonth);
+
+      customers = (leadsData || []).map(c => {
+        const changeItem = (changeData || []).find(ch => ch.id === c.id) || {};
+        return {
+          ...c,
+          change: changeItem.change || 0,
+          todays_dif: changeItem.todays_dif || 0,
+          yesterdays_dif: changeItem.yesterdays_dif || 0,
+          tendens: changeItem.tendens || '-'
+        };
+      });
     }
 
-    const customers = response.customers || [];
-    const result = [];
-
-    customers.forEach(customer => {
-      if (customer.history && customer.history.length > 0) {
-        const monthly = getMonthlyLeads(customer.history);
-        monthly.forEach(month => {
-          result.push({
-            ...customer,
-            leads: month.leads,
-            archived_at: month.archived_at,
-            period: month.period
-          });
-        });
-      } else {
-        result.push(customer);
-      }
-    });
-
-    carboostCustomers.value = result;
-    localTotalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
+    carboostCustomers.value = customers;
+    totalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
 
   } catch (err) {
     console.error("fetchAll error:", err);
     carboostCustomers.value = [];
-    localTotalPages.value = 1;
+    totalPages.value = 1;
   }
 };
 
@@ -229,6 +201,21 @@ watch(filteredItems, () => {
   );
   resetPage();
 });
+
+const periodLabel = computed(() => {
+  if (!props.selectedMonth) return "-";
+
+  const [year, month] = props.selectedMonth.split("-");
+  const date = new Date(year, month - 1, 1);
+
+  return date
+    .toLocaleDateString("da-DK", {
+      month: "long",
+      year: "numeric"
+    })
+    .replace(/^\w/, c => c.toUpperCase());
+});
+
 </script>
 <template>
   <div class="carboost-table">
@@ -241,7 +228,7 @@ watch(filteredItems, () => {
                       ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
                       : 'ArrowUpThin'" 
               class="carboost-table__filter-icon"
-            />          
+            />
             Kundenavn
           </th>
           <th @click="sortBy('leads')" class="carboost-table__filter-title">
@@ -338,9 +325,9 @@ watch(filteredItems, () => {
           </template>
           <template v-else>
             <td class="carboost-table__text--leftalign">
-              {{ item.period }}
+              {{ periodLabel }}
             </td>
-            <td class="carboost-table__text--center">{{ item.monthlyLeads }}</td>
+            <td class="carboost-table__text--center">{{ item.leads  }}</td>
             <td class="carboost-table__text--center">
               {{ item.change ?? "-" }}
             </td>
