@@ -2,9 +2,9 @@ import cron from 'node-cron';
 import { syncData } from "../scripts/SyncData.js";
 
 cron.schedule(
-  '0 12 * * *',
+  '* 12 * * *',
   async () => {
-    console.log('Starter daglig sync/arkivering kl. 12 (CET)...');
+    console.log('Starter daglig sync/arkivering kl. 19:15 (CET)...');
     try {
       await syncData();
       console.log('Daglig sync/arkivering færdig ✓');
@@ -15,4 +15,4 @@ cron.schedule(
   { timezone: 'Europe/Copenhagen' }
 );
 
-console.log('Cron-job er aktivt og kører dagligt kl. 12.');
+console.log('Cron-job er aktivt og kører dagligt kl. 19:15.');
