@@ -69,3 +69,38 @@ export const getCustomersInCarboostByDate = async (month) => {
     return { customers: [] };
   }
 };
+
+
+export const getCustomersCarboostChange= async (month) => {
+  try {
+    const [year, mon] = month.split('-').map(Number);
+    const prevMonth = mon === 1 ? `${year-1}-12` : `${year}-${(mon-1).toString().padStart(2,'0')}`;
+
+    const res = await fetch(`${BASE_URL}/api/customer/carboost/change?month=${month}&prevMonth=${prevMonth}`);
+    if (!res.ok) throw new Error("Server error");
+
+    const data = await res.json(); 
+    const rows = data || [];
+
+    const customers = rows.map(r => {
+
+      const change = (r.leads || 0) - (r.prev_leads || 0);
+
+      return {
+        id: r.customer_id,
+        name: r.customer_name,
+        leads: r.leads,
+        change,
+        todays_dif: change,
+        yesterdays_dif: r.prev_leads || 0,
+        last_updated: r.archived_at,
+        tendens: change > 0 ? 'up' : change < 0 ? 'down' : '-'
+      };
+    });
+
+    return { customers };
+  } catch (err) {
+    console.error("Fejl i getCustomersCarboostChange:", err);
+    return { customers: [] };
+  }
+};

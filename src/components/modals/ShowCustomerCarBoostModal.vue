@@ -96,7 +96,7 @@ watch(
                 <h1 class="show-customer-carboost-modal__topbar-title">{{ customer?.name }}</h1>
             </div>
             <div class="show-customer-carboost-modal__topbar-dropdowns">
-                <CalendarComp v-model="selectedMonth"/>
+                <CalendarComp v-model="selectedMonth" :isModal="true" />
                 <ExportData />
             </div>
             <div v-if="tendensDown" class="show-customer-carboost-modal__topbar-alert">
@@ -106,7 +106,7 @@ watch(
         </div>
           <CarBoostGraph />        
           <p class="text-regular show-customer-carboost-modal__last-updated">
-            Sidst opdateret: {{ lastUpdated }}
+            Sidst opdateret: {{ customerData[0]?.last_updated ? new Date(customerData[0].last_updated).toLocaleDateString("da-DK") : "-" }}
         </p>
         <CarBoostTable 
           :highlighted-ids="[customer?.id]"
@@ -114,7 +114,7 @@ watch(
           :hide-pagination="true"
           :hide-checkbox="true"
           :table-in-modal="true"
-          :visible-columns="['change', 'lastUpdated', 'name', 'tendens', 'period']"
+          :visible-columns="['change', 'lastUpdated', 'tendens', 'period']"
           :selected-month="selectedMonth"
         />
     </div>

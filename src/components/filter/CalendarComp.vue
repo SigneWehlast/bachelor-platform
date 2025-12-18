@@ -1,27 +1,41 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import Dropdown from './Dropdown.vue';
 import { getMonths } from "@/services/calendarService";
 
-const displayOptions = ref([]);
-const selectedMonth = ref(null);
+const props = defineProps({
+  modelValue: { type: String, default: null },
+  isModal: { type: Boolean, default: false }
+});
+const emit = defineEmits(['update:modelValue']);
+
+const months = ref([]);
+const selectedMonth = ref(props.modelValue);
+
+const displayOptions = computed(() => {
+  if (props.isModal) {
+    return months.value;
+  }
+  return [{ label: "Dagsvisning", value: null }, ...months.value];
+});
 
 onMounted(async () => {
-  displayOptions.value = await getMonths();
-
-  const currentMonth = new Date().toISOString().slice(0, 7);
-  const exists = displayOptions.value.find(o => o.value === currentMonth);
-
-  selectedMonth.value = exists
-    ? currentMonth
-    : displayOptions.value[0]?.value ?? null;
+  const fetchedMonths = await getMonths();
+  months.value = fetchedMonths;
+  if (!selectedMonth.value) {
+    selectedMonth.value = props.isModal ? months.value[0]?.value ?? null : null;
+  }
 });
+
+watch(selectedMonth, (val) => emit('update:modelValue', val));
+watch(() => props.modelValue, (val) => selectedMonth.value = val);
 </script>
 
 <template>
   <Dropdown
-      v-model="selectedMonth"
-      :options="displayOptions"
-      label="Vælg måned"
+    v-if="displayOptions.length"
+    v-model="selectedMonth"
+    :options="displayOptions"
+    label="Vælg periode"
   />
 </template>
