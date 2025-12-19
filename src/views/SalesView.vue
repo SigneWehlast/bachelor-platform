@@ -202,7 +202,6 @@ const paginatedTableData = computed(() => {
       :alwaysShowLabel="true"
     />
     <CalendarComp />
-    <CustomerName />
     <ExportData />
   </div>
     <!-- Ikke valgte kunder -->
