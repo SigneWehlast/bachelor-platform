@@ -11,6 +11,9 @@
         &-icon {
             width: vars.$icon-size-md;
             fill: vars.$icon-color-tooltip;
+            display: inline-block;
+            vertical-align: middle;
+            padding-bottom: vars.$spacing-padding-xxs;
         }
 
         &-title {

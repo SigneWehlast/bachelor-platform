@@ -8,9 +8,13 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  customers: {
-    type: Array,
-    default: () => []
+  selectedMonth: { 
+    type: String, 
+    default: null 
+  },
+  customers: { 
+    type: Array, 
+    default: () => [] 
   }
 });
 
@@ -19,29 +23,38 @@ let chart = null;
 
 onMounted(async () => {
   const result = await getHistoryCarboost();
-  history.value = result.history;
+  history.value = result.history || [];
 });
 
-// Watch både history og selectedIds
-watch([history, () => props.selectedIds], ([newHistory, ids]) => {
+watch([history, () => props.selectedIds, () => props.selectedMonth], ([newHistory, ids, month]) => {
   if (!newHistory.length || !ids.length) {
     if (chart) chart.destroy();
     return;
   }
 
+  const [year, monthNum] = month ? month.split("-").map(Number) : [null, null];
+
   const filteredHistory = newHistory
-    .filter(item => ids.includes(item.id))
+    .filter(h => ids.includes(h.id))
+    .filter(h => {
+      if (!year || !monthNum) return true;
+      const d = new Date(h.archived_at);
+      return d.getFullYear() === year && (d.getMonth() + 1) === monthNum;
+    })
     .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at));
 
+  if (!filteredHistory.length) {
+    if (chart) chart.destroy();
+    return;
+  }
+
   const allDates = Array.from(
-    new Set(filteredHistory.map(item => new Date(item.archived_at).toLocaleDateString("da-DK")))
-  );
+    new Set(filteredHistory.map(h => new Date(h.archived_at).toLocaleDateString("da-DK")))
+  ).sort((a,b) => new Date(a) - new Date(b));
 
   const series = ids.map(id => {
-    const points = filteredHistory.filter(item => item.id === id);
+    const points = filteredHistory.filter(h => h.id === id);
     const customer = props.customers.find(c => c.id === id);
-    
-    // Bevarer navnet fra historikken, hvis det findes
     const name = points.length ? points[0].name : (customer ? customer.name : `Navn ${id}`);
     
     const data = allDates.map(date => {
@@ -55,9 +68,7 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
   const options = {
     chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false } },
     series,
-    stroke: {
-    curve: 'smooth'
-  },
+    stroke: { curve: "smooth" },
     xaxis: { categories: allDates },
     legend: { horizontalAlign: "left", showForSingleSeries: true }
   };
@@ -67,7 +78,6 @@ watch([history, () => props.selectedIds], ([newHistory, ids]) => {
   chart.render();
 });
 </script>
-
 <template>
   <div class="carboost-graph">
     <div id="chart"></div>

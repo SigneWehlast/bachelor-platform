@@ -123,3 +123,48 @@ export async function getCustomersByDate(req, res) {
     res.status(500).json({ error: "Server error" });
   }
 }
+
+
+export async function getCustomersCarboostChange(req, res) {
+  try {
+    const { month } = req.query;
+    const [year, mon] = month.split('-').map(Number);
+    const prevMonth = mon === 1 ? `${year-1}-12` : `${year}-${(mon-1).toString().padStart(2,'0')}`;
+
+    const [rows] = await db.query(`
+      SELECT 
+        h.customer_id,
+        c.customer_name,
+        h.leads AS leads,
+        IFNULL(prev.leads,0) AS prev_leads,
+        h.archived_at
+      FROM history h
+      JOIN customer c ON h.customer_id = c.customer_id
+      LEFT JOIN (
+        SELECT h2.customer_id, h2.leads
+        FROM history h2
+        INNER JOIN (
+          SELECT customer_id, MAX(archived_at) AS latest_date
+          FROM history
+          WHERE DATE_FORMAT(archived_at, '%Y-%m') = ?
+          GROUP BY customer_id
+        ) latest_prev
+        ON h2.customer_id = latest_prev.customer_id AND h2.archived_at = latest_prev.latest_date
+      ) prev
+      ON h.customer_id = prev.customer_id
+      INNER JOIN (
+        SELECT customer_id, MAX(archived_at) AS latest_date
+        FROM history
+        WHERE DATE_FORMAT(archived_at, '%Y-%m') = ?
+        GROUP BY customer_id
+      ) latest
+      ON h.customer_id = latest.customer_id AND h.archived_at = latest.latest_date
+      ORDER BY c.customer_name ASC;
+    `, [prevMonth, month]);
+
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+}
