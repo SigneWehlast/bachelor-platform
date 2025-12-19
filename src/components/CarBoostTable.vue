@@ -307,12 +307,12 @@ const periodLabel = computed(() => {
             </td>
             <td class="carboost-table__text--center">
               <Icon
-                v-if="item.yesterdays_dif > 0 && item.todays_dif / item.yesterdays_dif < 0.5"
+                v-if="item.yesterdays_dif > 9 && item.yesterdays_dif > 0 && item.todays_dif / item.yesterdays_dif < 0.5"
                 name="AlertCircle"
                 class="carboost-table__text-icon carboost-table__text-icon-alert--red"
               />
               <Icon
-                v-else-if="item.yesterdays_dif > 0 && (item.todays_dif / item.yesterdays_dif) < 0.7"
+                v-else-if="item.yesterdays_dif > 9 && item.yesterdays_dif > 0 && (item.todays_dif / item.yesterdays_dif) < 0.7"
                 name="Alert"
                 class="carboost-table__text-icon carboost-table__text-icon-alert--yellow"
               />

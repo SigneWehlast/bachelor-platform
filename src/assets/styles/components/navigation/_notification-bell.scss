@@ -1,0 +1,33 @@
+@use '../../abstracts/variables' as v;
+@use '../../base/typography' as t;
+@use '../icon' as i;
+
+.notification-bell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &__icon {
+    width: v.$icon-size-lg;
+    height: v.$icon-size-lg;
+  }
+
+  &__badge {
+      position: absolute;
+      top: 1;
+      right: 0;
+      transform: translate(25%, -50%);
+      color: v.$bg-white;
+      height: v.$height-xxs;
+      min-width: v.$height-xxs;
+      border-radius: v.$border-radius-md;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      &--alert {
+        background: v.$primary-color-carads-light;
+      }
+  }
+}
