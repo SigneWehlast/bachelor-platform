@@ -8,7 +8,6 @@
 @use './components/icon';
 @use './components/car-boost-graph';
 @use './components/car-boost-table';
-@use './components/notification-comp';
 @use './components/sale-choose-company';
 @use './components/sale-table';
 @use './components/settings-navigation';
@@ -31,7 +30,9 @@
 @use './components/navigation/breadcrumbs-comp';
 @use './components/navigation/navigation-comp';
 @use './components/navigation/pagination-comp';
-@use './components/navigation/nontifikaction-bell';
+@use './components/navigation/notification-bell';
+@use './components/navigation/notification-comp';
+
 
 
 // Pages

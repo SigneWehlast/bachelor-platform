@@ -1,0 +1,57 @@
+@use '../../abstracts/mixins' as mix;
+@use '../../abstracts/variables' as vars;
+
+.notification-comp {
+    position: absolute;
+    top: 50px;
+    left: 6px;
+    display: flex;
+    flex-direction: column;
+    @include mix.input;
+    background-color: vars.$bg-white;
+    height: fit-content;
+    max-height: 1200px;
+    width: fit-content;
+    overflow-y: auto;
+    z-index: 999;    
+
+    &__list {
+        list-style: none;
+
+        &-item {
+            display: flex;
+            flex-direction: row;
+            padding:6px;
+
+            &:hover {
+                background-color: vars.$bg-ultra-light-gray;
+            }
+        }
+
+        &-icon {
+            width: vars.$icon-size-md;
+
+            &--green {
+                fill: vars.$icon-color-positive;
+            }
+
+            &--red {
+                fill: vars.$icon-color-negative;
+            }
+
+            &--yellow {
+                fill: vars.$icon-color-warning;
+            }
+        }
+    }
+}
+
+.notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 998;
+}

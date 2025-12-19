@@ -9,7 +9,7 @@ export function useCarboostWarnings() {
 
   const warningCustomers = computed(() =>
     customers.value.filter(item =>
-      item.yesterdays_dif > 0 &&
+      item.yesterdays_dif > 9 &&
       (
         item.todays_dif / item.yesterdays_dif < 0.5 ||
         item.todays_dif / item.yesterdays_dif < 0.7
