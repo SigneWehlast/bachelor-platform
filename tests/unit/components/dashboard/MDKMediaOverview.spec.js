@@ -50,9 +50,8 @@ describe("MDKMediaOverview.vue", () => {
 
     expect(setCustomersSpy).toHaveBeenCalledWith(mockCarboost.customers);
 
-    // Tjek at overviews ref er korrekt mappet
     const combined = wrapper.vm.combinedOverview;
-    expect(combined).toHaveLength(mockGroups.length + 1); // Advarsler + grupper
+    expect(combined).toHaveLength(mockGroups.length + 1);
     expect(combined[0]).toEqual({ name: "Advarsler", data: 0 });
     expect(combined[1]).toEqual({ name: "Carboost", data: 5 });
     expect(combined[2]).toEqual({ name: "Carweb", data: 10 });
