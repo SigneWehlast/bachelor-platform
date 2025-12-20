@@ -40,6 +40,8 @@ const navigate = (customer) => {
 
 <template>
   <div class="notification-comp">
+    <h3>Notifikationer</h3>
+    <span class="notification-comp__line"></span>
     <div
       v-for="customer in allCustomers"
       :key="customer.id"
