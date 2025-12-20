@@ -5,7 +5,7 @@ import { getMonths } from "@/services/calendarService";
 
 const props = defineProps({
   modelValue: { type: String, default: null },
-  isModal: { type: Boolean, default: false }
+  noDayShow: { type: Boolean, default: false }
 });
 const emit = defineEmits(['update:modelValue']);
 
@@ -13,7 +13,7 @@ const months = ref([]);
 const selectedMonth = ref(props.modelValue);
 
 const displayOptions = computed(() => {
-  if (props.isModal) {
+  if (props.noDayShow) {
     return months.value;
   }
   return [{ label: "Dagsvisning", value: null }, ...months.value];
@@ -23,7 +23,7 @@ onMounted(async () => {
   const fetchedMonths = await getMonths();
   months.value = fetchedMonths;
   if (!selectedMonth.value) {
-    selectedMonth.value = props.isModal ? months.value[0]?.value ?? null : null;
+    selectedMonth.value = props.noDayShow ? months.value[0]?.value ?? null : null;
   }
 });
 

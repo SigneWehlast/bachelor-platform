@@ -24,11 +24,21 @@ export async function getCarboostHistory(req, res) {
 export async function getSalesHistory(req, res) {
   try {
     const [rows] = await db.query(`
-      SELECT customer_id, carboost_conversions, total_budget, number_of_cars, leads, archived_at 
-      FROM history
+      SELECT 
+        h.customer_id,
+        c.customer_name,
+        h.carboost_conversions,
+        h.total_budget,
+        h.number_of_cars,
+        h.leads,
+        h.archived_at
+      FROM history h
+      JOIN customer c ON h.customer_id = c.customer_id
     `);
+
     res.json(rows);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Database error" });
   }
 }
