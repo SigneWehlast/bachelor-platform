@@ -32,6 +32,6 @@ onMounted(async () => {
       {{ warningCount }}
     </span>
   </div>
-    <div v-if="open" class="notification-overlay" @click="open = false"></div>
+    <div v-if="open" class="notification-bell__overlay" @click="open = false"></div>
     <NotificationComp v-if="open" :customers="warningCustomerList" @close="open = false" />
 </template>

@@ -14,6 +14,7 @@
     width: fit-content;
     overflow-y: auto;
     z-index: 999;    
+    padding: 6px;
 
     &__list {
         list-style: none;
@@ -21,7 +22,7 @@
         &-item {
             display: flex;
             flex-direction: row;
-            padding:6px;
+            padding: 6px 0;
 
             &:hover {
                 background-color: vars.$bg-ultra-light-gray;
@@ -44,14 +45,10 @@
             }
         }
     }
-}
 
-.notification-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 998;
+    &__line {
+        height: vars.$spacing-margin-xxxs;
+        background-color: vars.$bg-light-gray;
+        margin: vars.$spacing-margin-xxs 0;
+    }
 }
