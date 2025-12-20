@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
 // Components
 import SaleTable from "@/components/SaleTable.vue";
@@ -12,6 +12,7 @@ import ConfirmationModal from "@/components/modals/ConfirmationModal.vue";
 
 // Services
 import { getCustomers, getSelectedCustomers } from "@/services/customerService";
+import { getHistorySales } from "@/services/historyService";
 
 // Utils
 import { sortByName } from "@/utils/sort";
@@ -27,6 +28,7 @@ const confirm = ref(false);
 const salesCustomers = ref([]);
 const selectedCustomers = ref([]);
 const customerTableData = ref([]);
+const selectedMonth = ref(null);
 
 // Composable for search & filter
 const { searchQuery, filterValue: selectedCarsFilter, filteredItems: filteredCustomers } = useSearchFilter(
@@ -126,14 +128,54 @@ function moveToAvailable(customer) {
   sortByName(salesCustomers.value);
 }
 
+const filteredByMonthTableData = computed(() => {
+  if (!selectedMonth.value) return customerTableData.value;
+
+  return customerTableData.value.filter(item => {
+    const date = new Date(item.archived_at);
+    const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+    return month === selectedMonth.value;
+  });
+});
+
+
 async function showCustomerData() {
   if (selectedCustomers.value.length === 0) return;
-  const idsArray = selectedCustomers.value.map(c => c.id);
-  customerTableData.value = await getSelectedCustomers(idsArray);
+
+  const selectedIds = selectedCustomers.value.map(c => c.id);
+
+  if (!selectedMonth.value) {
+    customerTableData.value = await getSelectedCustomers(selectedIds);
+    show();
+    return;
+  }
+
+  const { history } = await getHistorySales();
+  const [selYear, selMonth] = selectedMonth.value.split("-").map(Number);
+
+  const filtered = history.filter(item => {
+    if (!selectedIds.includes(item.id)) return false;
+
+    const [year, month] = item.archived_at.split(" ")[0].split("-").map(Number);
+    return year === selYear && month === selMonth;
+  });
+
+  const latestPerCustomer = {};
+  filtered.forEach(item => {
+    const current = latestPerCustomer[item.id];
+    if (!current) {
+      latestPerCustomer[item.id] = item;
+    } else {
+      if (new Date(item.archived_at) > new Date(current.archived_at)) {
+        latestPerCustomer[item.id] = item;
+      }
+    }
+  });
+
+  customerTableData.value = Object.values(latestPerCustomer);
   show();
 }
 
-// Fetch customers
 onMounted(async () => {
   salesCustomers.value = await getCustomers();
 });
@@ -147,15 +189,20 @@ const {
   nextPage: nextSelectedPage,
   prevPage: prevSelectedPage,
   resetPage: resetSelectedPage
-} = usePagination(selectedCustomers, pageSize);
+} = usePagination(filteredByMonthTableData, pageSize);
 
 
 const paginatedTableData = computed(() => {
-  return paginatedSelectedCustomers.value
-    .map(sel =>
-      customerTableData.value.find(row => row.id === sel.id)
-    )
-    .filter(Boolean);
+  return paginatedSelectedCustomers.value;
+});
+
+watch(selectedMonth, () => {
+  resetSelectedPage();
+});
+
+watch(selectedMonth, async (newMonth) => {
+  if (selectedCustomers.value.length === 0) return;
+  await showCustomerData();
 });
 </script>
 <template>
@@ -198,7 +245,7 @@ const paginatedTableData = computed(() => {
       multiple
       :alwaysShowLabel="true"
     />
-    <CalendarComp />
+    <CalendarComp v-model="selectedMonth" :no-day-show="true" />
     <ExportData />
   </div>
     <!-- Ikke valgte kunder -->
@@ -247,6 +294,7 @@ const paginatedTableData = computed(() => {
   :carsData="paginatedTableData"
   v-model:showId="showId"
   :visibleColumns="visibleColumns"
+  v-model="selectedMonth"
 />
 
 <div class="SalesView__pagination" v-if="showTable">  
