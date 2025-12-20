@@ -157,10 +157,7 @@ const paginatedTableData = computed(() => {
     )
     .filter(Boolean);
 });
-
 </script>
-
-
 <template>
   <div class="SalesView">
     <div class="SalesView__topbar"> <h1>Salg</h1>
