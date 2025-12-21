@@ -44,32 +44,38 @@ export async function getHistorySales() {
 
     const grouped = {};
 
-    data.forEach(item => {
-      const id = item.customer_id;
-      const date = new Date(item.archived_at).toLocaleDateString("da-DK");
-
+    data.forEach(c => {
+      const id = c.customer_id;
+      const date = c.archived_at.split("T")[0];
       const key = `${id}-${date}`;
 
       if (!grouped[key]) {
         grouped[key] = {
           id,
-          name: item.customer_name,
-          numberOfCars: item.number_of_cars,
-          totalBudget: item.total_budget,
-          leads: item.leads,
-          saleConversions: item.sale_conversions || 0,
-          budgetPerDay: item.budget_per_day || 0,
-          conversionPercent: item.conversion_percent || 0,
-          archived_at: item.archived_at
+          name: c.customer_name,
+          numberOfCars: c.number_of_cars,
+          totalBudget: c.total_budget,
+          leads: c.leads,
+          carboostConversions: c.carboost_conversions || 0,
+          archived_at: c.archived_at
         };
       } else {
-        grouped[key].leads += item.leads;
-        grouped[key].saleConversions += item.sale_conversions || 0;
-        grouped[key].totalBudget += item.total_budget;
+        grouped[key].leads += c.leads;
+        grouped[key].carboostConversions += c.carboost_conversions || 0;
+        grouped[key].totalBudget += c.total_budget;
+        grouped[key].numberOfCars += c.number_of_cars;
       }
     });
 
-    const history = Object.values(grouped);
+    const history = Object.values(grouped).map(c => ({
+      ...c,
+      budgetPerDay: c.numberOfCars > 0
+        ? Number((c.totalBudget / (c.numberOfCars * 30)).toFixed(1))
+        : 0,
+      conversionPercent: c.leads > 0
+        ? Number(((c.carboostConversions / c.leads) * 100).toFixed(1))
+        : 0
+    }));
 
     return { history, totalCount: history.length };
   } catch (err) {
@@ -77,3 +83,4 @@ export async function getHistorySales() {
     return { history: [], totalCount: 0 };
   }
 }
+
