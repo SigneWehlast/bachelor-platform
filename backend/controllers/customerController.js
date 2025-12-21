@@ -1,80 +1,58 @@
-import { db } from "../app.js";
+import * as CustomerModel from "../models/customerModel.js";
 
+// Hent alle kunder
 export async function getAllCustomers(req, res) {
   try {
-    const [rows] = await db.query(
-      "SELECT customer_id, customer_name, number_of_cars FROM customer"
-    );
+    const rows = await CustomerModel.getAllCustomers();
     res.json(rows);
   } catch (err) {
-    console.error("DB Error:", err.code, err.sqlMessage, err.sql);
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
   }
 }
 
+// Hent salgs-kunder
 export async function getSaleCustomers(req, res) {
-  const ids = req.query.ids.split(",").map(Number);
-
   try {
-    const [rows] = await db.query(`
-      SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions
-      FROM customer
-      WHERE customer_id IN (?)
-      ORDER BY customer_name ASC
-    `, [ids]);
-
+    const ids = req.query.ids.split(",").map(Number);
+    const rows = await CustomerModel.getSaleCustomersByIds(ids);
     res.json(rows);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Database error" });
   }
 }
 
+// Hent Carboost liste
 export async function getCarboostList(req, res) {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const offset = (page - 1) * limit;
-
   try {
-    const [rows] = await db.query(`
-      SELECT customer_id, customer_name, leads, last_updated
-      FROM customer
-      WHERE customer_name IS NOT NULL
-      ORDER BY customer_name ASC
-      LIMIT ? OFFSET ?
-    `, [limit, offset]);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
 
-    const [countRows] = await db.query(`
-      SELECT COUNT(*) AS totalCount FROM customer 
-      WHERE customer_name IS NOT NULL
-    `);
-
-    res.json({ data: rows, totalCount: countRows[0].totalCount });
+    const result = await CustomerModel.getCarboostList(limit, offset);
+    res.json({ data: result.rows, totalCount: result.totalCount });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Database error" });
   }
 }
 
+// Hent kundernes ændringer
 export async function getCustomerChanges(req, res) {
   try {
-    const [rows] = await db.query(`
-      SELECT customer_id, customer_name, create_date
-      FROM customer
-      ORDER BY create_date DESC
-    `);
+    const rows = await CustomerModel.getCustomerChanges();
     res.json(rows);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Database error" });
   }
 }
 
+// Hent kunder i grupper
 export async function getCustomersInGroups(req, res) {
   try {
-    const [rows] = await db.query(`
-      SELECT g.group_name, COUNT(cg.customer_id) AS customer_count
-      FROM customer_group cg
-      JOIN \`group\` g ON cg.group_id = g.group_id
-      GROUP BY g.group_name
-    `);
+    const rows = await CustomerModel.getCustomersInGroups();
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -82,12 +60,10 @@ export async function getCustomersInGroups(req, res) {
   }
 }
 
+// Hent stats
 export async function getCustomerStats(req, res) {
   try {
-    const [rows] = await db.query(`
-      SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions
-      FROM customer
-    `);
+    const rows = await CustomerModel.getCustomerStats();
     res.json(rows);
   } catch (err) {
     console.error(err);
@@ -95,76 +71,28 @@ export async function getCustomerStats(req, res) {
   }
 }
 
+// Hent kunder efter måned
 export async function getCustomersByDate(req, res) {
   try {
     const { month } = req.query;
-    if (!month) {
-      return res.status(400).json({ error: "Missing month parameter" });
-    }
+    if (!month) return res.status(400).json({ error: "Missing month parameter" });
 
-    const [rows] = await db.query(`
-      SELECT h.customer_id, c.customer_name, h.leads, h.dif_leads, h.archived_at
-      FROM history h
-      JOIN customer c ON h.customer_id = c.customer_id
-      INNER JOIN (
-          SELECT customer_id, MAX(archived_at) AS latest_date
-          FROM history
-          WHERE DATE_FORMAT(archived_at, '%Y-%m') = ?
-          GROUP BY customer_id
-      ) latest
-      ON h.customer_id = latest.customer_id AND h.archived_at = latest.latest_date
-      WHERE c.customer_name IS NOT NULL
-      ORDER BY c.customer_name ASC;
-    `, [month]);
-
-    res.json(rows);
-  } catch (err) {
-    console.error("Fejl i /customer/carboost/date:", err);
-    res.status(500).json({ error: "Server error" });
-  }
-}
-
-
-export async function getCustomersCarboostChange(req, res) {
-  try {
-    const { month } = req.query;
-    const [year, mon] = month.split('-').map(Number);
-    const prevMonth = mon === 1 ? `${year-1}-12` : `${year}-${(mon-1).toString().padStart(2,'0')}`;
-
-    const [rows] = await db.query(`
-      SELECT 
-        h.customer_id,
-        c.customer_name,
-        h.leads AS leads,
-        IFNULL(prev.leads,0) AS prev_leads,
-        h.archived_at
-      FROM history h
-      JOIN customer c ON h.customer_id = c.customer_id
-      LEFT JOIN (
-        SELECT h2.customer_id, h2.leads
-        FROM history h2
-        INNER JOIN (
-          SELECT customer_id, MAX(archived_at) AS latest_date
-          FROM history
-          WHERE DATE_FORMAT(archived_at, '%Y-%m') = ?
-          GROUP BY customer_id
-        ) latest_prev
-        ON h2.customer_id = latest_prev.customer_id AND h2.archived_at = latest_prev.latest_date
-      ) prev
-      ON h.customer_id = prev.customer_id
-      INNER JOIN (
-        SELECT customer_id, MAX(archived_at) AS latest_date
-        FROM history
-        WHERE DATE_FORMAT(archived_at, '%Y-%m') = ?
-        GROUP BY customer_id
-      ) latest
-      ON h.customer_id = latest.customer_id AND h.archived_at = latest.latest_date
-      ORDER BY c.customer_name ASC;
-    `, [prevMonth, month]);
-
+    const rows = await CustomerModel.getCustomersByDate(month);
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Database error" });
+  }
+}
+
+// Hent Carboost ændringer
+export async function getCustomersCarboostChange(req, res) {
+  try {
+    const { month } = req.query;
+    const rows = await CustomerModel.getCustomersCarboostChange(month);
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
   }
 }

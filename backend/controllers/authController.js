@@ -1,28 +1,27 @@
-import { db } from "../app.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import * as AuthModel from "../models/authModel.js";
+
 dotenv.config();
 
 export async function login(req, res) {
   const { email, password } = req.body;
 
   try {
-    const [rows] = await db.query(
-      "SELECT * FROM users WHERE email = ?",
-      [email]
-    );
+    const user = await AuthModel.findUserByEmail(email);
 
-    if (rows.length === 0) return res.status(400).send("User not found");
-    if (password !== rows[0].password) return res.status(400).send("Wrong password");
+    if (!user) return res.status(400).send("User not found");
+    if (password !== user.password) return res.status(400).send("Wrong password");
 
     const token = jwt.sign(
-      { user_id: rows[0].user_id },
+      { user_id: user.user_id },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
     res.json({ token });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).send("Database error");
   }
 }
