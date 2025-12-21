@@ -71,7 +71,7 @@ export const getCustomersInCarboostByDate = async (month) => {
 };
 
 
-export const getCustomersCarboostChange= async (month) => {
+export const getCustomersInCarboostChange= async (month) => {
   try {
     const [year, mon] = month.split('-').map(Number);
     const prevMonth = mon === 1 ? `${year-1}-12` : `${year}-${(mon-1).toString().padStart(2,'0')}`;
