@@ -46,7 +46,7 @@ export async function getHistorySales() {
 
     data.forEach(c => {
       const id = c.customer_id;
-      const date = c.archived_at.split("T")[0];
+      const date = c.archived_at.split(" ")[0];
       const key = `${id}-${date}`;
 
       if (!grouped[key]) {
