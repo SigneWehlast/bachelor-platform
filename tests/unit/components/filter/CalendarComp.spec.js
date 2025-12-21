@@ -1,41 +1,64 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { mount, flushPromises } from "@vue/test-utils";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import CalendarComp from "@/components/filter/CalendarComp.vue";
+import Dropdown from "@/components/filter/Dropdown.vue";
+import { getMonths } from "@/services/calendarService";
 
-vi.mock('@/services/calendarService', () => ({
+vi.mock("@/services/calendarService", () => ({
   getMonths: vi.fn()
 }));
 
-import CalendarComp from '@/components/filter/CalendarComp.vue';
-import Dropdown from '@/components/filter/Dropdown.vue';
-import { getMonths } from '@/services/calendarService';
-import { mount } from '@vue/test-utils';
-
-describe('CalendarComp.vue', () => {
+describe("CalendarComp.vue", () => {
   beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2025-12-15T00:00:00Z"));
     vi.clearAllMocks();
   });
 
-  it('skal hente måneder og sætte displayOptions og selectedMonth korrekt', async () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("skal hente måneder og starte med Dagsvisning når noDayShow = false", async () => {
     const mockMonths = [
-      { label: 'November 2025', value: '2025-11' },
-      { label: 'December 2025', value: '2025-12' }
+      { label: "November 2025", value: "2025-11" },
+      { label: "December 2025", value: "2025-12" }
     ];
     getMonths.mockResolvedValue(mockMonths);
 
-    const wrapper = mount(CalendarComp);
+    const wrapper = mount(CalendarComp, {
+      props: { noDayShow: false }
+    });
 
-    await wrapper.vm.$nextTick();
-    await wrapper.vm.$nextTick();
+    await flushPromises();
 
-    expect(getMonths).toHaveBeenCalled();
-    expect(wrapper.vm.displayOptions).toEqual(mockMonths);
+    expect(wrapper.vm.displayOptions).toEqual([
+      { label: "Dagsvisning", value: null },
+      ...mockMonths
+    ]);
 
-    const currentMonth = new Date().toISOString().slice(0, 7);
-    const exists = mockMonths.find(o => o.value === currentMonth);
-    expect(wrapper.vm.selectedMonth).toBe(exists ? currentMonth : mockMonths[0].value);
+    expect(wrapper.vm.selectedMonth).toBe(null);
 
     const dropdown = wrapper.findComponent(Dropdown);
     expect(dropdown.exists()).toBe(true);
-    expect(dropdown.props('options')).toBe(wrapper.vm.displayOptions);
-    expect(dropdown.props('modelValue')).toBe(wrapper.vm.selectedMonth);
+    expect(dropdown.props("options")).toBe(wrapper.vm.displayOptions);
+    expect(dropdown.props("modelValue")).toBe(wrapper.vm.selectedMonth);
+  });
+
+  it("skal starte med første måned når noDayShow = true", async () => {
+    const mockMonths = [
+      { label: "November 2025", value: "2025-11" },
+      { label: "December 2025", value: "2025-12" }
+    ];
+    getMonths.mockResolvedValue(mockMonths);
+
+    const wrapper = mount(CalendarComp, {
+      props: { noDayShow: true }
+    });
+
+    await flushPromises();
+
+    expect(wrapper.vm.displayOptions).toEqual(mockMonths);
+    expect(wrapper.vm.selectedMonth).toBe("2025-11");
   });
 });

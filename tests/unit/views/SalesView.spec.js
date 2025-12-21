@@ -184,4 +184,54 @@ describe("SalesView.vue", () => {
     expect(getSelectedCustomers).toHaveBeenCalledWith([1]);
     expect(wrapper.vm.customerTableData).toEqual(mockCustomers);
   });
+
+  it("pagination håndterer sider korrekt", async () => {
+    const manyCustomers = Array.from({ length: 25 }, (_, i) => ({
+      id: i + 1,
+      name: `Kunde ${i + 1}`,
+      numberOfCars: i * 10,
+      archived_at: "2025-01-01"
+    }));
+    getCustomers.mockResolvedValue(manyCustomers);
+    getSelectedCustomers.mockResolvedValue(manyCustomers);
+
+    const wrapper = mount(SalesView, {
+      global: {
+        stubs: {
+          SaleTable: true,
+          Dropdown: true,
+          SearchBar: true,
+          CalendarComp: true,
+          ExportData: true,
+          ConfirmationModal: true,
+          BreadcrumbsComp: true,
+        },
+      },
+    });
+
+    await flushPromises();
+
+    wrapper.vm.selectedCustomers.push(...manyCustomers);
+
+    await wrapper.vm.showCustomerData();
+
+    expect(wrapper.vm.selectedCurrentPage).toBe(1);
+    expect(wrapper.vm.paginatedTableData.length).toBe(10);
+
+    wrapper.vm.nextSelectedPage();
+    expect(wrapper.vm.selectedCurrentPage).toBe(2);
+    expect(wrapper.vm.paginatedTableData.length).toBe(10);
+
+    wrapper.vm.nextSelectedPage();
+    expect(wrapper.vm.selectedCurrentPage).toBe(3);
+    expect(wrapper.vm.paginatedTableData.length).toBe(5);
+
+    wrapper.vm.prevSelectedPage();
+    expect(wrapper.vm.selectedCurrentPage).toBe(2);
+    expect(wrapper.vm.paginatedTableData.length).toBe(10);
+
+    wrapper.vm.resetSelectedPage();
+    expect(wrapper.vm.selectedCurrentPage).toBe(1);
+    expect(wrapper.vm.paginatedTableData.length).toBe(10);
+  });
 });

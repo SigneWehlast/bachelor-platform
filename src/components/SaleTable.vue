@@ -13,6 +13,10 @@ const props = defineProps({
   visibleColumns: {
     type: Array,
     required: true
+  },
+  selectedMonth: {
+    type: String,
+    default: null
   }
 });
 </script>

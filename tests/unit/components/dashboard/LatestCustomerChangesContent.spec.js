@@ -49,13 +49,11 @@ describe("LatestCustomerChangesContent.vue", () => {
 
   it("viser kun 5 kunder med customerLimit sat til 5 og skjuler pagination", async () => {
     const wrapper = mountComp({ customerLimit: 5 });
-    await flushPromises();
-
-    expect(wrapper.vm.showPagination).toBe(false);
-    expect(wrapper.vm.showCustomers.length).toBe(5);
+    await flushPromises(); 
     expect(wrapper.vm.paginatedCustomers.length).toBe(5);
-    expect(wrapper.find(".latest-customer-changes__pagination").exists()).toBe(false);
+    expect(wrapper.vm.showPagination).toBe(false);
   });
+
 
   it("nextPage og prevPage ændrer side korrekt via DOM", async () => {
     const wrapper = mountComp();

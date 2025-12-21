@@ -14,6 +14,7 @@ const selectedIds = ref([]);
 const showModal = ref(false);
 const selectedCustomer = ref(null);
 const pageSize = 10;
+const localTotalPages = ref(1);
 
 const sortTableBy = ref("name");
 const sortDirection = ref("asc");
@@ -194,7 +195,7 @@ watch(
 );
 
 watch(filteredItems, () => {
-  totalPages.value = Math.max(
+  localTotalPages.value = Math.max(
     1,
     Math.ceil(filteredItems.value.length / pageSize)
   );
@@ -366,7 +367,7 @@ const periodLabel = computed(() => {
       @close="showModal = false"
     />
     <div v-if="!props.hidePagination" class="carboost-table__pagination">
-      <div>Viser side {{ currentPage }} ud af {{ totalPages }}</div>
+      <div>Viser side {{ currentPage }} ud af {{ localTotalPages }}</div>
       <div>
         <button class="carboost-table__pagination-button" @click="prevPage" :disabled="currentPage === 1">
           Forrige
