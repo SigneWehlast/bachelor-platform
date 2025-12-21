@@ -41,35 +41,42 @@ export async function getHistorySales() {
     const result = await res.json();
 
     const data = Array.isArray(result) ? result : [];
-
     const grouped = {};
 
-    data.forEach(item => {
-      const id = item.customer_id;
-      const date = new Date(item.archived_at).toLocaleDateString("da-DK");
+    data.forEach(h => {
+      if (!h.archived_at) return;
 
+      const id = h.customer_id;
+      const date = new Date(h.archived_at).toLocaleDateString("da-DK");
       const key = `${id}-${date}`;
 
       if (!grouped[key]) {
         grouped[key] = {
           id,
-          name: item.customer_name,
-          numberOfCars: item.number_of_cars,
-          totalBudget: item.total_budget,
-          leads: item.leads,
-          saleConversions: item.sale_conversions || 0,
-          budgetPerDay: item.budget_per_day || 0,
-          conversionPercent: item.conversion_percent || 0,
-          archived_at: item.archived_at
+          name: h.customer_name,
+          numberOfCars: h.number_of_cars || 0,
+          totalBudget: h.total_budget || 0,
+          leads: h.leads || 0,
+          carboostConversions: h.carboost_conversions || 0,
+          archived_at: h.archived_at
         };
       } else {
-        grouped[key].leads += item.leads;
-        grouped[key].saleConversions += item.sale_conversions || 0;
-        grouped[key].totalBudget += item.total_budget;
+        grouped[key].leads += h.leads || 0;
+        grouped[key].carboostConversions += h.carboost_conversions || 0;
+        grouped[key].totalBudget += h.total_budget || 0;
+        grouped[key].numberOfCars += h.number_of_cars || 0;
       }
     });
 
-    const history = Object.values(grouped);
+    const history = Object.values(grouped).map(h => ({
+      ...h,
+      budgetPerDay: h.numberOfCars > 0
+        ? Number((h.totalBudget / (h.numberOfCars * 30)).toFixed(1))
+        : 0,
+      conversionPercent: h.leads > 0
+        ? Number(((h.carboostConversions / h.leads) * 100).toFixed(1))
+        : 0
+    }));
 
     return { history, totalCount: history.length };
   } catch (err) {
