@@ -1,11 +1,9 @@
 <script setup>
 import { ref, onMounted, computed, defineEmits, watch  } from "vue";
 import BaseTable from './BaseTable.vue';
-import { getCustomersInCarboost } from "@/services/carboostService";
+import { getCustomersInCarboost, getCustomersInCarboostByDate, getCustomersInCarboostChange } from "@/services/carboostService";
 import Icon from "@/components/Icon.vue";
 import ShowCustomerCarBoostModal from "./modals/ShowCustomerCarBoostModal.vue";
-import { getCustomersInCarboostByDate } from "@/services/carboostService"; 
-import { getCustomersCarboostChange } from "@/services/carboostService";
 import { useSearchFilter } from "@/utils/searchFilter";
 import { usePagination } from "@/utils/pagination";
 
@@ -66,11 +64,11 @@ const fetchAll = async () => {
     let customers = [];
 
     if (!props.selectedMonth) {
-      const res = await getCustomersInCarboost(1, 99999);
+      const res = await getCustomersInCarboost(1, 1000);
       customers = res.customers || [];
     } else {
       const { customers: leadsData = [] } = await getCustomersInCarboostByDate(props.selectedMonth);
-      const { customers: changeData = [] } = await getCustomersCarboostChange(props.selectedMonth);
+      const { customers: changeData = [] } = await getCustomersInCarboostChange(props.selectedMonth);
 
       customers = (leadsData || []).map(c => {
         const changeItem = (changeData || []).find(ch => ch.id === c.id) || {};
@@ -85,7 +83,7 @@ const fetchAll = async () => {
     }
 
     carboostCustomers.value = customers;
-    totalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
+    localTotalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
 
   } catch (err) {
     console.error("fetchAll error:", err);
