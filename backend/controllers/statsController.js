@@ -1,13 +1,11 @@
-import { db } from "../app.js";
+import * as StatsModel from "../models/statsModel.js";
 
 export async function getCustomerStats(req, res) {
   try {
-    const [rows] = await db.query(`
-      SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions
-      FROM customer
-    `);
+    const rows = await StatsModel.getCustomerStats();
     res.json(rows);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Database error" });
   }
 }
