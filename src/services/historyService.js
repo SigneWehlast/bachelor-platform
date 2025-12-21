@@ -41,39 +41,40 @@ export async function getHistorySales() {
     const result = await res.json();
 
     const data = Array.isArray(result) ? result : [];
-
     const grouped = {};
 
-    data.forEach(c => {
-      const id = c.customer_id;
-      const date = c.archived_at.split(" ")[0];
+    data.forEach(h => {
+      if (!h.archived_at) return;
+
+      const id = h.customer_id;
+      const date = new Date(h.archived_at).toLocaleDateString("da-DK");
       const key = `${id}-${date}`;
 
       if (!grouped[key]) {
         grouped[key] = {
           id,
-          name: c.customer_name,
-          numberOfCars: c.number_of_cars,
-          totalBudget: c.total_budget,
-          leads: c.leads,
-          carboostConversions: c.carboost_conversions || 0,
-          archived_at: c.archived_at
+          name: h.customer_name,
+          numberOfCars: h.number_of_cars || 0,
+          totalBudget: h.total_budget || 0,
+          leads: h.leads || 0,
+          carboostConversions: h.carboost_conversions || 0,
+          archived_at: h.archived_at
         };
       } else {
-        grouped[key].leads += c.leads;
-        grouped[key].carboostConversions += c.carboost_conversions || 0;
-        grouped[key].totalBudget += c.total_budget;
-        grouped[key].numberOfCars += c.number_of_cars;
+        grouped[key].leads += h.leads || 0;
+        grouped[key].carboostConversions += h.carboost_conversions || 0;
+        grouped[key].totalBudget += h.total_budget || 0;
+        grouped[key].numberOfCars += h.number_of_cars || 0;
       }
     });
 
-    const history = Object.values(grouped).map(c => ({
-      ...c,
-      budgetPerDay: c.numberOfCars > 0
-        ? Number((c.totalBudget / (c.numberOfCars * 30)).toFixed(1))
+    const history = Object.values(grouped).map(h => ({
+      ...h,
+      budgetPerDay: h.numberOfCars > 0
+        ? Number((h.totalBudget / (h.numberOfCars * 30)).toFixed(1))
         : 0,
-      conversionPercent: c.leads > 0
-        ? Number(((c.carboostConversions / c.leads) * 100).toFixed(1))
+      conversionPercent: h.leads > 0
+        ? Number(((h.carboostConversions / h.leads) * 100).toFixed(1))
         : 0
     }));
 
@@ -83,4 +84,3 @@ export async function getHistorySales() {
     return { history: [], totalCount: 0 };
   }
 }
-
