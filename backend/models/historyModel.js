@@ -21,12 +21,12 @@ export async function getSalesHistory() {
   const [rows] = await db.query(`
     SELECT 
       h.customer_id,
-      c.customer_name,
+      COALESCE(c.customer_name, 'Ukendt') AS customer_name,
       h.carboost_conversions,
       h.total_budget,
       h.number_of_cars,
       h.leads,
-      h.archived_at
+      COALESCE(h.archived_at, NOW()) AS archived_at
     FROM history h
     LEFT JOIN customer c ON h.customer_id = c.customer_id
   `);
