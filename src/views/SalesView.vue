@@ -150,7 +150,7 @@ async function showCustomerData() {
     return;
   }
 
-  const { history } = await getHistorySales();
+  const { history } = await getHistorySales(selectedIds);
   const [selYear, selMonth] = selectedMonth.value.split("-").map(Number);
 
   const filtered = history.filter(item => {

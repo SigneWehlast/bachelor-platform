@@ -34,8 +34,7 @@ export async function getHistoryCarboost() {
   }
 }
 
-
-export async function getHistorySales() {
+export async function getHistorySales(customerIds = []) {
   try {
     const res = await fetch(`${BASE_URL}/api/history/sales`);
     const result = await res.json();
@@ -47,6 +46,9 @@ export async function getHistorySales() {
       if (!h.archived_at) return;
 
       const id = h.customer_id;
+
+      if (customerIds.length > 0 && !customerIds.includes(id)) return;
+
       const date = new Date(h.archived_at).toLocaleDateString("da-DK");
       const key = `${id}-${date}`;
 
