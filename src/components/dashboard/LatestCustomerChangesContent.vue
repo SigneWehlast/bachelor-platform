@@ -58,30 +58,30 @@ const paginatedCustomers = computed(() => {
     if (currentPage.value > 1) currentPage.value--;
   };
 </script>
-  
-  
 <template>
-  <table class="latest-customer-changes__content">
-    <thead>
-      <tr>
-        <th class="latest-customer-changes__content-title h3">Kundenavn</th>
-        <th class="latest-customer-changes__content-title h3">Dato</th>
-      </tr>
-    </thead>
-    <tbody class="">
-      <tr v-for="customer in paginatedCustomers"
-          :key="customer.id"
-          :class="{ 'recent-change': customer.isRecent }">
-        <td class="text-medium">{{ customer.name }}</td>
-        <td class="text-medium">{{ customer.date }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <div v-if="props.customerLimit === null" class="latest-customer-changes__pagination">
-    <div>Viser side {{ currentPage }} ud af {{ totalPages }}</div>
-    <div>
-      <button class="latest-customer-changes__pagination-button" @click="prevPage" :disabled="currentPage === 1">Forrige</button>
-      <button class="latest-customer-changes__pagination-button" @click="nextPage" :disabled="currentPage === totalPages">Næste</button>
-    </div>
+  <div class="latest-customer-changes-content">
+    <table class="latest-customer-changes-content__content">
+      <thead>
+        <tr>
+          <th class="latest-customer-changes-content__content-title h3">Kundenavn</th>
+          <th class="latest-customer-changes-content__content-title h3">Dato</th>
+        </tr>
+      </thead>
+      <tbody class="">
+        <tr v-for="customer in paginatedCustomers"
+            :key="customer.id"
+            :class="{ 'recent-change': customer.isRecent }">
+          <td class="text-medium">{{ customer.name }}</td>
+          <td class="text-medium">{{ customer.date }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-if="props.customerLimit === null" class="latest-customer-changes-content__pagination">
+      <div>Viser side {{ currentPage }} ud af {{ totalPages }}</div>
+      <div>
+        <button class="latest-customer-changes-content__pagination-button" @click="prevPage" :disabled="currentPage === 1">Forrige</button>
+        <button class="latest-customer-changes-content__pagination-button" @click="nextPage" :disabled="currentPage === totalPages">Næste</button>
+      </div>
+    </div>  
   </div>
 </template>

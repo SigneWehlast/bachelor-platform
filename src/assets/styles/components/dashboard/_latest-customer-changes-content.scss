@@ -1,0 +1,35 @@
+@use '../../abstracts/variables' as vars;
+@use '../../abstracts/mixins' as mix;
+
+.latest-customer-changes-content {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: space-between;
+
+    &__content {
+        table-layout: fixed;
+        border-collapse: collapse;
+
+        &-title {
+            text-align: left;
+        }
+
+        tbody tr + tr:not(.recent-change) td{
+            padding-top: vars.$spacing-padding-md;
+        }
+        tbody tr.recent-change td {
+            padding-left: 6px;
+        }
+    }
+
+    &__pagination {
+        display: flex;
+        align-items: center;
+
+            &-button {
+                @include mix.buttons-pagination;
+                margin-left: vars.$spacing-margin-sm;
+            }
+        }
+}

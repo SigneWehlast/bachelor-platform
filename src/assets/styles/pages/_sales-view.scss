@@ -2,9 +2,10 @@
 @use '../abstracts/mixins' as m;
 
 
-.SalesView {
+.sales-view {
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   &__wrapper{
    display: flex;
@@ -28,6 +29,15 @@
     gap: v.$spacing-gap-sm;
     padding: v.$spacing-padding-sm 0;
     
+    &__selected {
+      display: flex;
+      justify-content: space-between;
+
+      &-dropdowns {
+        display: flex;
+        gap: v.$spacing-gap-sm;
+      }
+    }
 
   }
 
@@ -78,7 +88,7 @@
         padding: v.$spacing-padding-xs v.$spacing-padding-xs;
         gap: v.$spacing-gap-xs;
         margin: 0;
-        max-height: 550px; // skal erstattes til en rem højde
+        max-height: 400px; //ret til rem
         overflow-y: auto;
     }
 
@@ -106,5 +116,12 @@
         @include m.buttons-pagination;
         margin-left: v.$spacing-margin-sm;
     }
-}
+  }
+
+  &__table-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
 }
