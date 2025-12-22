@@ -12,7 +12,7 @@ export async function getCarboostHistory(req, res) {
 }
 
 // /api/history/sales
-export async function getSalesHistory(req, res) {
+export async function getSaleHistory(req, res) {
   try {
     const rows = await HistoryModel.getSalesHistory();
     res.json(rows);

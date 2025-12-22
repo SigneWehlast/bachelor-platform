@@ -28,7 +28,7 @@ export async function getSalesHistory() {
       h.leads,
       h.archived_at
     FROM history h
-    JOIN customer c ON h.customer_id = c.customer_id
+    LEFT JOIN customer c ON h.customer_id = c.customer_id
   `);
   return rows;
 }

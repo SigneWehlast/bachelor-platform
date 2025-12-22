@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getCarboostHistory,
-  getSalesHistory,
+  getSaleHistory,
   getCarboostDailyTable,
   getMonths
 } from "../controllers/historyController.js";
@@ -9,7 +9,7 @@ import {
 const router = express.Router();
 
 router.get("/carboost", getCarboostHistory);
-router.get("/sales", getSalesHistory);
+router.get("/sales", getSaleHistory);
 router.get("/carboost/table", getCarboostDailyTable);
 router.get("/months", getMonths);
 
