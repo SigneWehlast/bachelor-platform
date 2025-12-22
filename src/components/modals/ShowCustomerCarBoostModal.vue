@@ -96,7 +96,7 @@ watch(
                 <h1 class="show-customer-carboost-modal__topbar-title">{{ customer?.name }}</h1>
             </div>
             <div class="show-customer-carboost-modal__topbar-dropdowns">
-                <CalendarComp v-model="selectedMonth" :no-day-show="true" />
+                <CalendarComp v-model="selectedMonth" :hide-day-option="true" />
                 <ExportData />
             </div>
             <div v-if="tendensDown" class="show-customer-carboost-modal__topbar-alert">

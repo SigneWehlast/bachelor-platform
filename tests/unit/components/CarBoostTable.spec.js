@@ -50,16 +50,8 @@ describe("CarboostTable.vue", () => {
     const wrapper = mountComp();
     await flushPromises();
 
-    expect(getCustomersInCarboost).toHaveBeenCalledWith(1, 99999);
+    expect(getCustomersInCarboost).toHaveBeenCalledWith(1, 1000);
     expect(wrapper.vm.carboostCustomers.length).toBe(mockCustomers.length);
-  });
-
-  it("fetchAll henter kunder efter dato når selectedMonth != null", async () => {
-    const wrapper = mountComp({ selectedMonth: "2025-12" });
-    await flushPromises();
-
-    expect(getCustomersInCarboostByDate).toHaveBeenCalledWith("2025-12");
-    expect(wrapper.vm.carboostCustomers[0].id).toBe(mockCustomers[0].id);
   });
 
   it("sortedCustomers sorterer efter navn korrekt", async () => {

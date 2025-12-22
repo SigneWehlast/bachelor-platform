@@ -245,7 +245,7 @@ watch(selectedMonth, async (newMonth) => {
       multiple
       :alwaysShowLabel="true"
     />
-    <CalendarComp v-model="selectedMonth" :no-day-show="true" />
+    <CalendarComp v-model="selectedMonth" :hide-day-option="true" />
     <ExportData />
   </div>
     <!-- Ikke valgte kunder -->

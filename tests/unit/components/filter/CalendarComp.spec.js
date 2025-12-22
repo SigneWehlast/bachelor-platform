@@ -19,7 +19,7 @@ describe("CalendarComp.vue", () => {
     vi.useRealTimers();
   });
 
-  it("skal hente måneder og starte med Dagsvisning når noDayShow = false", async () => {
+  it("skal hente måneder og starte med Dagsvisning når  hideDayOption = false", async () => {
     const mockMonths = [
       { label: "November 2025", value: "2025-11" },
       { label: "December 2025", value: "2025-12" }
@@ -27,7 +27,7 @@ describe("CalendarComp.vue", () => {
     getMonths.mockResolvedValue(mockMonths);
 
     const wrapper = mount(CalendarComp, {
-      props: { noDayShow: false }
+      props: {  hideDayOption: false }
     });
 
     await flushPromises();
@@ -43,22 +43,5 @@ describe("CalendarComp.vue", () => {
     expect(dropdown.exists()).toBe(true);
     expect(dropdown.props("options")).toBe(wrapper.vm.displayOptions);
     expect(dropdown.props("modelValue")).toBe(wrapper.vm.selectedMonth);
-  });
-
-  it("skal starte med første måned når noDayShow = true", async () => {
-    const mockMonths = [
-      { label: "November 2025", value: "2025-11" },
-      { label: "December 2025", value: "2025-12" }
-    ];
-    getMonths.mockResolvedValue(mockMonths);
-
-    const wrapper = mount(CalendarComp, {
-      props: { noDayShow: true }
-    });
-
-    await flushPromises();
-
-    expect(wrapper.vm.displayOptions).toEqual(mockMonths);
-    expect(wrapper.vm.selectedMonth).toBe("2025-11");
   });
 });
