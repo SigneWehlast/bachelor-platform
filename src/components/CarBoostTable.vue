@@ -17,7 +17,7 @@ const localTotalPages = ref(1);
 const sortTableBy = ref("name");
 const sortDirection = ref("asc");
 
-const emit = defineEmits(["update:selectedIds"]);
+const emit = defineEmits(["update:selectedIds","customersFetched"]);
 
 const { searchQuery, filteredItems } = useSearchFilter(
   carboostCustomers,
@@ -83,6 +83,7 @@ const fetchAll = async () => {
     }
 
     carboostCustomers.value = customers;
+    emit("customersFetched", customers);
     localTotalPages.value = Math.ceil(carboostCustomers.value.length / pageSize);
 
   } catch (err) {

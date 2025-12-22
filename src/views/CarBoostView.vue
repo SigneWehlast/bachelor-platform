@@ -8,11 +8,13 @@ import SearchBar from '@/components/filter/SearchBar.vue';
 import Dropdown from '@/components/filter/Dropdown.vue';
 import CalendarComp from '@/components/filter/CalendarComp.vue';
 import CarBoostGraph from '@/components/CarBoostGraph.vue';
+import Icon from '@/components/Icon.vue';
 
 //Functions
 import { useGoBack } from "@/utils/goBack";
 
 const searchQuery = ref("");
+const customersList = ref([]);
 
 const { showTable, goBack, show } = useGoBack();
 
@@ -51,6 +53,12 @@ const visibleColumns = ref([
   'status',
   'lastUpdated'
 ]);
+
+const hasTendensDown = computed(() => {
+  return customersList.value
+    .filter(c => selectedIds.value.includes(c.id))
+    .some(c => c.tendens === 'down');
+});
 
 </script>
 <template>  
@@ -102,17 +110,24 @@ const visibleColumns = ref([
       :visibleColumns="visibleColumns"
     />
     <div v-else class="carboost-view__show-selected-customers">
-    <CarBoostGraph 
-      :selectedIds="selectedOnly" 
-      :selectedMonth="selectedMonth" 
-      :customers="customersList"
-    />      
-    <CarBoostTable
-        :highlightedIds="selectedOnly"
-        :showOnlySelected="true"
-        :hidePagination="true"
-        :selectedMonth="selectedMonth"
-        :visibleColumns="visibleColumns"
+      <div v-if="hasTendensDown" class="carboost-view__alert">
+        <Icon name="Alert" class="carboost-view__alert-icon"/>
+          <p class="text-regular">
+            OBS. tendens er faldende på en eller flere valgte kunder
+          </p>
+      </div>
+      <CarBoostGraph 
+        :selectedIds="selectedOnly" 
+        :selectedMonth="selectedMonth" 
+        :customers="customersList" 
+      />      
+      <CarBoostTable
+          :highlightedIds="selectedOnly"
+          :showOnlySelected="true"
+          :hidePagination="true"
+          :selectedMonth="selectedMonth"
+          :visibleColumns="visibleColumns"
+          @customersFetched="customers => customersList = customers"
       />
     </div>
   </div>

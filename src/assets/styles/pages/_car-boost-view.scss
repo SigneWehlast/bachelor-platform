@@ -40,4 +40,15 @@
         flex-direction: column;
         gap: vars.$spacing-gap-sm;
     }
+
+    &__alert {
+        display: flex;
+        flex-direction: row;
+        gap: vars.$spacing-gap-xs;
+
+        &-icon {
+            width: vars.$icon-size-md;
+            fill: vars.$icon-color-warning;
+        }
+    }
 }
