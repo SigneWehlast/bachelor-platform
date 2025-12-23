@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import Icon from "../Icon.vue";
+import { ref } from 'vue';
+import Icon from '../Icon.vue';
 
 const props = defineProps({
   modelValue: [String, Number, Array],
@@ -10,7 +10,7 @@ const props = defineProps({
   },
   label: {
     type: String,
-    default: ""
+    default: ''
   },
   disableOptions: {
     type: Array,
@@ -18,18 +18,18 @@ const props = defineProps({
   },
   selectedPrefix: {
     type: String,
-    default: "" 
+    default: ''
   },
   multiple: {
     type: Boolean,
     default: false
   },
-  alwaysShowLabel: { 
-    type: Boolean, 
+  alwaysShowLabel: {
+    type: Boolean,
     default: false }
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 const open = ref(false);
 
 function toggle() {
@@ -50,17 +50,17 @@ function select(option) {
 
     if (current.includes(val)) {
       emit(
-        "update:modelValue",
+        'update:modelValue',
         current.filter(v => v !== val)
       );
     } else {
       emit(
-        "update:modelValue",
+        'update:modelValue',
         [...current, val]
       );
     }
   } else {
-    emit("update:modelValue", val);
+    emit('update:modelValue', val);
     open.value = false;
   }
 }
@@ -73,18 +73,18 @@ function getLabel(option) {
 }
 </script>
 <template>
-  <div class="dropdown" @click="toggle">
-    <p class="text-regular">
-      <template v-if="alwaysShowLabel">
+  <div class='dropdown' @click='toggle'>
+    <p class='text-regular'>
+      <template v-if='alwaysShowLabel'>
         {{ label }}
       </template>
       <template v-else>
-        <span v-if="!modelValue || (Array.isArray(modelValue) && modelValue.length === 0)">
+        <span v-if='!modelValue || (Array.isArray(modelValue) && modelValue.length === 0)'>
           {{ label }}
         </span>
         <span v-else>
-          {{ selectedPrefix ? selectedPrefix + ": " : "" }}
-          <template v-if="Array.isArray(modelValue)">
+          {{ selectedPrefix ? selectedPrefix + ': ' : '' }}
+          <template v-if='Array.isArray(modelValue)'>
             {{ modelValue
               .map(v => {
                 const option = options.find(o => (typeof o === 'object' && 'value' in o ? o.value : o) === v);
@@ -105,13 +105,13 @@ function getLabel(option) {
     </p>
     <Icon
       :name="open ? 'ChevronDoubleUp' : 'ChevronDoubleDown'"
-      class="dropdown-icon"
+      class='dropdown-icon'
     />
-    <ul v-if="open" class="dropdown-options" @click.stop>
+    <ul v-if='open' class='dropdown-options' @click.stop>
       <li
-        v-for="(option, index) in options"
-        :key="index"
-        class="dropdown-item"
+        v-for='(option, index) in options'
+        :key='index'
+        class='dropdown-item'
         :class="{ 'dropdown-item--disabled':
                   disableOptions.includes(
                     typeof option === 'object' && 'value' in option
@@ -119,11 +119,11 @@ function getLabel(option) {
                       : option
                   )
                }"
-        @click="select(option)"
+        @click='select(option)'
       >
         <input
           v-if="multiple && !disableOptions.includes(typeof option === 'object' && 'value' in option ? option.value : option)"
-          type="checkbox"
+          type='checkbox'
           :checked="Array.isArray(modelValue) && modelValue.includes(typeof option === 'object' && 'value' in option ? option.value : option)"
           readonly
         />

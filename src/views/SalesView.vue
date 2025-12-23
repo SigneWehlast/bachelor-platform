@@ -1,24 +1,24 @@
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch } from 'vue';
 
 // Components
-import SaleTable from "@/components/SaleTable.vue";
+import SaleTable from '@/components/SaleTable.vue';
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
-import Dropdown from "@/components/filter/Dropdown.vue";
-import SearchBar from "@/components/filter/SearchBar.vue";
-import CalendarComp from "@/components/filter/CalendarComp.vue";
-import ExportData from "@/components/filter/ExportData.vue";
-import ConfirmationModal from "@/components/modals/ConfirmationModal.vue";
+import Dropdown from '@/components/filter/Dropdown.vue';
+import SearchBar from '@/components/filter/SearchBar.vue';
+import CalendarComp from '@/components/filter/CalendarComp.vue';
+import ExportData from '@/components/filter/ExportData.vue';
+import ConfirmationModal from '@/components/modals/ConfirmationModal.vue';
 
 // Services
-import { getCustomers, getSelectedCustomers } from "@/services/customerService";
-import { getHistorySales } from "@/services/historyService";
+import { getCustomers, getSelectedCustomers } from '@/services/customerService';
+import { getHistorySales } from '@/services/historyService';
 
 // Utils
-import { sortByName } from "@/utils/sort";
-import { useGoBack } from "@/utils/goBack";
-import { useSearchFilter } from "@/utils/searchFilter";
-import { usePagination } from "@/utils/pagination";
+import { sortByName } from '@/utils/sort';
+import { useGoBack } from '@/utils/goBack';
+import { useSearchFilter } from '@/utils/searchFilter';
+import { usePagination } from '@/utils/pagination';
 
 
 // State
@@ -33,8 +33,8 @@ const selectedMonth = ref(null);
 // Composable for search & filter
 const { searchQuery, filterValue: selectedCarsFilter, filteredItems: filteredCustomers } = useSearchFilter(
   salesCustomers,
-  "name",          // søgefelt
-  "numberOfCars"   // filterfelt
+  'name',          // søgefelt
+  'numberOfCars'   // filterfelt
 );
 
 // Go back utility
@@ -45,19 +45,19 @@ const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
 
 // Options
 const carsOptions = [
-  "Alle",
-  "0 - 25 biler",
-  "26 - 50 biler",
-  "51 - 75 biler",
-  "76 - 100 biler",
-  "101 - 125 biler",
-  "126 - 150 biler",
-  "151 - 175 biler",
-  "176 - 200 biler",
-  "201 - 225 biler",
-  "226 - 250 biler",
-  "251 - 275 biler",
-  "275+ biler"
+  'Alle',
+  '0 - 25 biler',
+  '26 - 50 biler',
+  '51 - 75 biler',
+  '76 - 100 biler',
+  '101 - 125 biler',
+  '126 - 150 biler',
+  '151 - 175 biler',
+  '176 - 200 biler',
+  '201 - 225 biler',
+  '226 - 250 biler',
+  '251 - 275 biler',
+  '275+ biler'
 ];
 
 const displayOptions = [
@@ -67,7 +67,7 @@ const displayOptions = [
   { label: 'Konverteringer', value: 'conversions' },
   { label: 'Carboost konverteringer', value: 'carboostConversions' },
   { label: 'Budget', value: 'budget' },
-  { label: 'Antal konverteringer i procent', value: 'conversionsPercent' },
+  { label: 'Antal konverteringer i procent', value: 'conversionsPercent' }
 ];
 
 const visibleColumns = ref ([
@@ -78,7 +78,7 @@ const visibleColumns = ref ([
   'carboostConversions',
   'budget',
   'conversionsInProcent'
-])
+]);
 
 // Functions
 function anonymize() {
@@ -151,12 +151,12 @@ async function showCustomerData() {
   }
 
   const { history } = await getHistorySales(selectedIds);
-  const [selYear, selMonth] = selectedMonth.value.split("-").map(Number);
+  const [selYear, selMonth] = selectedMonth.value.split('-').map(Number);
 
   const filtered = history.filter(item => {
     if (!selectedIds.includes(item.id)) return false;
 
-    const [year, month] = item.archived_at.split(" ")[0].split("-").map(Number);
+    const [year, month] = item.archived_at.split(' ')[0].split('-').map(Number);
     return year === selYear && month === selMonth;
   });
 
@@ -200,108 +200,106 @@ watch(selectedMonth, () => {
   resetSelectedPage();
 });
 
-watch(selectedMonth, async (newMonth) => {
+watch(selectedMonth, async () => {
   if (selectedCustomers.value.length === 0) return;
   await showCustomerData();
 });
 </script>
 <template>
-  <div class="sales-view">
-    <div class="sales-view__topbar"> 
+  <div class='sales-view'>
+    <div class='sales-view__topbar'>
       <h1>Salg</h1>
-      <div class="sales-view__buttons-wrapper">
-        <button v-if="showTable" class="sales-view__button-back" @click="goBack">Tilbage</button>
-        <button v-if="!showTable" class="sales-view__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
-        <button v-if="showTable" class="sales-view__button-anonymize" @click="anonymize">
-          <p v-if="!clicked">Anonymiser</p>
-          <p v-else="!confirm">Vis data</p>
+      <div class='sales-view__buttons-wrapper'>
+        <button v-if='showTable' class='sales-view__button-back' @click='goBack'>Tilbage</button>
+        <button v-if='!showTable' class='sales-view__button-next' :disabled='isButtonDisabled' @click='showCustomerData'>Vis valgte</button>
+        <button v-if='showTable' class='sales-view__button-anonymize' @click='anonymize'>
+          <p v-if='!clicked'>Anonymiser</p>
+          <p v-else='!confirm'>Vis data</p>
         </button>
       </div>
     </div>
-    <ConfirmationModal 
-      v-if="confirm" 
-      @yes="handleModalYes" 
-      @no="handleModalNo" 
+    <ConfirmationModal
+      v-if='confirm'
+      @yes='handleModalYes'
+      @no='handleModalNo'
     />
-    <p class="regular settings-breadcrumbs">
-      <BreadcrumbsComp /> 
+    <p class='regular settings-breadcrumbs'>
+      <BreadcrumbsComp />
     </p>
-    <div v-if="!showTable" class="sales-view__filter-section">
-      <SearchBar v-model="searchQuery" />
+    <div v-if='!showTable' class='sales-view__filter-section'>
+      <SearchBar v-model='searchQuery' />
       <Dropdown
-      :options="carsOptions"
-      label="Antal biler"
-      v-model="selectedCarsFilter"
-    />  
+      :options='carsOptions'
+      label='Antal biler'
+      v-model='selectedCarsFilter'
+    />
     </div>
 
-  <div v-if="showTable" class="sales-view__filter-section sales-view__filter-section__selected">
-    <div class="sales-view__filter-section__selected-dropdowns">
+  <div v-if='showTable' class='sales-view__filter-section sales-view__filter-section__selected'>
+    <div class='sales-view__filter-section__selected-dropdowns'>
       <Dropdown
-        :options="displayOptions"
-        label="Visning"
-        :disableOptions="['name', 'numberOfCars']"
-        v-model="visibleColumns"
+        :options='displayOptions'
+        label='Visning'
+        :disableOptions='["name", "numberOfCars"]'
+        v-model='visibleColumns'
         multiple
-        :alwaysShowLabel="true"
+        :alwaysShowLabel='true'
       />
-      <CalendarComp v-model="selectedMonth" :hide-day-option="true" />
+      <CalendarComp v-model='selectedMonth' :hide-day-option='true' />
     </div>
     <ExportData />
   </div>
 
-  <div v-if="!showTable" class="sales-view__wrapper"> 
-    <div class="sales-view__customer-list">
-      <div class="sales-view__controls">
-        <p class="text-medium">Virksomheder</p>
-        <button class="sales-view__button" @click="selectAllCustomers">Vælg alle</button>
+  <div v-if='!showTable' class='sales-view__wrapper'>
+    <div class='sales-view__customer-list'>
+      <div class='sales-view__controls'>
+        <p class='text-medium'>Virksomheder</p>
+        <button class='sales-view__button' @click='selectAllCustomers'>Vælg alle</button>
       </div>
       <ul>
         <li
-          v-for="item in filteredCustomers"
-          :key="item.id"
-          class="sales-view__customer-item h3"
-          @click="moveToSelected(item)"
+          v-for='item in filteredCustomers'
+          :key='item.id'
+          class='sales-view__customer-item h3'
+          @click='moveToSelected(item)'
         >
           {{ item.name }}
         </li>
       </ul>
     </div>
 
-      <div class="sales-view__customer-list sales-view__customer-list--selected">
-        <div class="sales-view__controls">
-          <p class="text-medium">Valgte kunder</p>
-          <button class="sales-view__button" @click="removeAllCustomers">Fjern alle</button>
+      <div class='sales-view__customer-list sales-view__customer-list--selected'>
+        <div class='sales-view__controls'>
+          <p class='text-medium'>Valgte kunder</p>
+          <button class='sales-view__button' @click='removeAllCustomers'>Fjern alle</button>
         </div>
         <ul>
           <li
-            v-for="item in selectedCustomers"
-            :key="item.id"
-            class="sales-view__customer-item h3"
-            @click="moveToAvailable(item)"
+            v-for='item in selectedCustomers'
+            :key='item.id'
+            class='sales-view__customer-item h3'
+            @click='moveToAvailable(item)'
           >
             {{ item.name }}
           </li>
         </ul>
       </div>
     </div>
-    <div class="sales-view__table-view">
+    <div class='sales-view__table-view'>
       <SaleTable
-        v-if="showTable"
-        :carsData="paginatedTableData"
-        v-model:showId="showId"
-        :visibleColumns="visibleColumns"
-        v-model="selectedMonth"
+        v-if='showTable'
+        :carsData='paginatedTableData'
+        v-model:showId='showId'
+        :visibleColumns='visibleColumns'
+        v-model='selectedMonth'
       />
-      <div class="sales-view__pagination" v-if="showTable">  
+      <div class='sales-view__pagination' v-if='showTable'>
         <span>Viser side {{ selectedCurrentPage }} ud af {{ selectedTotalPages }}</span>
         <div>
-          <button class="sales-view__pagination-button" @click="prevSelectedPage" :disabled="selectedCurrentPage === 1">Forrige</button>
-          <button class="sales-view__pagination-button" @click="nextSelectedPage" :disabled="selectedCurrentPage === selectedTotalPages">Næste</button>
+          <button class='sales-view__pagination-button' @click='prevSelectedPage' :disabled='selectedCurrentPage === 1'>Forrige</button>
+          <button class='sales-view__pagination-button' @click='nextSelectedPage' :disabled='selectedCurrentPage === selectedTotalPages'>Næste</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-

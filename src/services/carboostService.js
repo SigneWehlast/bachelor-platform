@@ -1,5 +1,5 @@
-import { sortByName } from "@/utils/sort";
-const BASE_URL = import.meta.env.VITE_BASE_URL 
+import { sortByName } from '@/utils/sort';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getCustomersInCarboost(page = 1, limit = 10) {
   try {
@@ -14,7 +14,7 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
     const customers = customersData
       .filter(c => c.customer_name)
       .map(c => {
-        const history = historyData.find(h => h.customer_id === c.customer_id) || {};        
+        const history = historyData.find(h => h.customer_id === c.customer_id) || {};
         const change = history.change || 0;
         const todays_dif = history.todays_dif || 0;
         const yesterdays_dif = history.yesterdays_dif || 0;
@@ -23,24 +23,22 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
         if (change > 0) tendens = 'up';
         else if (change < 0) tendens = 'down';
 
-       return {
-        id: c.customer_id,
-        name: c.customer_name,
-        leads: todays_dif,
-        monthlyLeads: c.leads,
-        change: change,
-        tendens: tendens,
-        todays_dif: todays_dif,
-        yesterdays_dif: yesterdays_dif,
-        last_updated: c.last_updated,
-      };
-    });
-
+        return {
+          id: c.customer_id,
+          name: c.customer_name,
+          leads: todays_dif,
+          monthlyLeads: c.leads,
+          change: change,
+          tendens: tendens,
+          todays_dif: todays_dif,
+          yesterdays_dif: yesterdays_dif,
+          last_updated: c.last_updated
+        };
+      });
     sortByName(customers);
     return { customers, totalCount };
-
   } catch (err) {
-    console.error("Fejl ved hentning af kunder:", err);
+    console.error('Fejl ved hentning af kunder:', err);
     return { customers: [], totalCount: 0 };
   }
 }
@@ -48,11 +46,9 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
 export const getCustomersInCarboostByDate = async (month) => {
   try {
     const res = await fetch(`${BASE_URL}/api/customer/carboost/date?month=${month}`);
-    if (!res.ok) throw new Error("Server error");
-
-    const data = await res.json(); 
+    if (!res.ok) throw new Error('Server error');
+    const data = await res.json();
     const rows = data || [];
-
     const customers = rows.map(r => ({
       id: r.customer_id,
       name: r.customer_name,
@@ -65,15 +61,14 @@ export const getCustomersInCarboostByDate = async (month) => {
     }));
     return { customers };
   } catch (err) {
-    console.error("Fejl i getCustomersInCarboostByDate:", err);
+    console.error('Fejl i getCustomersInCarboostByDate:', err);
     return { customers: [] };
   }
 };
 
-
 export const getCustomersInCarboostChange = async (month) => {
   try {
-    if (!month || typeof month !== "string") {
+    if (!month || typeof month !== 'string') {
       return { customers: [] };
     }
 
@@ -87,7 +82,7 @@ export const getCustomersInCarboostChange = async (month) => {
       `${BASE_URL}/api/customer/carboost/change?month=${month}&prevMonth=${prevMonth}`
     );
 
-    if (!res.ok) throw new Error("Server error");
+    if (!res.ok) throw new Error('Server error');
 
     const rows = await res.json();
 
@@ -107,10 +102,9 @@ export const getCustomersInCarboostChange = async (month) => {
         tendens: change > 0 ? 'up' : change < 0 ? 'down' : '-'
       };
     });
-
     return { customers };
   } catch (err) {
-    console.error("Fejl i getCustomersInCarboostChange:", err);
+    console.error('Fejl i getCustomersInCarboostChange:', err);
     return { customers: [] };
   }
 };

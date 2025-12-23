@@ -1,4 +1,4 @@
-import * as CustomerModel from "../models/customerModel.js";
+import * as CustomerModel from '../models/customerModel.js';
 
 // Hent alle kunder
 export async function getAllCustomers(req, res) {
@@ -7,19 +7,19 @@ export async function getAllCustomers(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
 // Hent salgs-kunder
 export async function getSaleCustomers(req, res) {
   try {
-    const ids = req.query.ids.split(",").map(Number);
+    const ids = req.query.ids.split(',').map(Number);
     const rows = await CustomerModel.getSaleCustomersByIds(ids);
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -34,7 +34,7 @@ export async function getCarboostList(req, res) {
     res.json({ data: result.rows, totalCount: result.totalCount });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -45,7 +45,7 @@ export async function getCustomerChanges(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -56,7 +56,7 @@ export async function getCustomersInGroups(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -67,7 +67,7 @@ export async function getCustomerStats(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -75,13 +75,13 @@ export async function getCustomerStats(req, res) {
 export async function getCustomersByDate(req, res) {
   try {
     const { month } = req.query;
-    if (!month) return res.status(400).json({ error: "Missing month parameter" });
+    if (!month) return res.status(400).json({ error: 'Missing month parameter' });
 
     const rows = await CustomerModel.getCustomersByDate(month);
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -93,6 +93,6 @@ export async function getCustomersCarboostChange(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }

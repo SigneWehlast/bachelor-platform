@@ -1,7 +1,7 @@
 describe('Compare leads on customers', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:5173')
-  })
+    cy.visit('http://localhost:5173');
+  });
 
   it('can login, navigate, select customers in carboost and choose December', () => {
     //login
@@ -11,7 +11,7 @@ describe('Compare leads on customers', () => {
 
     //go to administration
     cy.contains('div', 'Administration').should('be.visible').click();
-    
+
     //go to lead-view / carboost
     cy.contains('button', 'Lead-view').click();
 
@@ -27,5 +27,5 @@ describe('Compare leads on customers', () => {
     cy.get('.dropdown-options .dropdown-item').eq(1).click();
 
     //godkend
-  })
-})
+  });
+});

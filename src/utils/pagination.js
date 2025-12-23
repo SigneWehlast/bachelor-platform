@@ -1,4 +1,4 @@
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch } from 'vue';
 
 export function usePagination(items, pageSize = 10, options = {}) {
   const currentPage = ref(1);

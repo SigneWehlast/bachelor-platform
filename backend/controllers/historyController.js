@@ -1,4 +1,4 @@
-import * as HistoryModel from "../models/historyModel.js";
+import * as HistoryModel from '../models/historyModel.js';
 
 // /api/history/carboost
 export async function getCarboostHistory(req, res) {
@@ -7,7 +7,7 @@ export async function getCarboostHistory(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -18,7 +18,7 @@ export async function getSaleHistory(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -29,7 +29,7 @@ export async function getCarboostDailyTable(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -40,6 +40,6 @@ export async function getMonths(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }

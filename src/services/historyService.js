@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getHistoryCarboost() {
   try {
@@ -9,7 +9,7 @@ export async function getHistoryCarboost() {
 
     data.forEach(item => {
       const id = item.customer_id;
-      const date = new Date(item.archived_at).toLocaleDateString("da-DK");
+      const date = new Date(item.archived_at).toLocaleDateString('da-DK');
 
       const key = `${id}-${date}`;
 
@@ -29,7 +29,7 @@ export async function getHistoryCarboost() {
     return { history, totalCount: history.length };
 
   } catch (err) {
-    console.error("Fejl ved hentning af historik:", err);
+    console.error('Fejl ved hentning af historik:', err);
     return { history: [], totalCount: 0 };
   }
 }
@@ -49,7 +49,7 @@ export async function getHistorySales(customerIds = []) {
 
       if (customerIds.length > 0 && !customerIds.includes(id)) return;
 
-      const date = new Date(h.archived_at).toLocaleDateString("da-DK");
+      const date = new Date(h.archived_at).toLocaleDateString('da-DK');
       const key = `${id}-${date}`;
 
       if (!grouped[key]) {
@@ -82,7 +82,7 @@ export async function getHistorySales(customerIds = []) {
 
     return { history, totalCount: history.length };
   } catch (err) {
-    console.error("Fejl ved hentning af salgshistorik:", err);
+    console.error('Fejl ved hentning af salgshistorik:', err);
     return { history: [], totalCount: 0 };
   }
 }

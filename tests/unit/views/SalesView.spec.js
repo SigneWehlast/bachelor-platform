@@ -1,13 +1,13 @@
-import { mount, flushPromises } from "@vue/test-utils";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import SalesView from "@/views/SalesView.vue";
+import { mount, flushPromises } from '@vue/test-utils';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import SalesView from '@/views/SalesView.vue';
 
-vi.mock("@/services/customerService", () => ({
+vi.mock('@/services/customerService', () => ({
   getCustomers: vi.fn(),
   getSelectedCustomers: vi.fn()
 }));
 
-vi.mock("@/utils/goBack", () => ({
+vi.mock('@/utils/goBack', () => ({
   useGoBack: () => ({
     showTable: false,
     goBack: vi.fn(),
@@ -15,9 +15,9 @@ vi.mock("@/utils/goBack", () => ({
   })
 }));
 
-import { getCustomers, getSelectedCustomers } from "@/services/customerService";
+import { getCustomers, getSelectedCustomers } from '@/services/customerService';
 
-describe("SalesView.vue", () => {
+describe('SalesView.vue', () => {
   const mockCustomers = Array.from({ length: 12 }, (_, i) => ({
     id: i + 1,
     name: `Kunde ${i + 1}`,
@@ -30,7 +30,7 @@ describe("SalesView.vue", () => {
     getSelectedCustomers.mockResolvedValue(mockCustomers);
   });
 
-  it("henter kunder når view mountes", async () => {
+  it('henter kunder når view mountes', async () => {
     const wrapper = mount(SalesView, {
       global: {
         stubs: {
@@ -42,9 +42,9 @@ describe("SalesView.vue", () => {
           CalendarComp: true,
           CustomerName: true,
           ExportData: true,
-          ConfirmationModal: true,
-        },
-      },
+          ConfirmationModal: true
+        }
+      }
     });
 
     await flushPromises();
@@ -53,7 +53,7 @@ describe("SalesView.vue", () => {
     expect(wrapper.vm.salesCustomers.length).toBe(mockCustomers.length);
   });
 
-  it("vælger en kunde når der klikkes på den", async () => {
+  it('vælger en kunde når der klikkes på den', async () => {
     const wrapper = mount(SalesView, {
       global: {
         stubs: {
@@ -65,21 +65,21 @@ describe("SalesView.vue", () => {
           CalendarComp: true,
           CustomerName: true,
           ExportData: true,
-          ConfirmationModal: true,
-        },
-      },
+          ConfirmationModal: true
+        }
+      }
     });
 
     await flushPromises();
 
-    const items = wrapper.findAll(".SalesView__customer-item");
-    await items[0].trigger("click");
+    const items = wrapper.findAll('.SalesView__customer-item');
+    await items[0].trigger('click');
 
     expect(wrapper.vm.selectedCustomers).toContainEqual(mockCustomers[0]);
     expect(wrapper.vm.salesCustomers.length).toBe(mockCustomers.length - 1);
   });
 
-  it("selectAllCustomers flytter alle filtrerede kunder til selectedCustomers", async () => {
+  it('selectAllCustomers flytter alle filtrerede kunder til selectedCustomers', async () => {
     const wrapper = mount(SalesView, {
       global: {
         stubs: {
@@ -91,20 +91,20 @@ describe("SalesView.vue", () => {
           CalendarComp: true,
           CustomerName: true,
           ExportData: true,
-          ConfirmationModal: true,
-        },
-      },
+          ConfirmationModal: true
+        }
+      }
     });
 
     await flushPromises();
 
-    await wrapper.find(".SalesView__button").trigger("click");
+    await wrapper.find('.SalesView__button').trigger('click');
 
     expect(wrapper.vm.selectedCustomers.length).toBe(mockCustomers.length);
     expect(wrapper.vm.salesCustomers.length).toBe(0);
   });
 
-  it("removeAllCustomers flytter alle kunder tilbage til salesCustomers", async () => {
+  it('removeAllCustomers flytter alle kunder tilbage til salesCustomers', async () => {
     const wrapper = mount(SalesView, {
       global: {
         stubs: {
@@ -116,9 +116,9 @@ describe("SalesView.vue", () => {
           CalendarComp: true,
           CustomerName: true,
           ExportData: true,
-          ConfirmationModal: true,
-        },
-      },
+          ConfirmationModal: true
+        }
+      }
     });
 
     await flushPromises();
@@ -130,7 +130,7 @@ describe("SalesView.vue", () => {
     expect(wrapper.vm.salesCustomers.length).toBe(mockCustomers.length);
   });
 
-  it("anonymize gør kunderne anonymiserede", async () => {
+  it('anonymize gør kunderne anonymiserede', async () => {
     const wrapper = mount(SalesView, {
       global: {
         stubs: {
@@ -142,9 +142,9 @@ describe("SalesView.vue", () => {
           CalendarComp: true,
           CustomerName: true,
           ExportData: true,
-          ConfirmationModal: true,
-        },
-      },
+          ConfirmationModal: true
+        }
+      }
     });
 
     expect(wrapper.vm.showId).toBe(false);
@@ -159,7 +159,7 @@ describe("SalesView.vue", () => {
     expect(wrapper.vm.confirm).toBe(true);
   });
 
-  it("showCustomerData henter selectedCustomers data og viser tabellen for de valgte kunder", async () => {
+  it('showCustomerData henter selectedCustomers data og viser tabellen for de valgte kunder', async () => {
     const wrapper = mount(SalesView, {
       global: {
         stubs: {
@@ -171,9 +171,9 @@ describe("SalesView.vue", () => {
           CalendarComp: true,
           CustomerName: true,
           ExportData: true,
-          ConfirmationModal: true,
-        },
-      },
+          ConfirmationModal: true
+        }
+      }
     });
 
     await flushPromises();
@@ -185,12 +185,12 @@ describe("SalesView.vue", () => {
     expect(wrapper.vm.customerTableData).toEqual(mockCustomers);
   });
 
-  it("pagination håndterer sider korrekt", async () => {
+  it('pagination håndterer sider korrekt', async () => {
     const manyCustomers = Array.from({ length: 25 }, (_, i) => ({
       id: i + 1,
       name: `Kunde ${i + 1}`,
       numberOfCars: i * 10,
-      archived_at: "2025-01-01"
+      archived_at: '2025-01-01'
     }));
     getCustomers.mockResolvedValue(manyCustomers);
     getSelectedCustomers.mockResolvedValue(manyCustomers);
@@ -204,9 +204,9 @@ describe("SalesView.vue", () => {
           CalendarComp: true,
           ExportData: true,
           ConfirmationModal: true,
-          BreadcrumbsComp: true,
-        },
-      },
+          BreadcrumbsComp: true
+        }
+      }
     });
 
     await flushPromises();

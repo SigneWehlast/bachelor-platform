@@ -1,36 +1,36 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
-import Dropdown from "../filter/Dropdown.vue";
-import { getCustomerStats } from "@/services/customerStatsService";
+import { ref, onMounted, watch } from 'vue';
+import Dropdown from '../filter/Dropdown.vue';
+import { getCustomerStats } from '@/services/customerStatsService';
 
 const conversions = ref([
-  { name: "Gns konverteringer", data: "-", description: "" },
-  { name: "Gns CarBoost andel", data: "-", description: "" },
-  { name: "Gns Pris pr. bil pr. dag", data: "-", description: "" },
-  { name: "Gns antal biler", data: "-"}
+  { name: 'Gns konverteringer', data: '-', description: '' },
+  { name: 'Gns CarBoost andel', data: '-', description: '' },
+  { name: 'Gns Pris pr. bil pr. dag', data: '-', description: '' },
+  { name: 'Gns antal biler', data: '-'}
 ]);
 
 const segmentOptions = [
-  "0 - 1000 kr.",
-  "1001 - 2000 kr.",
-  "2001 - 3000 kr.",
-  "3001 - 4000 kr.",
-  "4001+ kr."
+  '0 - 1000 kr.',
+  '1001 - 2000 kr.',
+  '2001 - 3000 kr.',
+  '3001 - 4000 kr.',
+  '4001+ kr.'
 ];
 
 const selectedSegment = ref(segmentOptions[0]);
 const customerData = ref([]);
 
 function parseBudgetSegment(segment) {
-  const cleaned = segment.replace("kr.", "").trim();
+  const cleaned = segment.replace('kr.', '').trim();
 
-  if (cleaned.includes("+")) {
+  if (cleaned.includes('+')) {
     const min = parseInt(cleaned);
     return { min, max: Infinity };
   }
 
   const [min, max] = cleaned
-    .split("-")
+    .split('-')
     .map(v => parseInt(v.trim()));
 
   return { min, max };
@@ -45,8 +45,8 @@ function updateConversionsBudget() {
 
   if (filtered.length === 0) {
     conversions.value.forEach(c => {
-      c.data = "0";
-      c.description = "Ingen data";
+      c.data = '0';
+      c.description = 'Ingen data';
     });
     return;
   }
@@ -67,19 +67,19 @@ function updateConversionsBudget() {
 
   conversions.value[0].data = (totalLeads / filtered.length).toFixed(0);
   conversions.value[1].data = (totalCarBoost / filtered.length).toFixed(0);
-  conversions.value[2].data = avgBudgetPerDay + " kr.";
+  conversions.value[2].data = avgBudgetPerDay + ' kr.';
   conversions.value[3].data = (totalCars / filtered.length).toFixed(0);
 
   conversions.value[0].description =
-    totalLeads / filtered.length > 50 ? "(+) Høj konvertering" : "Stabil";
+    totalLeads / filtered.length > 50 ? '(+) Høj konvertering' : 'Stabil';
 
   conversions.value[1].description =
     overallCarBoost > 0
-      ? ((totalCarBoost / overallCarBoost) * 100).toFixed(1) + "% af totalen"
-      : "0% af totalen";
+      ? ((totalCarBoost / overallCarBoost) * 100).toFixed(1) + '% af totalen'
+      : '0% af totalen';
 
   conversions.value[2].description =
-    avgBudgetPerDay < 5 ? "(lav – høj effektivitet)" : "(høj – tjek budget)";
+    avgBudgetPerDay < 5 ? '(lav – høj effektivitet)' : '(høj – tjek budget)';
 
 }
 
@@ -93,19 +93,19 @@ watch(selectedSegment, updateConversionsBudget);
 </script>
 
 <template>
-    <div class="conversion-data-budget">
-        <h1 class="conversion-data-budget__title">Konverteringsdata budget</h1>
+    <div class='conversion-data-budget'>
+        <h1 class='conversion-data-budget__title'>Konverteringsdata budget</h1>
         <Dropdown
-          v-model="selectedSegment"
-          :options="segmentOptions"
-          label="Segment"
-          selectedPrefix="Segment"
-        /> 
-        <div class="conversion-data-budget__content">
-            <div v-for="(conversion, index) in conversions" :key="index" class="conversion-data-budget__content__box">
-                <div class="conversion-data-budget__content__box-name h3">{{ conversion.name }}</div>
-                <div class="conversion-data-budget__content__box-data h1">{{ conversion.data }}</div>
-                <div class="conversion-data-budget__content__box-description">{{ conversion.description }}</div>
+          v-model='selectedSegment'
+          :options='segmentOptions'
+          label='Segment'
+          selectedPrefix='Segment'
+        />
+        <div class='conversion-data-budget__content'>
+            <div v-for='(conversion, index) in conversions' :key='index' class='conversion-data-budget__content__box'>
+                <div class='conversion-data-budget__content__box-name h3'>{{ conversion.name }}</div>
+                <div class='conversion-data-budget__content__box-data h1'>{{ conversion.data }}</div>
+                <div class='conversion-data-budget__content__box-description'>{{ conversion.description }}</div>
             </div>
         </div>
     </div>

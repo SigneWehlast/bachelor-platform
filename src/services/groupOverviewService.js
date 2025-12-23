@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL 
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export async function getCustomersInGroups() {
   try {
@@ -10,7 +10,7 @@ export async function getCustomersInGroups() {
       customerCount: item.customer_count
     }));
   } catch (err) {
-    console.error("Fejl ved hentning af kunder:", err);
+    console.error('Fejl ved hentning af kunder:', err);
     return [];
   }
 }
