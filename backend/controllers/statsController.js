@@ -1,4 +1,4 @@
-import * as StatsModel from "../models/statsModel.js";
+import * as StatsModel from '../models/statsModel.js';
 
 export async function getCustomerStats(req, res) {
   try {
@@ -6,6 +6,6 @@ export async function getCustomerStats(req, res) {
     res.json(rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: 'Database error' });
   }
 }

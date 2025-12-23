@@ -1,6 +1,6 @@
-import { trackingStore } from "./trackingStore";
-import { findMenuPath } from "./findPath";
-import { menuItems } from "@/config/menuItems";
+import { trackingStore } from './trackingStore';
+import { findMenuPath } from './findPath';
+import { menuItems } from '@/config/menuItems';
 
 export function UserTracking(path) {
   const breadcrumbTrail = findMenuPath(menuItems, path);
@@ -16,9 +16,9 @@ export function UserTracking(path) {
     if (item.section && !breadcrumbs.find(b => b.label === item.section)) {
       breadcrumbs.push({
         label: item.section,
-        path: "/Administration", 
+        path: '/Administration'
       });
-    }
+    };
 
     if (item.label) {
       breadcrumbs.push({
@@ -29,4 +29,4 @@ export function UserTracking(path) {
   });
 
   trackingStore.breadcrumbs = breadcrumbs;
-}
+};

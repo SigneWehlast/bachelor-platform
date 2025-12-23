@@ -1,4 +1,4 @@
-import * as UserModel from "../models/userModel.js";
+import * as UserModel from '../models/userModel.js';
 
 // /api/users
 export async function getUserData(req, res) {
@@ -6,8 +6,8 @@ export async function getUserData(req, res) {
     const rows = await UserModel.getUserData();
     res.json(rows);
   } catch (error) {
-    console.error("Database error:", error);
-    res.status(500).json({ error: "Database error" });
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'Database error' });
   }
 }
 
@@ -18,12 +18,12 @@ export async function getUserRole(req, res) {
     const role = await UserModel.getUserRole(user_id);
 
     if (!role) {
-      return res.status(404).json({ message: "No role found for user" });
+      return res.status(404).json({ message: 'No role found for user' });
     }
 
     res.json(role);
   } catch (error) {
-    console.error("Database error:", error);
-    res.status(500).json({ error: "Database error" });
+    console.error('Database error:', error);
+    res.status(500).json({ error: 'Database error' });
   }
 }

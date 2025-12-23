@@ -7,17 +7,16 @@ const route = useRoute();
 
 
 <template>
-    <template v-if="route.meta.layout === 'none'">
-      <RouterView />
-    </template>
-    
-   <template v-else>
-    <div class="view">
+  <template v-if="route.meta.layout === 'none'">
+    <RouterView />
+  </template>
+  <template v-else>
+    <div class='view'>
       <header>
         <NavigationComp />
       </header>
 
-      <main class="view__page">
+      <main class='view__page'>
         <RouterView />
       </main>
     </div>

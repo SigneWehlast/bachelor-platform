@@ -1,4 +1,4 @@
-import { syncData } from "../scripts/SyncData.js";
+import { syncData } from '../scripts/SyncData.js';
 import 'dotenv/config';
 
 try {

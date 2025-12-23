@@ -30,16 +30,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="mdkmedia-overview">
-    <h1 class="mdkmedia-overview__title">MDK-Media Oversigt</h1>
-    <div class="mdkmedia-overview__content">
+  <div class='mdkmedia-overview'>
+    <h1 class='mdkmedia-overview__title'>MDK-Media Oversigt</h1>
+    <div class='mdkmedia-overview__content'>
       <div
-        v-for="(overview, index) in combinedOverview"
-        :key="index"
-        class="mdkmedia-overview__content__box"
+        v-for='(overview, index) in combinedOverview'
+        :key='index'
+        class='mdkmedia-overview__content__box'
       >
-        <div class="mdkmedia-overview__content__box-name h3">{{ overview.name }}</div>
-        <div class="mdkmedia-overview__content__box-data h1">{{ overview.data }}</div>
+        <div class='mdkmedia-overview__content__box-name h3'>{{ overview.name }}</div>
+        <div class='mdkmedia-overview__content__box-data h1'>{{ overview.data }}</div>
       </div>
     </div>
   </div>

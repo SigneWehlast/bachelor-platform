@@ -1,9 +1,9 @@
-import { db } from "../app.js";
+import { db } from '../app.js';
 
 // Hent alle kunder
 export async function getAllCustomers() {
   const [rows] = await db.query(
-    "SELECT customer_id, customer_name, number_of_cars FROM customer"
+    'SELECT customer_id, customer_name, number_of_cars FROM customer'
   );
   return rows;
 }

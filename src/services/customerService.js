@@ -1,5 +1,5 @@
-import { sortByName } from "@/utils/sort";
-const BASE_URL = import.meta.env.VITE_BASE_URL 
+import { sortByName } from '@/utils/sort';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 //Hent rå data fra API
 export async function fetchCustomersRaw() {
@@ -7,7 +7,7 @@ export async function fetchCustomersRaw() {
     const res = await fetch(`${BASE_URL}/api/customer`);
     return await res.json();
   } catch (err) {
-    console.error("Fejl ved hentning af kunder:", err);
+    console.error('Fejl ved hentning af kunder:', err);
     return [];
   }
 }
@@ -58,13 +58,13 @@ export async function fetchSelectedCustomers(idsArray) {
 
     if (!res.ok) {
       const text = await res.text();
-      console.error("Server returnerede ikke JSON:", text);
+      console.error('Server returnerede ikke JSON:', text);
       return [];
     }
 
     return await res.json();
   } catch (err) {
-    console.error("Fejl ved hentning af valgte kunder:", err);
+    console.error('Fejl ved hentning af valgte kunder:', err);
     return [];
   }
 }
@@ -79,8 +79,8 @@ export function mapSelectedCustomers(data) {
     leads: c.leads,
     carboostConversions: c.carboost_conversions,
     budgetPerDay: Number((c.total_budget / (c.number_of_cars * 30)).toFixed(1)),
-    conversionPercent: c.leads > 0 
-      ? Number(((c.carboost_conversions / c.leads) * 100).toFixed(1)) 
+    conversionPercent: c.leads > 0
+      ? Number(((c.carboost_conversions / c.leads) * 100).toFixed(1))
       : 0
   }));
 }

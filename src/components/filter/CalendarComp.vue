@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch } from 'vue';
 import Dropdown from './Dropdown.vue';
-import { getMonths } from "@/services/calendarService";
+import { getMonths } from '@/services/calendarService';
 
 const props = defineProps({
   modelValue: { type: String, default: null },
@@ -16,7 +16,7 @@ const displayOptions = computed(() => {
   if (props.hideDayOption) {
     return months.value;
   }
-  return [{ label: "Dagsvisning", value: null }, ...months.value];
+  return [{ label: 'Dagsvisning', value: null }, ...months.value];
 });
 
 onMounted(async () => {
@@ -24,7 +24,7 @@ onMounted(async () => {
   months.value = fetchedMonths;
 
   if (!selectedMonth.value) {
-    selectedMonth.value = null; 
+    selectedMonth.value = null;
   }
 });
 
@@ -34,9 +34,9 @@ watch(() => props.modelValue, (val) => selectedMonth.value = val);
 
 <template>
   <Dropdown
-    v-if="displayOptions.length"
-    v-model="selectedMonth"
-    :options="displayOptions"
-    label="Vælg periode"
+    v-if='displayOptions.length'
+    v-model='selectedMonth'
+    :options='displayOptions'
+    label='Vælg periode'
   />
 </template>

@@ -1,4 +1,4 @@
-import { db } from "../app.js";
+import { db } from '../app.js';
 
 // Hent kundestatistik
 export async function getCustomerStats() {

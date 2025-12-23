@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 
 //Components
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
@@ -11,30 +11,27 @@ import CarBoostGraph from '@/components/CarBoostGraph.vue';
 import Icon from '@/components/Icon.vue';
 
 //Functions
-import { useGoBack } from "@/utils/goBack";
+import { useGoBack } from '@/utils/goBack';
 
-const searchQuery = ref("");
+const searchQuery = ref('');
 const customersList = ref([]);
 
 const { showTable, goBack, show } = useGoBack();
 
 const selectedIds = ref([]);
 const isButtonDisabled = computed(() => selectedIds.value.length === 0);
-
 const selectedOnly = computed(() => selectedIds.value);
-
 const selectedMonth = ref(null);
-
 
 const showSelected = () => {
   if (selectedIds.value.length === 0) return;
   show();
-}
+};
 
 const goBackAndReset =() => {
   goBack();
-  selectedIds.value = []; 
-}
+  selectedIds.value = [];
+};
 
 const displayOptions = [
   { label: 'Kundenavn', value: 'name' },
@@ -61,73 +58,71 @@ const hasTendensDown = computed(() => {
 });
 
 </script>
-<template>  
-  <div class="carboost-view">
-    <div class="carboost-view__topbar">
-      <div class="carboost-view__topbar-left">
-        <h1 class="carboost-view__topbar-title">CarBoost</h1>
-        <BreadcrumbsComp/> 
-      </div>   
-
-      <div class="carboost-view__topbar-btn-wrapper">
-          <button 
-          class="carboost-view__topbar-btn" @click="showSelected" :disabled="isButtonDisabled" v-if="!showTable">
+<template>
+  <div class='carboost-view'>
+    <div class='carboost-view__topbar'>
+      <div class='carboost-view__topbar-left'>
+        <h1 class='carboost-view__topbar-title'>CarBoost</h1>
+        <BreadcrumbsComp/>
+      </div>
+      <div class='carboost-view__topbar-btn-wrapper'>
+          <button
+          class='carboost-view__topbar-btn' @click='showSelected' :disabled='isButtonDisabled' v-if='!showTable'>
           Vis valgte
         </button>
 
-        <button class="carboost-view__topbar-btn" v-else @click="goBackAndReset">
+        <button class='carboost-view__topbar-btn' v-else @click='goBackAndReset'>
           Tilbage
         </button>
 
-        <button v-if="showTable" class="carboost-view__topbar-btn">
+        <button v-if='showTable' class='carboost-view__topbar-btn'>
           Godkend Data
         </button>
       </div>
-
     </div>
-    <div class="carboost-view__filter">
-      <SearchBar v-if="!showTable" v-model="searchQuery" />
+    <div class='carboost-view__filter'>
+      <SearchBar v-if='!showTable' v-model='searchQuery' />
       <Dropdown
-        v-model="visibleColumns"
-        :options="displayOptions"
+        v-model='visibleColumns'
+        :options='displayOptions'
         :disableOptions="[
           'name',
           'leads',
           'tendens',
           'status'
         ]"
-        label="Visning"
+        label='Visning'
         multiple
-        :alwaysShowLabel="true"
+        :alwaysShowLabel='true'
       />
-      <CalendarComp v-model="selectedMonth" />
+      <CalendarComp v-model='selectedMonth' />
     </div>
     <CarBoostTable
-      v-if="!showTable"
-      v-model:search="searchQuery"
-      @update:selectedIds="ids => selectedIds = ids"
-      :selectedMonth="selectedMonth"
-      :visibleColumns="visibleColumns"
+      v-if='!showTable'
+      v-model:search='searchQuery'
+      @update:selectedIds='ids => selectedIds = ids'
+      :selectedMonth='selectedMonth'
+      :visibleColumns='visibleColumns'
     />
-    <div v-else class="carboost-view__show-selected-customers">
-      <div v-if="hasTendensDown" class="carboost-view__alert">
-        <Icon name="Alert" class="carboost-view__alert-icon"/>
-          <p class="text-regular">
+    <div v-else class='carboost-view__show-selected-customers'>
+      <div v-if='hasTendensDown' class='carboost-view__alert'>
+        <Icon name='Alert' class='carboost-view__alert-icon'/>
+          <p class='text-regular'>
             OBS. tendens er faldende på en eller flere valgte kunder
           </p>
       </div>
-      <CarBoostGraph 
-        :selectedIds="selectedOnly" 
-        :selectedMonth="selectedMonth" 
-        :customers="customersList" 
-      />      
+      <CarBoostGraph
+        :selectedIds='selectedOnly'
+        :selectedMonth='selectedMonth'
+        :customers='customersList'
+      />
       <CarBoostTable
-          :highlightedIds="selectedOnly"
-          :showOnlySelected="true"
-          :hidePagination="true"
-          :selectedMonth="selectedMonth"
-          :visibleColumns="visibleColumns"
-          @customersFetched="customers => customersList = customers"
+          :highlightedIds='selectedOnly'
+          :showOnlySelected='true'
+          :hidePagination='true'
+          :selectedMonth='selectedMonth'
+          :visibleColumns='visibleColumns'
+          @customersFetched='customers => customersList = customers'
       />
     </div>
   </div>

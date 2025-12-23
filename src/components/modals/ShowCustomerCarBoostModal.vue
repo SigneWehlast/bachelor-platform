@@ -1,22 +1,24 @@
 <script setup>
-import { defineProps, defineEmits, ref, watch, onMounted, computed } from "vue";
-import Icon from "@/components/Icon.vue";
-import CalendarComp from "../filter/CalendarComp.vue";
-import ExportData from "../filter/ExportData.vue";
-import ApexCharts from "apexcharts";
-import CarBoostTable from "../CarBoostTable.vue";
-import { getHistoryCarboost } from "@/services/historyService";
-import CarBoostGraph from "../CarBoostGraph.vue";
+import { defineProps, defineEmits, ref, watch, onMounted, computed } from 'vue';
+import Icon from '@/components/Icon.vue';
+import CalendarComp from '../filter/CalendarComp.vue';
+import ExportData from '../filter/ExportData.vue';
+import ApexCharts from 'apexcharts';
+import CarBoostTable from '../CarBoostTable.vue';
+import { getHistoryCarboost } from '@/services/historyService';
+import CarBoostGraph from '../CarBoostGraph.vue';
 
 const props = defineProps({
   customer: { type: Object, default: null }
 });
 
-const emit = defineEmits(["close"]);
-function handleClose() { emit("close"); }
+const emit = defineEmits(['close']);
+function handleClose() {
+  emit('close');
+};
 
 const today = new Date();
-const selectedMonth = ref(`${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2,"0")}`);
+const selectedMonth = ref(`${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2,'0')}`);
 
 const history = ref([]);
 const customerData = ref([]);
@@ -25,7 +27,7 @@ let chart = null;
 const fetchCustomerData = () => {
   if (!props.customer || !history.value.length) return;
 
-  const [year, monthNum] = selectedMonth.value.split("-").map(Number);
+  const [year, monthNum] = selectedMonth.value.split('-').map(Number);
 
   const customerHistory = history.value
     .filter(h => h.id === props.customer.id)
@@ -49,23 +51,23 @@ const fetchCustomerData = () => {
     leads: lastDay.leads,
     change: lastDay.change || 0,
     tendens: lastDay.leads > 0 ? 'up' : lastDay.leads < 0 ? 'down' : '-',
-    period: new Date(selectedMonth.value + "-01").toLocaleDateString("da-DK", { month: "long", year: "numeric" }),
+    period: new Date(selectedMonth.value + '-01').toLocaleDateString('da-DK', { month: 'long', year: 'numeric' }),
     last_updated: lastDay.archived_at
   }];
 
   const dates = customerHistory
     .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at))
-    .map(p => new Date(p.archived_at).toLocaleDateString("da-DK"));
+    .map(p => new Date(p.archived_at).toLocaleDateString('da-DK'));
 
   const data = customerHistory
     .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at))
     .map(p => p.dif_leads);
 
   if(chart) chart.destroy();
-  chart = new ApexCharts(document.querySelector("#chart"), {
-    chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false } },
+  chart = new ApexCharts(document.querySelector('#chart'), {
+    chart: { type: 'line', height: 350, toolbar: { show: true }, zoom: { enabled: false } },
     series: [{ name: props.customer.name, data }],
-    stroke: { curve: "smooth" },
+    stroke: { curve: 'smooth' },
     xaxis: { categories: dates },
     legend: { show: false }
   });
@@ -81,41 +83,41 @@ onMounted(async () => {
 
 watch(
   [selectedMonth, () => props.customer, history],
-  ([month, customer, hist]) => {
+  ([customer, hist]) => {
     if(hist.length && customer) fetchCustomerData();
   },
   { immediate: true }
 );
 </script>
 <template>
-  <div class="show-customer-carboost-modal">
-    <div class="show-customer-carboost-modal__content">
+  <div class='show-customer-carboost-modal'>
+    <div class='show-customer-carboost-modal__content'>
         <div>
-            <div class="show-customer-carboost-modal__topbar">
-                <Icon @click="handleClose" name="Close" class="show-customer-carboost-modal__topbar-icon" />
-                <h1 class="show-customer-carboost-modal__topbar-title">{{ customer?.name }}</h1>
-            </div>
-            <div class="show-customer-carboost-modal__topbar-dropdowns">
-                <CalendarComp v-model="selectedMonth" :hide-day-option="true" />
-                <ExportData />
-            </div>
-            <div v-if="tendensDown" class="show-customer-carboost-modal__topbar-alert">
-                <Icon name="Alert" class="show-customer-carboost-modal__topbar-alert__icon" />
-                <p class="text-regular show-customer-carboost-modal__topbar-alert__text">OBS. tendens er faldende</p>
-            </div>
+          <div class='show-customer-carboost-modal__topbar'>
+              <Icon @click='handleClose' name='Close' class='show-customer-carboost-modal__topbar-icon' />
+              <h1 class='show-customer-carboost-modal__topbar-title'>{{ customer?.name }}</h1>
+          </div>
+          <div class='show-customer-carboost-modal__topbar-dropdowns'>
+              <CalendarComp v-model='selectedMonth' :hide-day-option='true' />
+              <ExportData />
+          </div>
+          <div v-if='tendensDown' class='show-customer-carboost-modal__topbar-alert'>
+              <Icon name='Alert' class='show-customer-carboost-modal__topbar-alert__icon' />
+              <p class='text-regular show-customer-carboost-modal__topbar-alert__text'>OBS. tendens er faldende</p>
+          </div>
         </div>
-          <CarBoostGraph />        
-          <p class="text-regular show-customer-carboost-modal__last-updated">
-            Sidst opdateret: {{ customerData[0]?.last_updated ? new Date(customerData[0].last_updated).toLocaleDateString("da-DK") : "-" }}
+        <CarBoostGraph />
+        <p class='text-regular show-customer-carboost-modal__last-updated'>
+          Sidst opdateret: {{ customerData[0]?.last_updated ? new Date(customerData[0].last_updated).toLocaleDateString('da-DK') : '-' }}
         </p>
-        <CarBoostTable 
-          :highlighted-ids="[customer?.id]"
-          :show-only-selected="true"
-          :hide-pagination="true"
-          :hide-checkbox="true"
-          :table-in-modal="true"
+        <CarBoostTable
+          :highlighted-ids='[customer?.id]'
+          :show-only-selected='true'
+          :hide-pagination='true'
+          :hide-checkbox='true'
+          :table-in-modal='true'
           :visible-columns="['change', 'lastUpdated', 'tendens', 'period']"
-          :selected-month="selectedMonth"
+          :selected-month='selectedMonth'
         />
     </div>
   </div>

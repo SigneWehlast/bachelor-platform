@@ -4,7 +4,7 @@ export async function getUsers() {
   try {
     const res = await fetch(`${BASE_URL}/api/user`);
     if (!res.ok) {
-      throw new Error("Fejl ved hentning af brugere");
+      throw new Error('Fejl ved hentning af brugere');
     }
     const data = await res.json();
     return data.map(user => ({
@@ -14,7 +14,7 @@ export async function getUsers() {
       initials: `${user.first_name[0]}${user.last_name[0]}`.toUpperCase()
     }));
   } catch (err) {
-    console.error("Fejl ved hentning af brugere:", err);
+    console.error('Fejl ved hentning af brugere:', err);
     return [];
   }
 }
@@ -23,7 +23,7 @@ export async function getUserRole(userId) {
   try {
     const res = await fetch(`${BASE_URL}/api/user/${userId}/role`);
     if (!res.ok) {
-      throw new Error("Fejl ved hentning af brugerrolle");
+      throw new Error('Fejl ved hentning af brugerrolle');
     }
     const role = await res.json();
     return {
@@ -31,7 +31,7 @@ export async function getUserRole(userId) {
       name: role.role_name
     };
   } catch (err) {
-    console.error("Fejl ved hentning af brugerrolle:", err);
+    console.error('Fejl ved hentning af brugerrolle:', err);
     return null;
   }
 }

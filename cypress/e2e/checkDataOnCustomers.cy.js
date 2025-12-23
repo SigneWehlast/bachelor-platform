@@ -1,7 +1,7 @@
 describe('Check data on customers', () => {
   beforeEach(() => {
     cy.visit('http://localhost:5173');
-  })
+  });
 
   it('can login, select first car option, select all customers and see table, press anonymize and remove anonymization', () => {
     //login

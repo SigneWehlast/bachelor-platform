@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { menuItems } from "@/config/menuItems";
-import { UserTracking } from "@/utils/tracking";
+import { createRouter, createWebHistory } from 'vue-router';
+import { menuItems } from '@/config/menuItems';
+import { UserTracking } from '@/utils/tracking';
 
 function generateRoutes(items) {
   const routes = [];
@@ -9,7 +9,7 @@ function generateRoutes(items) {
     if (item.path && item.view) {
       routes.push({
         path: item.path,
-        name: item.label.toLowerCase().replace(/\s+/g, ""),
+        name: item.label.toLowerCase().replace(/\s+/g, ''),
         component: item.view,
         meta: item.meta || {}
       });
@@ -31,12 +31,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = !!localStorage.getItem("token");
+  const isLoggedIn = !!localStorage.getItem('token');
 
-if (!isLoggedIn && to.path !== "/login") {
-  return next("/login");
-}
-next();
+  if (!isLoggedIn && to.path !== '/login') {
+    return next('/login');
+  }
+  next();
 });
 
 router.afterEach((to) => {

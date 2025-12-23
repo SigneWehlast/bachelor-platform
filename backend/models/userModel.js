@@ -1,4 +1,4 @@
-import { db } from "../app.js";
+import { db } from '../app.js';
 
 // Hent alle brugere
 export async function getUserData() {

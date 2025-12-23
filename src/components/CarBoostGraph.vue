@@ -1,20 +1,20 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
-import ApexCharts from "apexcharts";
-import { getHistoryCarboost } from "@/services/historyService";
+import { ref, watch, onMounted } from 'vue';
+import ApexCharts from 'apexcharts';
+import { getHistoryCarboost } from '@/services/historyService';
 
 const props = defineProps({
   selectedIds: {
     type: Array,
     default: () => []
   },
-  selectedMonth: { 
-    type: String, 
-    default: null 
+  selectedMonth: {
+    type: String,
+    default: null
   },
-  customers: { 
-    type: Array, 
-    default: () => [] 
+  customers: {
+    type: Array,
+    default: () => []
   }
 });
 
@@ -32,7 +32,7 @@ watch([history, () => props.selectedIds, () => props.selectedMonth], ([newHistor
     return;
   }
 
-  const [year, monthNum] = month ? month.split("-").map(Number) : [null, null];
+  const [year, monthNum] = month ? month.split('-').map(Number) : [null, null];
 
   const filteredHistory = newHistory
     .filter(h => ids.includes(h.id))
@@ -49,16 +49,16 @@ watch([history, () => props.selectedIds, () => props.selectedMonth], ([newHistor
   }
 
   const allDates = Array.from(
-    new Set(filteredHistory.map(h => new Date(h.archived_at).toLocaleDateString("da-DK")))
+    new Set(filteredHistory.map(h => new Date(h.archived_at).toLocaleDateString('da-DK')))
   ).sort((a,b) => new Date(a) - new Date(b));
 
   const series = ids.map(id => {
     const points = filteredHistory.filter(h => h.id === id);
     const customer = props.customers.find(c => c.id === id);
     const name = points.length ? points[0].name : (customer ? customer.name : `Navn ${id}`);
-    
+
     const data = allDates.map(date => {
-      const point = points.find(p => new Date(p.archived_at).toLocaleDateString("da-DK") === date);
+      const point = points.find(p => new Date(p.archived_at).toLocaleDateString('da-DK') === date);
       return point ? point.dif_leads : 0;
     });
 
@@ -66,20 +66,20 @@ watch([history, () => props.selectedIds, () => props.selectedMonth], ([newHistor
   });
 
   const options = {
-    chart: { type: "line", height: 350, toolbar: { show: true }, zoom: { enabled: false } },
+    chart: { type: 'line', height: 350, toolbar: { show: true }, zoom: { enabled: false } },
     series,
-    stroke: { curve: "smooth" },
+    stroke: { curve: 'smooth' },
     xaxis: { categories: allDates },
-    legend: { horizontalAlign: "left", showForSingleSeries: true }
+    legend: { horizontalAlign: 'left', showForSingleSeries: true }
   };
 
   if (chart) chart.destroy();
-  chart = new ApexCharts(document.querySelector("#chart"), options);
+  chart = new ApexCharts(document.querySelector('#chart'), options);
   chart.render();
 });
 </script>
 <template>
-  <div class="carboost-graph">
-    <div id="chart"></div>
+  <div class='carboost-graph'>
+    <div id='chart'></div>
   </div>
 </template>
