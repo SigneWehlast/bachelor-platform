@@ -20,6 +20,11 @@
             width: vars.$width-xxxl;
         }
     }
+    
+    &__topbar-text{
+        display: flex;
+        gap: vars.$spacing-gap-xs;
+    }
 }
 
 .recent-change {

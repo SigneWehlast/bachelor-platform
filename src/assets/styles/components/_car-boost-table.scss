@@ -76,4 +76,10 @@
             margin-left: vars.$spacing-margin-sm;
         }
     }
+
+    &__tooltip {
+        display: inline-flex;
+        align-items: center;
+        gap: vars.$spacing-gap-xs;
+      }
 }

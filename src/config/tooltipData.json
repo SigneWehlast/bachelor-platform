@@ -1,0 +1,17 @@
+{
+    "antal-biler": "Antallet af biler kunden har registret",
+    "totalBudget": "Kundens samltet budget",
+    "conversions": "Antalet at bløde konveteringer",
+    "saleConversions": "Antal salgs-konverteringer",
+    "budgetPerDay": "Viser budget pr. dag pr dag",
+    "conversionsPercent": "Andel i procent carboost er en del af.",
+    "customerChanges": "Senest kundeændringer",
+    "leads": "Antal leads genereret for denne kunde i går",
+    "leadsTotal": "Det samlede antal af leads denne måned",
+    "change": "Mangler tekst",
+    "trend": "Mangler tekst",
+    "status": "Mangler tekst",
+    "LastUpdated": "sidst opdatet text",
+    "periode": "Viser valgte periode"
+  }
+  
