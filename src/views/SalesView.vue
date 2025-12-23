@@ -206,107 +206,102 @@ watch(selectedMonth, async (newMonth) => {
 });
 </script>
 <template>
-  <div class="SalesView">
-    <div class="SalesView__topbar"> <h1>Salg</h1>
-
-    <div class="SalesView__buttons-wrapper">
-      <button v-if="showTable" class="SalesView__button-back" @click="goBack">Tilbage</button>
-      <button v-if="!showTable" class="SalesView__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
-      <button v-if="showTable" class="SalesView__button-anonymize" @click="anonymize">
-        <p v-if="!clicked">Anonymiser</p>
-        <p v-else="!confirm">Vis data</p>
-      </button>
+  <div class="sales-view">
+    <div class="sales-view__topbar"> 
+      <h1>Salg</h1>
+      <div class="sales-view__buttons-wrapper">
+        <button v-if="showTable" class="sales-view__button-back" @click="goBack">Tilbage</button>
+        <button v-if="!showTable" class="sales-view__button-next" :disabled="isButtonDisabled" @click="showCustomerData">Vis valgte</button>
+        <button v-if="showTable" class="sales-view__button-anonymize" @click="anonymize">
+          <p v-if="!clicked">Anonymiser</p>
+          <p v-else="!confirm">Vis data</p>
+        </button>
+      </div>
     </div>
-  </div>
-
-  <ConfirmationModal 
-  v-if="confirm" 
-  @yes="handleModalYes" 
-  @no="handleModalNo" 
-/>
-  <p class="regular settings-breadcrumbs"><BreadcrumbsComp /> </p>
-<!-- Før valgte kunder (false)-->
-  <div v-if="!showTable" class="SalesView__filter-section">
-    <Dropdown
-    :options="carsOptions"
-    label="Antal biler"
-    v-model="selectedCarsFilter"
-  />  
-  <SearchBar v-model="searchQuery" />
-</div>
-
-<!-- Efter valgte kunder (true) -->
-  <div v-if="showTable" class="SalesView__filter-section">
-    <Dropdown
-      :options="displayOptions"
-      label="Visning"
-      :disableOptions="['name', 'numberOfCars']"
-      v-model="visibleColumns"
-      multiple
-      :alwaysShowLabel="true"
+    <ConfirmationModal 
+      v-if="confirm" 
+      @yes="handleModalYes" 
+      @no="handleModalNo" 
     />
-    <CalendarComp v-model="selectedMonth" :hide-day-option="true" />
+    <p class="regular settings-breadcrumbs">
+      <BreadcrumbsComp /> 
+    </p>
+    <div v-if="!showTable" class="sales-view__filter-section">
+      <SearchBar v-model="searchQuery" />
+      <Dropdown
+      :options="carsOptions"
+      label="Antal biler"
+      v-model="selectedCarsFilter"
+    />  
+    </div>
+
+  <div v-if="showTable" class="sales-view__filter-section sales-view__filter-section__selected">
+    <div class="sales-view__filter-section__selected-dropdowns">
+      <Dropdown
+        :options="displayOptions"
+        label="Visning"
+        :disableOptions="['name', 'numberOfCars']"
+        v-model="visibleColumns"
+        multiple
+        :alwaysShowLabel="true"
+      />
+      <CalendarComp v-model="selectedMonth" :hide-day-option="true" />
+    </div>
     <ExportData />
   </div>
-    <!-- Ikke valgte kunder -->
-  <div v-if="!showTable" class="SalesView__wrapper"> 
-    <div class="SalesView__customer-list">
-      <div class="SalesView__controls">
+
+  <div v-if="!showTable" class="sales-view__wrapper"> 
+    <div class="sales-view__customer-list">
+      <div class="sales-view__controls">
         <p class="text-medium">Virksomheder</p>
-        <button class="SalesView__button" @click="selectAllCustomers">Vælg alle</button>
+        <button class="sales-view__button" @click="selectAllCustomers">Vælg alle</button>
       </div>
-
       <ul>
-  <li
-    v-for="item in filteredCustomers"
-    :key="item.id"
-    class="SalesView__customer-item h3"
-    @click="moveToSelected(item)"
-  >
-    {{ item.name }}
-  </li>
-</ul>
+        <li
+          v-for="item in filteredCustomers"
+          :key="item.id"
+          class="sales-view__customer-item h3"
+          @click="moveToSelected(item)"
+        >
+          {{ item.name }}
+        </li>
+      </ul>
     </div>
 
-    <!-- Valgte kunder -->
-    <div class="SalesView__customer-list SalesView__customer-list--selected">
-      <div class="SalesView__controls">
-      <p class="text-medium">Valgte kunder</p>
-      <button class="SalesView__button" @click="removeAllCustomers">Fjern alle</button>
+      <div class="sales-view__customer-list sales-view__customer-list--selected">
+        <div class="sales-view__controls">
+          <p class="text-medium">Valgte kunder</p>
+          <button class="sales-view__button" @click="removeAllCustomers">Fjern alle</button>
+        </div>
+        <ul>
+          <li
+            v-for="item in selectedCustomers"
+            :key="item.id"
+            class="sales-view__customer-item h3"
+            @click="moveToAvailable(item)"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
     </div>
-    <ul>
-  <li
-    v-for="item in selectedCustomers"
-    :key="item.id"
-    class="SalesView__customer-item h3"
-    @click="moveToAvailable(item)"
-  >
-    {{ item.name }}
-  </li>
-</ul>
+    <div class="sales-view__table-view">
+      <SaleTable
+        v-if="showTable"
+        :carsData="paginatedTableData"
+        v-model:showId="showId"
+        :visibleColumns="visibleColumns"
+        v-model="selectedMonth"
+      />
+      <div class="sales-view__pagination" v-if="showTable">  
+        <span>Viser side {{ selectedCurrentPage }} ud af {{ selectedTotalPages }}</span>
+        <div>
+          <button class="sales-view__pagination-button" @click="prevSelectedPage" :disabled="selectedCurrentPage === 1">Forrige</button>
+          <button class="sales-view__pagination-button" @click="nextSelectedPage" :disabled="selectedCurrentPage === selectedTotalPages">Næste</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-
-<div>
-  <SaleTable
-  v-if="showTable"
-  :carsData="paginatedTableData"
-  v-model:showId="showId"
-  :visibleColumns="visibleColumns"
-  v-model="selectedMonth"
-/>
-
-<div class="SalesView__pagination" v-if="showTable">  
-  <span>Viser side {{ selectedCurrentPage }} ud af {{ selectedTotalPages }}</span>
-  <div>
-    <button class="SalesView__pagination-button" @click="prevSelectedPage" :disabled="selectedCurrentPage === 1">Forrige</button>
-    <button class="SalesView__pagination-button" @click="nextSelectedPage" :disabled="selectedCurrentPage === selectedTotalPages">Næste</button>
-  </div>
-</div>
-
-
-</div>
 </template>
 
 

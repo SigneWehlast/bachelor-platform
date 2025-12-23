@@ -5,8 +5,15 @@
     flex-direction: column;
     gap: vars.$spacing-gap-md;
     width: 50%;
+    height: 100%;
 
     &__content {
         margin-top: vars.$spacing-margin-xs;
+        display: flex;
+        flex-grow: 1;
     }
+}
+
+html, body, #app {
+  height: 100%;
 }

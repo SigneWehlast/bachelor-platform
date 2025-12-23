@@ -2,6 +2,7 @@
 
 .view {
    display: flex;
+   height: 100vh;
   
    &__page {
        border: 0.0625rem solid vars.$border-color;
