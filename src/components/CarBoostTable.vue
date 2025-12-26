@@ -263,7 +263,7 @@ const periodLabel = computed(() => {
                       : 'ArrowUpThin'" 
               class="carboost-table__filter-icon"
             />
-            Tendens<Tooltip type="trend"/></div>
+            Tendens<Tooltip type="tendens"/></div>
           </th>
 
           <th class="carboost-table__filter-title">
@@ -292,7 +292,7 @@ const periodLabel = computed(() => {
           </th>
           <th class="carboost-table__filter-title">
             <div class="carboost-table__tooltip">
-            Tendens<Tooltip type="trend"/>
+            Tendens<Tooltip type="tendens"/>
             </div>
           </th>
           <th class="carboost-table__filter-title">
