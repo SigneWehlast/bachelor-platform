@@ -43,7 +43,8 @@ export async function getHistorySales(customerIds = []) {
 
     const data = Array.isArray(result) ? result : [];
     const grouped = {};
-    
+
+    // Normaliser valgte kunde-ID'er til tal
     const numericCustomerIds = customerIds
       .map(c => {
         if (typeof c === 'number') return c;
@@ -57,16 +58,14 @@ export async function getHistorySales(customerIds = []) {
     console.log('Valgte kunde-ID’er (normaliseret):', numericCustomerIds);
 
     data.forEach(h => {
-      if (!h.archived_at) return;
-
       const id = Number(h.customer_id);
 
       // Filtrér kun hvis der ER valgt kunder
-      if (numericCustomerIds.length > 0 && !numericCustomerIds.includes(id)) {
-        return;
-      }
+      if (numericCustomerIds.length > 0 && !numericCustomerIds.includes(id)) return;
 
-      const dateKey = h.archived_at.split('T')[0]; // YYYY-MM-DD
+      // Brug 'no-date' som fallback, hvis archived_at mangler
+      const hasHistory = !!h.archived_at;
+      const dateKey = hasHistory ? h.archived_at.split('T')[0] : 'no-date';
       const key = `${id}-${dateKey}`;
 
       if (!grouped[key]) {
@@ -77,9 +76,10 @@ export async function getHistorySales(customerIds = []) {
           totalBudget: h.total_budget || 0,
           leads: h.leads || 0,
           carboostConversions: h.carboost_conversions || 0,
-          archived_at: h.archived_at
+          archived_at: h.archived_at || null,
+          hasHistory
         };
-      } else {
+      } else if (hasHistory) {
         grouped[key].leads += h.leads || 0;
         grouped[key].carboostConversions += h.carboost_conversions || 0;
         grouped[key].totalBudget += h.total_budget || 0;
