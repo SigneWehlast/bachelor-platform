@@ -144,20 +144,40 @@ async function showCustomerData() {
 
   const selectedIds = selectedCustomers.value.map(c => c.id);
 
+  // Hvis ingen måned er valgt, hent normale kunder
   if (!selectedMonth.value) {
-    customerTableData.value = await getSelectedCustomers(selectedIds);
+    const data = await getSelectedCustomers(selectedIds);
+    console.log('Valgte kunder uden måned filter:', data);
+    customerTableData.value = data;
     show();
     return;
   }
 
+  // Hent historik for valgte kunder
   const { history } = await getHistorySales(selectedIds);
+  console.log('Rå history fra API:', history);
+
   const [selYear, selMonth] = selectedMonth.value.split('-').map(Number);
 
+  // Filtrer på måned
   const filtered = history.filter(item => {
-    if (!selectedIds.includes(item.id)) return false;
+    if (!selectedIds.includes(item.id)) {
+      console.warn(`Kunde ${item.customer_id} ikke i valgte kunder`);
+      return false;
+    }
+
+    if (!item.archived_at) {
+      console.warn(`Kunde ${item.customer_id} mangler archived_at`);
+      return true;
+    }
 
     const [year, month] = item.archived_at.split(' ')[0].split('-').map(Number);
-    return year === selYear && month === selMonth;
+    if (year !== selYear || month !== selMonth) {
+      console.log(`Kunde ${item.customer_id} har archived_at i forkert måned: ${item.archived_at}`);
+      return false;
+    }
+
+    return true;
   });
 
   const latestPerCustomer = {};
@@ -166,15 +186,20 @@ async function showCustomerData() {
     if (!current) {
       latestPerCustomer[item.id] = item;
     } else {
-      if (new Date(item.archived_at) > new Date(current.archived_at)) {
+      if (item.archived_at && new Date(item.archived_at) > new Date(current.archived_at)) {
         latestPerCustomer[item.id] = item;
       }
     }
   });
 
-  customerTableData.value = Object.values(latestPerCustomer);
+  const finalData = Object.values(latestPerCustomer);
+  console.log('Endelig customerTableData:', finalData);
+  console.table(finalData);
+
+  customerTableData.value = finalData;
   show();
 }
+
 
 onMounted(async () => {
   salesCustomers.value = await getCustomers();
