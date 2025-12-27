@@ -34,7 +34,7 @@
       .filter(h => h.id === props.customer.id)
       .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at));
   
-    // Find sidste dag i den valgte måned
+    // Find historik i den valgte måned
     const currentMonthHistory = allCustomerHistory
       .filter(h => {
         const d = new Date(h.archived_at);
@@ -47,24 +47,19 @@
       return;
     }
   
+    // Sidste dag i den valgte måned
     const lastDayCurrent = currentMonthHistory[currentMonthHistory.length - 1];
   
-    // Find sidste dag i forrige måned
-    const prevMonth = monthNum === 1 ? 12 : monthNum - 1;
-    const prevYear = monthNum === 1 ? year - 1 : year;
+    // Find seneste historik før starten af måneden
+    const firstDayOfCurrentMonth = new Date(year, monthNum - 1, 1);
+    const lastDayBeforeMonth = allCustomerHistory
+      .filter(h => new Date(h.archived_at) < firstDayOfCurrentMonth)
+      .pop(); // sidste historik før måneden
   
-    const prevMonthHistory = allCustomerHistory
-      .filter(h => {
-        const d = new Date(h.archived_at);
-        return d.getFullYear() === prevYear && (d.getMonth() + 1) === prevMonth;
-      });
+    const lastLeadsPrevMonth = lastDayBeforeMonth ? lastDayBeforeMonth.leads : 0;
   
-    const lastDayPrev = prevMonthHistory.length
-      ? prevMonthHistory[prevMonthHistory.length - 1]
-      : { leads: 0 };
-  
-    // Beregn måned-til-måned ændring
-    const monthChange = lastDayCurrent.leads - lastDayPrev.leads;
+    // Beregn korrekt måned-til-måned ændring
+    const monthChange = lastDayCurrent.leads - lastLeadsPrevMonth;
   
     customerData.value = [{
       id: props.customer.id,
@@ -89,6 +84,10 @@
       legend: { show: false }
     });
     chart.render();
+    console.log('Valgt måned:', selectedMonth.value);
+    console.log('Sidste dag i valgt måned:', lastDayCurrent);
+    console.log('Sidste dag før måneden:', lastDayBeforeMonth);
+    console.log('Beregn måned-til-måned ændring:', monthChange);
   };
   
   const tendensDown = computed(() => props.customer?.tendens === 'down');
@@ -105,7 +104,10 @@
     },
     { immediate: true }
   );
+
+
   </script>
+  
   
 <template>
   <div class='show-customer-carboost-modal'>
