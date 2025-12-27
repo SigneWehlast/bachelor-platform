@@ -80,7 +80,7 @@ export const getCustomersInCarboostChange = async (month) => {
         : `${year}-${String(mon - 1).padStart(2, '0')}`;
 
     const res = await fetch(
-      `${BASE_URL}/api/customer/carboost-change?month=${month}&prevMonth=${prevMonth}`
+      `${BASE_URL}/api/customer/carboost/change?month=${month}&prevMonth=${prevMonth}`
     );
 
     if (!res.ok) throw new Error('Server error');
