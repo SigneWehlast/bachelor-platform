@@ -56,7 +56,7 @@ export async function getHistorySales(customerIds = []) {
 
       if (numericCustomerIds.length > 0 && !numericCustomerIds.includes(id)) {
         console.warn(`Kunde ${id} blev filtreret væk`);
-        return;
+        // return;
       }
 
       const dateKey = h.archived_at.split('T')[0]; // Brug kun YYYY-MM-DD
