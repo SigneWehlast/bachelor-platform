@@ -1,4 +1,14 @@
 <script setup>
+import { getSettings, loadSettings } from '@/services/notificationService';
+import { onMounted, defineProps, ref, watch } from 'vue';
+
+const settings = getSettings();
+
+const props = defineProps({
+  saved: Boolean
+});
+
+onMounted(() => loadSettings());
 </script>
 <template>
     <div>
@@ -30,21 +40,21 @@
                     <h4>CarBoost</h4>
                     <div class='notification-settings__section-group'>
                         <div class='notification-settings__section-group__check'>
-                            <input type='checkbox' value='leads-down'>
+                            <input type='checkbox' v-model="settings['leads-down']">
                             <p class='regular'>Faldende antal i leads</p>
                         </div>
                         <p class='light'>Når denne funktion er slået til, modtager du notifikationer omkring faldende antal af leads blandt kunderne.</p>
                     </div>
                     <div class='notification-settings__section-group'>
                         <div class='notification-settings__section-group__check'>
-                            <input type='checkbox' value='leads-up'>
+                            <input type='checkbox' v-model="settings['leads-up']">
                             <p class='regular'>Stigende antal i leads</p>
                         </div>
                         <p class='light'>Når denne funktion er slået til, modtager du notifikationer omkring stigende antal af leads blandt kunderne.</p>
                     </div>
                     <div class='notification-settings__section-group'>
                         <div class='notification-settings__section-group__check'>
-                            <input type='checkbox' value='leads-stop'>
+                            <input type='checkbox' v-model="settings['leads-stop']">
                             <p class='regular'>Lead stop</p>
                         </div>
                         <p class='light'>Når denne funktion er slået til, modtager du notifikationer omkring stop i antal af leads blandt kunderne.</p>

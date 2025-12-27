@@ -4,6 +4,9 @@ import { useRouter } from 'vue-router';
 import Icon from '@/components/Icon.vue';
 import { fetchCustomerChanges } from '@/services/customerChangesService';
 
+const customers = ref([]);
+const newCustomers = ref([]);
+
 const router = useRouter();
 
 const emit = defineEmits(['close']);
@@ -17,8 +20,6 @@ const props = defineProps({
     required: true
   }
 });
-
-const newCustomers = ref([]);
 
 onMounted(async () => {
   const fetched = await fetchCustomerChanges();
@@ -44,7 +45,7 @@ const navigate = (customer) => {
   <div class='notification-comp'>
     <h3>Notifikationer</h3>
     <span class='notification-comp__line'></span>
-      <div v-if="allCustomers.lenght > 0">
+      <div v-if="allCustomers.length > 0 && notificationService.leadsEnabled">
       <div
         v-for='customer in allCustomers'
         :key='customer.id'

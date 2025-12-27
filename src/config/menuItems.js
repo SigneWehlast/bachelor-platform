@@ -68,7 +68,6 @@ export const menuItems = [
   },
   {
     label: 'Indstillinger',
-    path: '/settings',
     children: [
       {
         label: 'Diverse',

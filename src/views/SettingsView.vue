@@ -9,10 +9,9 @@ import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
            <h1>Indstillinger</h1>
            <button class='settings-topbar__btn'>Gem</button>
        </div>
-       <p class='regular settings-breadcrumbs'>  <BreadcrumbsComp/></p>
-       <div class='settings'>
-               <NotificationSettingsComp />
-       </div>
+       <p class='regular settings-breadcrumbs'>  
+        <BreadcrumbsComp/>
+      </p>
    </div>
 
 
