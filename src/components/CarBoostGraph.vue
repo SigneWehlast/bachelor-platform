@@ -1,7 +1,7 @@
 <script setup>
-  import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
-  import ApexCharts from 'apexcharts'
-  import { getHistoryCarboost } from '@/services/historyService'
+  import { ref, watch, onMounted } from 'vue';
+  import ApexCharts from 'apexcharts';
+  import { getHistoryCarboost } from '@/services/historyService';
   
   const props = defineProps({
     selectedIds: {
@@ -16,105 +16,70 @@
       type: Array,
       default: () => []
     }
-  })
+  });
   
-  const history = ref([])
-  let chart = null
+  const history = ref([]);
+  let chart = null;
   
   onMounted(async () => {
-    const result = await getHistoryCarboost()
-    history.value = result.history || []
-  })
+    const result = await getHistoryCarboost();
+    history.value = result.history || [];
+  });
   
-  onBeforeUnmount(() => {
-    if (chart) chart.destroy()
-  })
+  watch([history, () => props.selectedIds, () => props.selectedMonth], ([newHistory, ids, month]) => {
+    if (!newHistory.length || !ids.length) {
+      if (chart) chart.destroy();
+      return;
+    }
   
-  watch(
-    [history, () => props.selectedIds, () => props.selectedMonth, () => props.customers],
-    ([newHistory, ids, month]) => {
-      if (!newHistory.length || !ids.length) return
+    const [year, monthNum] = month ? month.split('-').map(Number) : [null, null];
   
-      const [year, monthNum] = month
-        ? month.split('-').map(Number)
-        : [null, null]
-  
-      const filteredHistory = newHistory
-        .filter(h => ids.includes(h.id))
-        .filter(h => {
-          if (!year || !monthNum) return true
-          const d = new Date(h.archived_at)
-          return (
-            d.getFullYear() === year &&
-            d.getMonth() + 1 === monthNum
-          )
-        })
-        .sort(
-          (a, b) =>
-            new Date(a.archived_at) - new Date(b.archived_at)
-        )
-  
-      if (!filteredHistory.length) return
-  
-      const allDates = [
-        ...new Set(
-          filteredHistory.map(h =>
-            new Date(h.archived_at).toLocaleDateString('da-DK')
-          )
-        )
-      ]
-  
-      const series = ids.map(id => {
-        const points = filteredHistory.filter(h => h.id === id)
-        const customer = props.customers.find(c => c.id === id)
-  
-        return {
-          name: customer?.name || points[0]?.name || `Navn ${id}`,
-          data: allDates.map(date => {
-            const p = points.find(
-              h =>
-                new Date(h.archived_at).toLocaleDateString('da-DK') === date
-            )
-            return p ? p.dif_leads : 0
-          })
-        }
+    const filteredHistory = newHistory
+      .filter(h => ids.includes(h.id))
+      .filter(h => {
+        if (!year || !monthNum) return true;
+        const d = new Date(h.archived_at);
+        return d.getFullYear() === year && (d.getMonth() + 1) === monthNum;
       })
+      .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at));
   
-      const options = {
-        chart: {
-          type: 'line',
-          height: 350,
-          toolbar: { show: true },
-          zoom: { enabled: false }
-        },
-        stroke: { curve: 'smooth', width: 2 },
-        xaxis: { categories: allDates },
-        legend: {
-          show: true,
-          showForSingleSeries: false
-        }
-      }
+    if (!filteredHistory.length) {
+      if (chart) chart.destroy();
+      return;
+    }
   
-      if (!chart) {
-        chart = new ApexCharts(
-          document.querySelector('#chart'),
-          { ...options, series }
-        )
-        chart.render()
-      } else {
-        chart.updateOptions(
-          { ...options, series },
-          true,
-          true
-        )
-      }
-    },
-    { immediate: true }
-  )
+    const allDates = Array.from(
+      new Set(filteredHistory.map(h => new Date(h.archived_at).toLocaleDateString('da-DK')))
+    ).sort((a,b) => new Date(a) - new Date(b));
+  
+    const series = ids.map(id => {
+      const points = filteredHistory.filter(h => h.id === id);
+      const customer = props.customers.find(c => c.id === id);
+      const name = points.length ? points[0].name : (customer ? customer.name : `Navn ${id}`);
+  
+      const data = allDates.map(date => {
+        const point = points.find(p => new Date(p.archived_at).toLocaleDateString('da-DK') === date);
+        return point ? point.dif_leads : 0;
+      });
+  
+      return { name, data };
+    });
+  
+    const options = {
+      chart: { type: 'line', height: 350, toolbar: { show: true }, zoom: { enabled: false } },
+      series,
+      stroke: { curve: 'smooth' },
+      xaxis: { categories: allDates },
+      legend: { horizontalAlign: 'left', showForSingleSeries: true }
+    };
+  
+    if (chart) chart.destroy();
+    chart = new ApexCharts(document.querySelector('#chart'), options);
+    chart.render();
+  });
   </script>
-  
   <template>
-    <div class="carboost-graph">
-      <div id="chart"></div>
+    <div class='carboost-graph'>
+      <div id='chart'></div>
     </div>
   </template>  

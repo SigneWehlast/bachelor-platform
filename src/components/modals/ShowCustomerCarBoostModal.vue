@@ -106,7 +106,11 @@ watch(
               <p class='text-regular show-customer-carboost-modal__topbar-alert__text'>OBS. tendens er faldende</p>
           </div>
         </div>
-        <CarBoostGraph />
+        <CarBoostGraph
+          :selectedIds="[customer?.id]"
+          :selectedMonth="selectedMonth"
+          :customers="[customer]"
+        />
         <p class='text-regular show-customer-carboost-modal__last-updated'>
           Sidst opdateret: {{ customerData[0]?.last_updated ? new Date(customerData[0].last_updated).toLocaleDateString('da-DK') : '-' }}
         </p>
