@@ -31,37 +31,52 @@ const fetchCustomerData = () => {
 
   const customerHistory = history.value
     .filter(h => h.id === props.customer.id)
+    .sort((a,b) => new Date(a.archived_at) - new Date(b.archived_at));
+
+  // Find sidste dag i den valgte måned
+  const currentMonthHistory = customerHistory
     .filter(h => {
       const d = new Date(h.archived_at);
       return d.getFullYear() === year && (d.getMonth() + 1) === monthNum;
     });
 
-  if (!customerHistory.length) {
+  if (!currentMonthHistory.length) {
     customerData.value = [];
     if(chart) chart.destroy();
     return;
   }
 
-  const lastDay = customerHistory
-    .sort((a, b) => new Date(b.archived_at) - new Date(a.archived_at))[0];
+  const lastDayCurrent = currentMonthHistory[currentMonthHistory.length - 1];
+
+  // Find sidste dag i forrige måned
+  const prevMonth = monthNum === 1 ? 12 : monthNum - 1;
+  const prevYear = monthNum === 1 ? year - 1 : year;
+
+  const prevMonthHistory = customerHistory
+    .filter(h => {
+      const d = new Date(h.archived_at);
+      return d.getFullYear() === prevYear && (d.getMonth() + 1) === prevMonth;
+    });
+
+  const lastDayPrev = prevMonthHistory.length
+    ? prevMonthHistory[prevMonthHistory.length - 1]
+    : { leads: 0 };
+
+  // Beregn måned-til-måned ændring
+  const monthChange = lastDayCurrent.leads - lastDayPrev.leads;
 
   customerData.value = [{
     id: props.customer.id,
     name: props.customer.name,
-    leads: lastDay.leads,
-    change: lastDay.change || 0,
-    tendens: lastDay.leads > 0 ? 'up' : lastDay.leads < 0 ? 'down' : '-',
+    leads: lastDayCurrent.leads,
+    change: monthChange,
+    tendens: monthChange > 0 ? 'up' : monthChange < 0 ? 'down' : '-',
     period: new Date(selectedMonth.value + '-01').toLocaleDateString('da-DK', { month: 'long', year: 'numeric' }),
-    last_updated: lastDay.archived_at
+    last_updated: lastDayCurrent.archived_at
   }];
 
-  const dates = customerHistory
-    .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at))
-    .map(p => new Date(p.archived_at).toLocaleDateString('da-DK'));
-
-  const data = customerHistory
-    .sort((a, b) => new Date(a.archived_at) - new Date(b.archived_at))
-    .map(p => p.dif_leads);
+  const dates = currentMonthHistory.map(p => new Date(p.archived_at).toLocaleDateString('da-DK'));
+  const data = currentMonthHistory.map(p => p.dif_leads);
 
   if(chart) chart.destroy();
   chart = new ApexCharts(document.querySelector('#chart'), {
