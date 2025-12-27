@@ -52,10 +52,11 @@ onMounted(() => {
         </span>
         <div class='administration__buttons'>
           <button
-            v-for='child in children'
-            :key='child.path'
-            class='administration__button'
-            @click='goTo(child.path)'
+            v-for="child in children"
+            :key="child.path || child.label"
+            class="administration__button"
+            :disabled="!child.path"
+            @click="child.path && goTo(child.path)"
           >
             <Icon
               v-if='child.iconAdministration'
