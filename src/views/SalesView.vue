@@ -273,9 +273,12 @@ watch(selectedMonth, async () => {
       />
       <CalendarComp v-model='selectedMonth' :hide-day-option='true' />
     </div>
-    <ExportData />
+    <ExportData
+      :tableData="paginatedTableData"
+      :visibleColumns="visibleColumns"
+      :showId="showId"
+    />
   </div>
-
   <div v-if='!showTable' class='sales-view__wrapper'>
     <div class='sales-view__customer-list'>
       <div class='sales-view__controls'>

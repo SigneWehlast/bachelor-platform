@@ -14,7 +14,7 @@
     width: fit-content;
     overflow-y: auto;
     z-index: 999;    
-    padding: 6px;
+    padding: vars.$spacing-padding-xs;
 
     &__list {
         list-style: none;
@@ -22,7 +22,7 @@
         &-item {
             display: flex;
             flex-direction: row;
-            padding: 6px 0;
+            padding: vars.$spacing-padding-xs 0;
 
             &:hover {
                 background-color: vars.$bg-ultra-light-gray;
@@ -50,5 +50,10 @@
         height: vars.$spacing-margin-xxxs;
         background-color: vars.$bg-light-gray;
         margin: vars.$spacing-margin-xxs 0;
+    }
+
+    &__empty {
+        padding: vars.$spacing-padding-xs 0;
+        min-width: vars.$width-xxxxxl;
     }
 }
