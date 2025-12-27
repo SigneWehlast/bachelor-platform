@@ -110,6 +110,7 @@ watch(
           :selectedIds="[customer?.id]"
           :selectedMonth="selectedMonth"
           :customers="[customer]"
+          :history="history"
         />
         <p class='text-regular show-customer-carboost-modal__last-updated'>
           Sidst opdateret: {{ customerData[0]?.last_updated ? new Date(customerData[0].last_updated).toLocaleDateString('da-DK') : '-' }}
