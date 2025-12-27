@@ -39,25 +39,29 @@ export async function getHistorySales(customerIds = []) {
     const res = await fetch(`${BASE_URL}/api/history/sales`);
     const result = await res.json();
 
-    console.log('Raw data fra API:', result); // tjek om der overhovedet kommer data
+    console.log('Raw data fra API:', result); // Tjek om API'en overhovedet sender data
 
     const data = Array.isArray(result) ? result : [];
     const grouped = {};
 
+    // Konverter customerIds til tal for sikker sammenligning
+    const numericCustomerIds = customerIds.map(Number);
+
     data.forEach(h => {
-      if (!h.archived_at) return;
-    
-      const id = h.customer_id;
-      console.log('Checking customer:', id, 'selectedIds:', customerIds);
-    
-      if (customerIds.length > 0 && !customerIds.includes(id)) {
+      if (!h.archived_at) return; // Spring over uden dato
+
+      const id = Number(h.customer_id);
+
+      console.log('Checking customer:', id, 'selectedIds:', numericCustomerIds);
+
+      if (numericCustomerIds.length > 0 && !numericCustomerIds.includes(id)) {
         console.warn(`Kunde ${id} blev filtreret væk`);
         return;
       }
-    
-      const dateKey = h.archived_at.split('T')[0];
+
+      const dateKey = h.archived_at.split('T')[0]; // Brug kun YYYY-MM-DD
       const key = `${id}-${dateKey}`;
-    
+
       if (!grouped[key]) {
         grouped[key] = {
           id,
@@ -74,7 +78,7 @@ export async function getHistorySales(customerIds = []) {
         grouped[key].totalBudget += h.total_budget || 0;
         grouped[key].numberOfCars += h.number_of_cars || 0;
       }
-    });    
+    });
 
     const history = Object.values(grouped).map(h => ({
       ...h,
@@ -86,8 +90,9 @@ export async function getHistorySales(customerIds = []) {
         : 0
     }));
 
-    console.log('Grouped historik klar:', history); // tjek slutresultatet
+    console.log('Grouped historik klar:', history);
     return { history, totalCount: history.length };
+
   } catch (err) {
     console.error('Fejl ved hentning af salgshistorik:', err);
     return { history: [], totalCount: 0 };
