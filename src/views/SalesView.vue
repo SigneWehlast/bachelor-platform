@@ -155,6 +155,7 @@ async function showCustomerData() {
 
   // Hent historik for valgte kunder
   const { history } = await getHistorySales(selectedIds);
+  console.log('Selected IDs:', selectedIds);
   console.log('Rå history fra API:', history);
 
   const [selYear, selMonth] = selectedMonth.value.split('-').map(Number);

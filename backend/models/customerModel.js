@@ -83,6 +83,7 @@ export async function getCustomersByDate(month) {
     WHERE c.customer_name IS NOT NULL
     ORDER BY c.customer_name ASC;
   `, [month]);
+  console.log('getCustomersByDate - month:', month, 'rows:', rows);
   return rows;
 }
 
