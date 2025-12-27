@@ -1,0 +1,34 @@
+@use '../abstracts/variables' as vars;
+
+.tooltip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  &__icon {
+    width: vars.$icon-size-sm;
+    height: vars.$icon-size-sm;;
+    cursor: pointer;
+    color: vars.$btn-color-hover;
+  }
+
+  &__text {
+    position: fixed;
+    z-index: 9999;
+    background: vars.$btn-color-dark;
+    color: vars.$white;
+    padding: vars.$spacing-padding-xs vars.$spacing-padding-sm;
+    border-radius: vars.$border-radius-sm;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: vars.$border-width-xs;
+      border-style: solid;
+      border-color: vars.$btn-color-hover transparent transparent transparent;
+    }
+  }
+}

@@ -20,4 +20,9 @@
             text-align: center;
         }
     }
+    &__tooltip {
+        display: inline-flex;
+        align-items: center;
+        gap: vars.$spacing-gap-xs;
+      }
 }

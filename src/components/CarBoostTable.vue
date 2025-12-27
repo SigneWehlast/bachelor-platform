@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted, computed, defineEmits, watch  } from 'vue';
 import BaseTable from './BaseTable.vue';
-import { getCustomersInCarboost, getCustomersInCarboostByDate, getCustomersInCarboostChange } from '@/services/carboostService';
-import Icon from '@/components/Icon.vue';
-import ShowCustomerCarBoostModal from './modals/ShowCustomerCarBoostModal.vue';
-import { useSearchFilter } from '@/utils/searchFilter';
-import { usePagination } from '@/utils/pagination';
+import { getCustomersInCarboost, getCustomersInCarboostByDate, getCustomersInCarboostChange } from "@/services/carboostService";
+import Icon from "@/components/Icon.vue";
+import ShowCustomerCarBoostModal from "./modals/ShowCustomerCarBoostModal.vue";
+import { useSearchFilter } from "@/utils/searchFilter";
+import { usePagination } from "@/utils/pagination";
+import Tooltip from "@/components/Tooltip.vue";
 
 const carboostCustomers = ref([]);
 const selectedIds = ref([]);
@@ -220,8 +221,9 @@ const periodLabel = computed(() => {
   <div class='carboost-table'>
     <BaseTable>
       <template #header>
-        <template v-if='!props.tableInModal'>
-          <th @click='sortBy("name")' class='carboost-table__filter-title-name carboost-table__text--leftalign'>
+        <template v-if="!props.tableInModal">
+
+          <th @click="sortBy('name')" class="carboost-table__filter-title-name carboost-table__text--leftalign">
             <Icon
               :name="sortTableBy === 'name'
                       ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin')
@@ -230,50 +232,75 @@ const periodLabel = computed(() => {
             />
             Kundenavn
           </th>
-          <th @click='sortBy("leads")' class='carboost-table__filter-title'>
+
+          <th @click="sortBy('leads')" class="carboost-table__filter-title">
+            <div class="carboost-table__tooltip">
             <Icon
-              :name="sortTableBy === 'leads'
-                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin')
-                      : 'ArrowUpThin'"
-              class='carboost-table__filter-icon'
-            />
-            Leads
-          </th>
-          <th v-if='props.visibleColumns.includes("change")' @click='sortBy("change")' class='carboost-table__filter-title'>
+              :name="sortTableBy === 'leads' 
+                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
+                      : 'ArrowUpThin'" 
+              class="carboost-table__filter-icon"
+            />          
+            Leads<Tooltip type="leads"/></div>
+          </th> 
+
+          <th v-if="props.visibleColumns.includes('change')" @click="sortBy('change')" class="carboost-table__filter-title">
+            <div class="carboost-table__tooltip">
             <Icon
-              :name="sortTableBy === 'change'
-                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin')
-                      : 'ArrowUpThin'"
-              class='carboost-table__filter-icon'
-            />
-            Ændring
+              :name="sortTableBy === 'change' 
+                      ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin') 
+                      : 'ArrowUpThin'" 
+              class="carboost-table__filter-icon"
+            />          
+            Ændring<Tooltip type="change"/></div>
           </th>
-          <th @click='sortBy("tendens")' class='carboost-table__filter-title'>
+
+          <th @click="sortBy('tendens')" class="carboost-table__filter-title">
+            <div class="carboost-table__tooltip">
             <Icon
               :name="sortTableBy === 'tendens'
                       ? (sortDirection === 'asc' ? 'ArrowUpThin' : 'ArrowDownThin')
                       : 'ArrowUpThin'"
               class='carboost-table__filter-icon'
             />
-            Tendens
+            Tendens<Tooltip type="tendens"/></div>
           </th>
-          <th class='carboost-table__filter-title'>Status</th>
-          <th v-if='props.visibleColumns.includes("lastUpdated")' class='carboost-table__text--leftalign carboost-table__filter-title'>Sidst opdateret</th>
+
+          <th class="carboost-table__filter-title">
+            <div class="carboost-table__tooltip">
+            Status<Tooltip type="status"/>
+          </div>
+          </th>
+          <th v-if="props.visibleColumns.includes('lastUpdated')" class="carboost-table__text--leftalign carboost-table__filter-title">Sidst opdateret</th>
+
         </template>
         <template v-else>
-          <th class='carboost-table__filter-title carboost-table__text--leftalign'>
-            Periode
+          <th class="carboost-table__filter-title carboost-table__text--leftalign">
+            <div class="carboost-table__tooltip">
+              Periode<Tooltip type="periode"/>
+            </div> 
           </th>
-          <th class='carboost-table__filter-title'>
-            Leads
+          <th class="carboost-table__filter-title">   
+            <div class="carboost-table__tooltip">      
+            Leads<Tooltip type="leadsTotal"/>
+            </div>
           </th>
-          <th class='carboost-table__filter-title'>
-            Ændring
+          <th class="carboost-table__filter-title">
+            <div class="carboost-table__tooltip">
+            Ændring<Tooltip type="change"/>
+            </div>
           </th>
-          <th class='carboost-table__filter-title'>
-            Tendens
+          <th class="carboost-table__filter-title">
+            <div class="carboost-table__tooltip">
+            Tendens<Tooltip type="tendens"/>
+            </div>
           </th>
-          <th>Status</th>
+          <th class="carboost-table__filter-title">
+        <div class="carboost-table__tooltip">
+          Status
+          <Tooltip type="status"/>
+        </div>
+      </th>
         </template>
       </template>
       <template #rows>
@@ -288,9 +315,9 @@ const periodLabel = computed(() => {
               />
               <p @click='openModalWithCustomer(item)'> {{ item.name }} </p>
             </td>
-            <td class='carboost-table__text--center'>{{ item.leads }}</td>
-            <td v-if='props.visibleColumns.includes("change")' class='carboost-table__text--center'>
-              {{ item.change ?? '-' }}
+            <td class="carboost-table__text--center">{{ item.leads }}</td> 
+            <td v-if="props.visibleColumns.includes('change')" class="carboost-table__text--center">
+              {{ item.change ?? "-" }}
             </td>
             <td class='carboost-table__text--center'>
               <Icon
