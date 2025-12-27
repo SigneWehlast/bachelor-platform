@@ -18,7 +18,7 @@ router.get('/carboost', getCarboostList);
 router.get('/changes', getCustomerChanges);
 router.get('/customers-in-groups', getCustomersInGroups);
 router.get('/stats', getCustomerStats);
-router.get('/carboost/date', getCustomersByDate);
+router.get('/carboost-date', getCustomersByDate);
 router.get('/carboost-change', getCustomersCarboostChange);
 
 export default router;
