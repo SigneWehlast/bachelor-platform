@@ -46,18 +46,18 @@ export async function getHistorySales(customerIds = []) {
 
     data.forEach(h => {
       if (!h.archived_at) return;
-
+    
       const id = h.customer_id;
-
+      console.log('Checking customer:', id, 'selectedIds:', customerIds);
+    
       if (customerIds.length > 0 && !customerIds.includes(id)) {
-        console.warn(`Kunde ${id} blev filtreret væk fordi den ikke er i valgte IDs`, customerIds);
+        console.warn(`Kunde ${id} blev filtreret væk`);
         return;
       }
-
-      // Brug ISO-streng (YYYY-MM-DD) for konsistent nøgle
-      const dateKey = h.archived_at.split('T')[0]; // tager kun datoen uden tid
+    
+      const dateKey = h.archived_at.split('T')[0];
       const key = `${id}-${dateKey}`;
-
+    
       if (!grouped[key]) {
         grouped[key] = {
           id,
@@ -74,7 +74,7 @@ export async function getHistorySales(customerIds = []) {
         grouped[key].totalBudget += h.total_budget || 0;
         grouped[key].numberOfCars += h.number_of_cars || 0;
       }
-    });
+    });    
 
     const history = Object.values(grouped).map(h => ({
       ...h,
