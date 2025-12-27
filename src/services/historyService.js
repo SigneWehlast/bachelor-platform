@@ -39,27 +39,34 @@ export async function getHistorySales(customerIds = []) {
     const res = await fetch(`${BASE_URL}/api/history/sales`);
     const result = await res.json();
 
-    console.log('Raw data fra API:', result); // Tjek om API'en overhovedet sender data
+    console.log('Raw data fra API:', result);
 
     const data = Array.isArray(result) ? result : [];
     const grouped = {};
+    
+    const numericCustomerIds = customerIds
+      .map(c => {
+        if (typeof c === 'number') return c;
+        if (typeof c === 'string') return Number(c);
+        if (typeof c === 'object') return c.id ?? c.customer_id;
+        return null;
+      })
+      .map(Number)
+      .filter(Number.isFinite);
 
-    // Konverter customerIds til tal for sikker sammenligning
-    const numericCustomerIds = customerIds.map(Number);
+    console.log('Valgte kunde-ID’er (normaliseret):', numericCustomerIds);
 
     data.forEach(h => {
-      if (!h.archived_at) return; // Spring over uden dato
+      if (!h.archived_at) return;
 
       const id = Number(h.customer_id);
 
-      console.log('Checking customer:', id, 'selectedIds:', numericCustomerIds);
-
+      // Filtrér kun hvis der ER valgt kunder
       if (numericCustomerIds.length > 0 && !numericCustomerIds.includes(id)) {
-        console.warn(`Kunde ${id} blev filtreret væk`);
-        // return;
+        return;
       }
 
-      const dateKey = h.archived_at.split('T')[0]; // Brug kun YYYY-MM-DD
+      const dateKey = h.archived_at.split('T')[0]; // YYYY-MM-DD
       const key = `${id}-${dateKey}`;
 
       if (!grouped[key]) {
@@ -91,6 +98,7 @@ export async function getHistorySales(customerIds = []) {
     }));
 
     console.log('Grouped historik klar:', history);
+
     return { history, totalCount: history.length };
 
   } catch (err) {
