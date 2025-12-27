@@ -1,14 +1,15 @@
 import { sortByName } from '@/utils/sort';
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const API_URL = import.meta.env.VITE_API_URL
+
 
 export async function getCustomersInCarboost(page = 1, limit = 10) {
   try {
-    const resCustomers = await fetch(`${BASE_URL}/api/customer/carboost?page=${page}&limit=${limit}`);
+    const resCustomers = await fetch(`${API_URL}/api/customer/carboost?page=${page}&limit=${limit}`);
     const resultCustomers = await resCustomers.json();
     const customersData = resultCustomers.data;
     const totalCount = resultCustomers.totalCount;
 
-    const resHistory = await fetch(`${BASE_URL}/api/history/carboost/table`);
+    const resHistory = await fetch(`${API_URL}/api/history/carboost/table`);
     const historyData = await resHistory.json();
 
     const customers = customersData
@@ -45,7 +46,7 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
 
 export const getCustomersInCarboostByDate = async (month) => {
   try {
-    const res = await fetch(`${BASE_URL}/api/customer/carboost/date?month=${month}`);
+    const res = await fetch(`${API_URL}/api/customer/carboost/date?month=${month}`);
     if (!res.ok) throw new Error('Server error');
     const data = await res.json();
     const rows = data || [];
@@ -79,7 +80,7 @@ export const getCustomersInCarboostChange = async (month) => {
         : `${year}-${String(mon - 1).padStart(2, '0')}`;
 
     const res = await fetch(
-      `${BASE_URL}/api/customer/carboost/change?month=${month}&prevMonth=${prevMonth}`
+      `${API_URLL}/api/customer/carboost/change?month=${month}&prevMonth=${prevMonth}`
     );
 
     if (!res.ok) throw new Error('Server error');
