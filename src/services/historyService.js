@@ -1,4 +1,5 @@
 const BASE_URL = import.meta.env.VITE_BASE_URL;
+import { getCustomerStats } from './customerStatsService';
 
 export async function getHistoryCarboost() {
   try {
@@ -38,34 +39,22 @@ export async function getHistorySales(customerIds = []) {
   try {
     const res = await fetch(`${BASE_URL}/api/history/sales`);
     const result = await res.json();
+    const historyData = Array.isArray(result) ? result : [];
 
-    console.log('Raw data fra API:', result);
+    // Normaliser valgte kunde-IDs
+    const numericCustomerIds = customerIds.map(c => Number(c)).filter(Number.isFinite);
 
-    const data = Array.isArray(result) ? result : [];
+    // Hent alle kunder for at få name og id
+    const allCustomers = await getCustomerStats();
+
     const grouped = {};
 
-    // Normaliser valgte kunde-ID'er til tal
-    const numericCustomerIds = customerIds
-      .map(c => {
-        if (typeof c === 'number') return c;
-        if (typeof c === 'string') return Number(c);
-        if (typeof c === 'object') return c.id ?? c.customer_id;
-        return null;
-      })
-      .map(Number)
-      .filter(Number.isFinite);
-
-    console.log('Valgte kunde-ID’er (normaliseret):', numericCustomerIds);
-
-    data.forEach(h => {
+    // Først fyld historik
+    historyData.forEach(h => {
       const id = Number(h.customer_id);
-
-      // Filtrér kun hvis der ER valgt kunder
       if (numericCustomerIds.length > 0 && !numericCustomerIds.includes(id)) return;
 
-      // Brug 'no-date' som fallback, hvis archived_at mangler
-      const hasHistory = !!h.archived_at;
-      const dateKey = hasHistory ? h.archived_at.split('T')[0] : 'no-date';
+      const dateKey = h.archived_at ? h.archived_at.split('T')[0] : 'no-date';
       const key = `${id}-${dateKey}`;
 
       if (!grouped[key]) {
@@ -77,27 +66,34 @@ export async function getHistorySales(customerIds = []) {
           leads: h.leads || 0,
           carboostConversions: h.carboost_conversions || 0,
           archived_at: h.archived_at || null,
-          hasHistory
+          hasHistory: !!h.archived_at
         };
-      } else if (hasHistory) {
-        grouped[key].leads += h.leads || 0;
-        grouped[key].carboostConversions += h.carboost_conversions || 0;
-        grouped[key].totalBudget += h.total_budget || 0;
-        grouped[key].numberOfCars += h.number_of_cars || 0;
+      }
+    });
+
+    // Tilføj kunder uden historik
+    numericCustomerIds.forEach(id => {
+      const exists = Object.values(grouped).some(g => g.id === id);
+      if (!exists) {
+        const customer = allCustomers.find(c => c.id === id);
+        grouped[`${id}-no-date`] = {
+          id,
+          name: customer?.name || `Kunde ${id}`,
+          numberOfCars: customer?.numberOfCars || 0,
+          totalBudget: customer?.totalBudget || 0,
+          leads: customer?.leads || 0,
+          carboostConversions: customer?.carboostConversions || 0,
+          archived_at: null,
+          hasHistory: false
+        };
       }
     });
 
     const history = Object.values(grouped).map(h => ({
       ...h,
-      budgetPerDay: h.numberOfCars > 0
-        ? Number((h.totalBudget / (h.numberOfCars * 30)).toFixed(1))
-        : 0,
-      conversionPercent: h.leads > 0
-        ? Number(((h.carboostConversions / h.leads) * 100).toFixed(1))
-        : 0
+      budgetPerDay: h.numberOfCars > 0 ? Number((h.totalBudget / (h.numberOfCars * 30)).toFixed(1)) : 0,
+      conversionPercent: h.leads > 0 ? Number(((h.carboostConversions / h.leads) * 100).toFixed(1)) : 0
     }));
-
-    console.log('Grouped historik klar:', history);
 
     return { history, totalCount: history.length };
 
