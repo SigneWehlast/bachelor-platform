@@ -63,10 +63,12 @@ export const menuItems = [
     ]
   },
   {
-    label: 'Produkter'
+    label: 'Produkter',
+    path: '/products'
   },
   {
     label: 'Indstillinger',
+    path: '/settings',
     children: [
       {
         label: 'Diverse',

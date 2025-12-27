@@ -6,6 +6,7 @@ function generateRoutes(items) {
   const routes = [];
 
   items.forEach(item => {
+    // Kun generer route hvis både path og view findes
     if (item.path && item.view) {
       routes.push({
         path: item.path,
@@ -15,7 +16,8 @@ function generateRoutes(items) {
       });
     }
 
-    if (item.children) {
+    // Kun recursivt, hvis children eksisterer og er et array
+    if (Array.isArray(item.children) && item.children.length > 0) {
       routes.push(...generateRoutes(item.children));
     }
   });
