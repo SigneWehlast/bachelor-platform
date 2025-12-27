@@ -39,6 +39,8 @@ export async function getHistorySales(customerIds = []) {
     const res = await fetch(`${BASE_URL}/api/history/sales`);
     const result = await res.json();
 
+    console.log('Raw data fra API:', result); // tjek om der overhovedet kommer data
+
     const data = Array.isArray(result) ? result : [];
     const grouped = {};
 
@@ -47,10 +49,14 @@ export async function getHistorySales(customerIds = []) {
 
       const id = h.customer_id;
 
-      if (customerIds.length > 0 && !customerIds.includes(id)) return;
+      if (customerIds.length > 0 && !customerIds.includes(id)) {
+        console.warn(`Kunde ${id} blev filtreret væk fordi den ikke er i valgte IDs`, customerIds);
+        return;
+      }
 
-      const date = new Date(h.archived_at).toLocaleDateString('da-DK');
-      const key = `${id}-${date}`;
+      // Brug ISO-streng (YYYY-MM-DD) for konsistent nøgle
+      const dateKey = h.archived_at.split('T')[0]; // tager kun datoen uden tid
+      const key = `${id}-${dateKey}`;
 
       if (!grouped[key]) {
         grouped[key] = {
@@ -80,6 +86,7 @@ export async function getHistorySales(customerIds = []) {
         : 0
     }));
 
+    console.log('Grouped historik klar:', history); // tjek slutresultatet
     return { history, totalCount: history.length };
   } catch (err) {
     console.error('Fejl ved hentning af salgshistorik:', err);
