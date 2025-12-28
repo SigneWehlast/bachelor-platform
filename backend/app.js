@@ -17,7 +17,10 @@ app.use(express.json());
 export const db = mysql.createPool(platformDb);
 
 app.use(cors({
-  origin: 'http://localhost:5173'
+  origin: [
+    'http://localhost:5173',
+    'https://bach.carads.io'
+  ]
 }));
 
 // Routes
