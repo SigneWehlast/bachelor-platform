@@ -20,8 +20,8 @@ function handleNo() {
       </div>
       <p>Er du sikker på, at du vil fjerne anonymisering?</p>
       <div class='confirmation-modal__buttons-wrapper'>
-        <button class='confirmation-modal__button' @click='handleNo'>Nej</button>
         <button class='confirmation-modal__button confirmation-modal__button--yes' @click='handleYes'>Ja</button>
+        <button class='confirmation-modal__button' @click='handleNo'>Nej</button>
       </div>
     </div>
   </div>
