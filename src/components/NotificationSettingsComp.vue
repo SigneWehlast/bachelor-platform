@@ -70,7 +70,7 @@ defineExpose({
                 <h4>Kundeændringer</h4>
                 <div class='notification-settings__section-group'>
                     <div class='notification-settings__section-group__check'>
-                        <input type='checkbox' value='new-customers'>
+                        <input type='checkbox' v-model="localSettings['new-customers']">
                         <p class='regular'>Nye kunder</p>
                     </div>
                     <p class='light'>Når denne funktion er slået til, modtager du notifikationer om nye kunder.</p>

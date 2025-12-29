@@ -37,7 +37,7 @@ onMounted(async () => {
 
 const filteredWarnings = computed(() =>
   customers.value.filter(
-    c => c.isRecent || matchesNotificationSettings(c, settings)
+    c => c.isRecent && settings['new-customers'] || matchesNotificationSettings(c, settings)
   )
 );
 

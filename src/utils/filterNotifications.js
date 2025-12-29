@@ -1,5 +1,5 @@
 export function matchesNotificationSettings(customer, settings) {
-  if (customer.isRecent) return true;
+  if (customer.isRecent && settings['new-customers']) return true;
 
   const yesterday = customer.yesterdays_dif;
   const today = customer.todays_dif;

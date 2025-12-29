@@ -3,7 +3,8 @@ import { reactive } from 'vue';
 const settings = reactive({
   'leads-down': true,
   'leads-up': true,
-  'leads-stop': true
+  'leads-stop': true,
+  'new-customers': true
 });
 
 export function getSettings() {
