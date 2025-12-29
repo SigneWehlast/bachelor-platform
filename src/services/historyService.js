@@ -19,7 +19,7 @@ export async function getHistoryCarboost() {
           name: item.customer_name,
           dif_leads: 0,
           archived_at: item.archived_at
-        }; 
+        };
       }
       grouped[key].dif_leads += item.dif_leads;
     });

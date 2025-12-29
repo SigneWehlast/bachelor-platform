@@ -1,8 +1,7 @@
 <script setup>
-import { defineProps, defineEmits, ref, watch, onMounted, computed } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import Icon from '@/components/Icon.vue';
 import CalendarComp from '../filter/CalendarComp.vue';
-import ExportData from '../filter/ExportData.vue';
 import ApexCharts from 'apexcharts';
 import CarBoostTable from '../CarBoostTable.vue';
 import { getHistoryCarboost } from '@/services/historyService';
@@ -98,8 +97,7 @@ watch(
               <h1 class='show-customer-carboost-modal__topbar-title'>{{ customer?.name }}</h1>
           </div>
           <div class='show-customer-carboost-modal__topbar-dropdowns'>
-              <CalendarComp v-model='selectedMonth' :hide-day-option='true' />
-              <ExportData />
+            <CalendarComp v-model='selectedMonth' :hide-day-option='true' />
           </div>
           <div v-if='tendensDown' class='show-customer-carboost-modal__topbar-alert'>
               <Icon name='Alert' class='show-customer-carboost-modal__topbar-alert__icon' />

@@ -26,10 +26,11 @@ const props = defineProps({
   },
   alwaysShowLabel: {
     type: Boolean,
-    default: false }
+    default: false
+  }
 });
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'select']);
 const open = ref(false);
 
 function toggle() {
@@ -49,18 +50,15 @@ function select(option) {
       : [];
 
     if (current.includes(val)) {
-      emit(
-        'update:modelValue',
-        current.filter(v => v !== val)
-      );
+      emit('update:modelValue', current.filter(v => v !== val));
     } else {
-      emit(
-        'update:modelValue',
-        [...current, val]
-      );
+      emit('update:modelValue', [...current, val]);
     }
+
+    emit('select', val);
   } else {
     emit('update:modelValue', val);
+    emit('select', val);
     open.value = false;
   }
 }
@@ -72,6 +70,7 @@ function getLabel(option) {
   return String(option);
 }
 </script>
+
 <template>
   <div class='dropdown' @click='toggle'>
     <p class='text-regular'>

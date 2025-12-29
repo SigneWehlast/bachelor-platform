@@ -23,10 +23,10 @@ const props = defineProps({
 </script>
 <template>
   <div>
-    <BaseTable> 
+    <BaseTable>
       <template #header>
         <th class="sale-table__text--leftalign sale-table-title-name">{{ props.showId ? 'ID' : 'Kundenavn' }}</th>
-        <th class="sale-table-title"><div class="sale-table__tooltip">Antal biler<Tooltip type="antal-biler"/></div></th> 
+        <th class="sale-table-title"><div class="sale-table__tooltip">Antal biler<Tooltip type="antal-biler"/></div></th>
         <th class="sale-table-title" v-if="props.visibleColumns.includes('totalBudget')"><div class="sale-table__tooltip">Samlet Budget<Tooltip type="totalBudget"/></div></th>
         <th class="sale-table-title" v-if="props.visibleColumns.includes('conversions')"><div class="sale-table__tooltip">Konverteringer<Tooltip type="conversions"/></div></th>
         <th class="sale-table-title" v-if="props.visibleColumns.includes('saleConversions')"><div class="sale-table__tooltip">sale konverteringer<Tooltip type="saleConversions"/></div></th>
