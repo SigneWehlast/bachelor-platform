@@ -1,28 +1,22 @@
-import { reactive, computed } from 'vue';
+import { reactive } from 'vue';
 
-const state = reactive({
-  'leads-down': false,
-  'leads-up': false,
-  'leads-stop': false
+const settings = reactive({
+  'leads-down': true,
+  'leads-up': true,
+  'leads-stop': true
 });
 
-export const leadsEnabled = computed(
-  () => state['leads-down'] || state['leads-up'] || state['leads-stop']
-);
+export function getSettings() {
+  return settings;
+}
 
 export function loadSettings() {
-  const saved = localStorage.getItem('leadsSettings');
+  const saved = localStorage.getItem('notificationSettings');
   if (saved) {
-    const parsed = JSON.parse(saved);
-    Object.assign(state, parsed);
+    Object.assign(settings, JSON.parse(saved));
   }
 }
 
 export function saveSettings() {
-  localStorage.setItem('leadsSettings', JSON.stringify(state));
-  console.log('Gemte settings:', state);
-}
-
-export function getSettings() {
-  return state;
+  localStorage.setItem('notificationSettings', JSON.stringify(settings));
 }

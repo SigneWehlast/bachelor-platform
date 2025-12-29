@@ -12,22 +12,18 @@ const customers = ref([]);
 const currentPage = ref(1);
 const pageSize = 10;
 
-// SearchFilter
 const { searchQuery, filteredItems } = useSearchFilter(customers, 'name');
 
-// Bind props.search til searchQuery
 watch(
   () => props.search,
   val => searchQuery.value = val,
   { immediate: true }
 );
 
-// Hent data
 onMounted(async () => {
   customers.value = await fetchCustomerChanges();
 });
 
-// Pagination
 const showPagination = computed(() => props.customerLimit === null);
 
 const totalPages = computed(() => {

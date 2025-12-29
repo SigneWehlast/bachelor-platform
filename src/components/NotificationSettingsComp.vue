@@ -1,14 +1,19 @@
 <script setup>
 import { getSettings, loadSettings } from '@/services/notificationService';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const settings = getSettings();
+const localSettings = ref({ ...settings });
 
 const props = defineProps({
   saved: Boolean
 });
 
 onMounted(() => loadSettings());
+
+defineExpose({
+  localSettings
+});
 </script>
 <template>
     <div>
@@ -40,21 +45,21 @@ onMounted(() => loadSettings());
                     <h4>CarBoost</h4>
                     <div class='notification-settings__section-group'>
                         <div class='notification-settings__section-group__check'>
-                            <input type='checkbox' v-model="settings['leads-down']">
+                            <input type='checkbox' v-model="localSettings['leads-down']">
                             <p class='regular'>Faldende antal i leads</p>
                         </div>
                         <p class='light'>Når denne funktion er slået til, modtager du notifikationer omkring faldende antal af leads blandt kunderne.</p>
                     </div>
                     <div class='notification-settings__section-group'>
                         <div class='notification-settings__section-group__check'>
-                            <input type='checkbox' v-model="settings['leads-up']">
+                            <input type='checkbox' v-model="localSettings['leads-up']">
                             <p class='regular'>Stigende antal i leads</p>
                         </div>
                         <p class='light'>Når denne funktion er slået til, modtager du notifikationer omkring stigende antal af leads blandt kunderne.</p>
                     </div>
                     <div class='notification-settings__section-group'>
                         <div class='notification-settings__section-group__check'>
-                            <input type='checkbox' v-model="settings['leads-stop']">
+                            <input type='checkbox' v-model="localSettings['leads-stop']">
                             <p class='regular'>Lead stop</p>
                         </div>
                         <p class='light'>Når denne funktion er slået til, modtager du notifikationer omkring stop i antal af leads blandt kunderne.</p>

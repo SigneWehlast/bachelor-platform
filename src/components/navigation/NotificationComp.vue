@@ -1,18 +1,7 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import Icon from '@/components/Icon.vue';
-import { fetchCustomerChanges } from '@/services/customerChangesService';
-
-const customers = ref([]);
-const newCustomers = ref([]);
-
-const router = useRouter();
-
-const emit = defineEmits(['close']);
-function handleClose() {
-  emit('close');
-};
 
 const props = defineProps({
   customers: {
@@ -21,14 +10,13 @@ const props = defineProps({
   }
 });
 
-onMounted(async () => {
-  const fetched = await fetchCustomerChanges();
-  newCustomers.value = fetched.filter(c =>
-    c.isRecent && !props.customers.find(pc => pc.id === c.id)
-  );
-});
 
-const allCustomers = computed(() => [...props.customers, ...newCustomers.value]);
+const router = useRouter();
+
+const emit = defineEmits(['close']);
+function handleClose() {
+  emit('close');
+};
 
 const navigate = (customer) => {
   if (customer.isRecent) {
@@ -40,47 +28,52 @@ const navigate = (customer) => {
   }
 };
 </script>
-
 <template>
   <div class='notification-comp'>
     <h3>Notifikationer</h3>
     <span class='notification-comp__line'></span>
-      <div v-if="allCustomers.length > 0 && notificationService.leadsEnabled">
+      <div v-if="props.customers.length > 0">
       <div
-        v-for='customer in allCustomers'
-        :key='customer.id'
+        v-for="c in props.customers"
+        :key='c.id'
         class='notification-comp__list'
       >
         <div
           class='notification-comp__list-item'
-          @click='() => navigate(customer)'
+          @click='() => navigate(c)'
           style='cursor: pointer;'
         >
           <div>
             <Icon
-              v-if='customer.yesterdays_dif > 9 && customer.todays_dif / customer.yesterdays_dif < 0.5'
+              v-if='c.yesterdays_dif > 9 && c.todays_dif / c.yesterdays_dif < 0.5'
               name='AlertCircle'
               class='notification-comp__list-icon notification-comp__list-icon--red'
             />
             <Icon
-              v-else-if='customer.yesterdays_dif > 9 && customer.todays_dif / customer.yesterdays_dif < 0.7'
+              v-else-if='c.yesterdays_dif > 9 && c.todays_dif / c.yesterdays_dif < 0.7'
               name='Alert'
               class='notification-comp__list-icon notification-comp__list-icon--yellow'
             />
             <Icon
-              v-if='customer.isRecent'
+              v-else-if="c.yesterdays_dif > 0 && c.todays_dif / c.yesterdays_dif > 1.5"
+              name="ArrowUpBold"
+              class="notification-comp__list-icon notification-comp__list-icon--green"
+            />
+            <Icon
+              v-if='c.isRecent'
               name='CarSearchOutline'
               class='notification-comp__list-icon notification-comp__list-icon--green'
             />
           </div>
           &nbsp;
           <span>
-            {{ customer.name.length > 15 ? customer.name.slice(0, 15) + '…' : customer.name }}
-            <span v-if='customer.isRecent'>er en ny kunde</span>
-            <span
-              v-else-if='customer.yesterdays_dif > 9 && customer.todays_dif / customer.yesterdays_dif < 0.5'
-            >
+            {{ c.name.length > 15 ? c.name.slice(0, 15) + '…' : c.name }}
+            <span v-if='c.isRecent'>er en ny kunde</span>
+            <span v-if="c.yesterdays_dif > 9 && c.todays_dif / c.yesterdays_dif < 0.7">
               leads er faldet
+            </span>
+            <span v-else-if="c.yesterdays_dif > 0 && c.todays_dif / c.yesterdays_dif > 1.5">
+              leads er steget
             </span>
           </span>
         </div>

@@ -2,22 +2,48 @@
 import { onMounted, ref, computed } from 'vue';
 import Icon from '@/components/Icon.vue';
 import NotificationComp from './NotificationComp.vue';
-import { useCarboostWarnings } from '@/utils/CarboostWarnings.js';
 import { getCustomersInCarboost } from '@/services/carboostService';
-
-const { setCustomers, warningCustomers, hasWarnings, warningCount } = useCarboostWarnings();
+import { getSettings } from '@/services/notificationService';
+import { matchesNotificationSettings } from '@/utils/filterNotifications';
+import { fetchCustomerChanges } from '@/services/customerChangesService';
 
 const open = ref(false);
-const toggle = () => open.value = !open.value;
+const settings = getSettings();
+const customers = ref([]);
 
-const warningCustomerList = computed(() => warningCustomers.value || []);
+const toggle = () => {
+  open.value = !open.value;
+};
 
 onMounted(async () => {
   const response = await getCustomersInCarboost(1, 99999);
-  setCustomers(response.customers || []);
-});
-</script>
+  const dbCustomers = response.customers || [];
 
+  const fetched = await fetchCustomerChanges();
+
+  const allCustomers = [...dbCustomers];
+
+  fetched.forEach(c => {
+    const index = allCustomers.findIndex(dc => dc.id === c.id);
+    if (index === -1) {
+      allCustomers.push(c);
+    } else {
+      allCustomers[index] = { ...allCustomers[index], ...c };
+    }
+  });
+
+  customers.value = allCustomers;
+});
+
+const filteredWarnings = computed(() =>
+  customers.value.filter(
+    c => c.isRecent || matchesNotificationSettings(c, settings)
+  )
+);
+
+const warningCount = computed(() => filteredWarnings.value.length);
+const hasWarnings = computed(() => warningCount.value > 0);
+</script>
 <template>
   <div class='notification-bell' @click='toggle'>
     <Icon
@@ -27,11 +53,14 @@ onMounted(async () => {
     />
     <span
       v-if='hasWarnings'
-      :class="['notification-bell__badge', { 'notification-bell__badge--alert': hasWarnings }, 'text-light']"
-    >
+      :class="['notification-bell__badge', { 'notification-bell__badge--alert': hasWarnings }, 'text-light']">
       {{ warningCount }}
     </span>
   </div>
-    <div v-if='open' class='notification-bell__overlay' @click='open = false'></div>
-    <NotificationComp v-if='open' :customers='warningCustomerList' @close='open = false' />
+  <div v-if="open" class='notification-bell__overlay' @click='open = false'></div>
+  <NotificationComp
+    v-if='open'
+    :customers='filteredWarnings'
+    @close='open = false'
+  />
 </template>
