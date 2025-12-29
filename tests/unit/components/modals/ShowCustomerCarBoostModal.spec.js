@@ -14,7 +14,10 @@ vi.mock('@/components/CarBoostGraph.vue', () => ({ default: { template: '<div></
 vi.mock('@/components/filter/ExportData.vue', () => ({ default: { template: '<div></div>' } }));
 
 vi.mock('apexcharts', () => ({
-  default: vi.fn().mockImplementation(() => ({ render: vi.fn(), destroy: vi.fn() }))
+  default: vi.fn().mockImplementation(() => ({
+    render: vi.fn(),
+    destroy: vi.fn()
+  }))
 }));
 
 vi.mock('@/services/historyService', () => ({
@@ -26,6 +29,7 @@ import ShowCustomerCarboostModal from '@/components/modals/ShowCustomerCarBoostM
 
 describe('ShowCustomerCarboostModal.vue', () => {
   beforeEach(() => {
+    document.querySelector = vi.fn().mockReturnValue(document.createElement('div'));
     vi.clearAllMocks();
   });
 
@@ -34,7 +38,8 @@ describe('ShowCustomerCarboostModal.vue', () => {
       props: {
         customer: { id: 1, name: 'Bjarnes biler', tendens: 'up' },
         ...props
-      }
+      },
+      attachTo: document.body // sikrer DOM-elementer som #chart kan findes
     });
 
   it('emitter close når handleClose kaldes', async () => {
@@ -74,7 +79,7 @@ describe('ShowCustomerCarboostModal.vue', () => {
       ]
     });
 
-    const wrapper = mountComp();
+    const wrapper = mountComp({ selectedMonth: '2025-12' });
     await flushPromises();
     await wrapper.vm.$nextTick();
 
@@ -125,7 +130,7 @@ describe('ShowCustomerCarboostModal.vue', () => {
       ]
     });
 
-    const wrapper = mountComp();
+    const wrapper = mountComp({ selectedMonth: '2025-12' });
     await flushPromises();
     await wrapper.vm.$nextTick();
 
@@ -142,7 +147,7 @@ describe('ShowCustomerCarboostModal.vue', () => {
       ]
     });
 
-    const wrapper = mountComp();
+    const wrapper = mountComp({ selectedMonth: '2025-12' });
     await flushPromises();
     const lastUpdated = new Date(wrapper.vm.customerData[0].last_updated).toLocaleDateString('da-DK');
     expect(lastUpdated).toBe(new Date('2025-12-02T00:00:00Z').toLocaleDateString('da-DK'));
