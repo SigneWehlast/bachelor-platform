@@ -5,7 +5,7 @@ import { menuItems } from '@/config/menuItems';
 import Icon from '@/components/Icon.vue';
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
 import { UserTracking } from '@/utils/tracking';
-import { getUsers, getUserRole } from '@/services/userService.js';
+import { getCurrentUser } from '@/services/userService.js';
 import NotificationBell from './NotificationBell.vue';
 
 const user = ref(null);
@@ -18,14 +18,11 @@ const route = useRoute();
 const openDropdowns = ref({});
 
 onMounted(async () => {
-  const users = await getUsers();
-  if (users.length > 0) {
-    user.value = users[0];
-
-    const userRole = await getUserRole(user.value.id);
-    if (userRole) {
-      role.value = userRole.name;
-    }
+  const currentUser = await getCurrentUser();
+  console.log('Current user:', currentUser);
+  if (currentUser) {
+    user.value = currentUser;
+    role.value = currentUser.role;
   }
 });
 

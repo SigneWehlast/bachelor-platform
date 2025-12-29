@@ -21,3 +21,12 @@ export async function getUserRole(user_id) {
 
   return rows[0] || null;
 }
+
+export async function getUserDataById(user_id) {
+  const [rows] = await db.query(`
+    SELECT user_id, first_name, last_name 
+    FROM users
+    WHERE user_id = ?
+  `, [user_id]);
+  return rows;
+}
