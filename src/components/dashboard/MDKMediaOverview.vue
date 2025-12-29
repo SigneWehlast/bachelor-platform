@@ -24,7 +24,7 @@ onMounted(async () => {
     data: item.customerCount
   }));
 
-  const carboostData = await getCustomersInCarboost(1, 99999);
+  const carboostData = await getCustomersInCarboost(1, 1000);
   setCustomers(carboostData.customers || []);
 });
 </script>

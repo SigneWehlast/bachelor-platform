@@ -16,6 +16,12 @@ vi.mock('@/services/groupOverviewService', () => ({
   getCustomersInGroups: vi.fn(() => Promise.resolve(mockGroups))
 }));
 
+vi.mock('@/services/carboostService', () => ({
+  getCustomersInCarboost: vi.fn(() => Promise.resolve({
+    customers: [{ id: 1 }, { id: 2 }]
+  }))
+}));
+
 const setCustomersSpy = vi.fn();
 const warningCustomersRef = ref([]);
 vi.mock('@/utils/CarboostWarnings.js', () => ({
@@ -40,7 +46,7 @@ describe('MDKMediaOverview.vue', () => {
     await flushPromises();
 
     expect(getCustomersInGroups).toHaveBeenCalled();
-    expect(getCustomersInCarboost).toHaveBeenCalledWith(1, 99999);
+    expect(getCustomersInCarboost).toHaveBeenCalledWith(1, 1000);
 
     expect(setCustomersSpy).toHaveBeenCalledWith(mockCarboost.customers);
 

@@ -70,9 +70,12 @@ describe('SalesView.vue', () => {
       }
     });
 
-    await flushPromises();
+    wrapper.vm.salesCustomers = [...mockCustomers];
+    await wrapper.vm.$nextTick();
 
-    const items = wrapper.findAll('.SalesView__customer-item');
+    const items = wrapper.findAll('.sales-view__customer-item');
+    expect(items.length).toBe(mockCustomers.length);
+
     await items[0].trigger('click');
 
     expect(wrapper.vm.selectedCustomers).toContainEqual(mockCustomers[0]);
@@ -96,9 +99,10 @@ describe('SalesView.vue', () => {
       }
     });
 
-    await flushPromises();
+    wrapper.vm.salesCustomers = [...mockCustomers];
+    await wrapper.vm.$nextTick();
 
-    await wrapper.find('.SalesView__button').trigger('click');
+    await wrapper.find('.sales-view__button').trigger('click');
 
     expect(wrapper.vm.selectedCustomers.length).toBe(mockCustomers.length);
     expect(wrapper.vm.salesCustomers.length).toBe(0);

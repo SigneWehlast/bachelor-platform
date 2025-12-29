@@ -54,12 +54,21 @@ describe('LatestCustomerChangesContent.vue', () => {
     expect(wrapper.vm.showPagination).toBe(false);
   });
 
-
   it('nextPage og prevPage ændrer side korrekt via DOM', async () => {
     const wrapper = mountComp();
     await flushPromises();
 
-    const buttons = wrapper.findAll('.latest-customer-changes__pagination-button');
+    wrapper.vm.customers = Array.from({ length: 25 }, (_, i) => ({
+      id: i + 1,
+      name: `Kunde ${i + 1}`,
+      date: '2025-12-01',
+      isRecent: false
+    }));
+    await wrapper.vm.$nextTick();
+
+    const buttons = wrapper.findAll('.latest-customer-changes-content__pagination-button');
+    expect(buttons.length).toBe(2);
+
     const prevButton = buttons[0];
     const nextButton = buttons[1];
 
@@ -73,18 +82,28 @@ describe('LatestCustomerChangesContent.vue', () => {
     expect(wrapper.vm.currentPage).toBe(1);
   });
 
+
   it('pagination stopper på sidste side', async () => {
     const wrapper = mountComp();
     await flushPromises();
 
+    wrapper.vm.customers = Array.from({ length: 25 }, (_, i) => ({
+      id: i + 1,
+      name: `Kunde ${i + 1}`,
+      date: '2025-12-01',
+      isRecent: false
+    }));
+    await wrapper.vm.$nextTick();
+
     wrapper.vm.currentPage = wrapper.vm.totalPages;
     await wrapper.vm.$nextTick();
 
-    const buttons = wrapper.findAll('.latest-customer-changes__pagination-button');
+    const buttons = wrapper.findAll('.latest-customer-changes-content__pagination-button');
     const nextButton = buttons[1];
 
     expect(nextButton.element.disabled).toBe(true);
   });
+
 
 
   it('watch totalPages justerer currentPage når for høj', async () => {

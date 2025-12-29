@@ -82,8 +82,8 @@ onMounted(async () => {
 
 watch(
   [selectedMonth, () => props.customer, history],
-  ([customer, hist]) => {
-    if(hist.length && customer) fetchCustomerData();
+  ([month, customer, hist]) => {
+    if (hist.length && customer) fetchCustomerData();
   },
   { immediate: true }
 );
@@ -110,6 +110,7 @@ watch(
           :customers="[customer]"
           :history="history"
         />
+        <div id="chart"></div>
         <p class='text-regular show-customer-carboost-modal__last-updated'>
           Sidst opdateret: {{ customerData[0]?.last_updated ? new Date(customerData[0].last_updated).toLocaleDateString('da-DK') : '-' }}
         </p>
