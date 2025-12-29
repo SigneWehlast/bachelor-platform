@@ -5,10 +5,6 @@ import { onMounted, ref } from 'vue';
 const settings = getSettings();
 const localSettings = ref({ ...settings });
 
-const props = defineProps({
-  saved: Boolean
-});
-
 onMounted(() => loadSettings());
 
 defineExpose({

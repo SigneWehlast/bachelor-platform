@@ -1,5 +1,4 @@
 <script setup>
-import { ref, computed, onMounted, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
 import Icon from '@/components/Icon.vue';
 

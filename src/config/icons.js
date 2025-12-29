@@ -20,7 +20,7 @@ export const icons = {
   ArrowDownBold: mdiArrowDownBold,
   Calendar: mdiCalendar,
   ChartLine: mdiChartLine,
-  CarWireless: mdiCreditCardWireless,
+  CardWireless: mdiCreditCardWireless,
   ContentSave: mdiContentSave,
   AccountDetails: mdiAccountDetails,
   InformationOutline: mdiInformationOutline,

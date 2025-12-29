@@ -2,7 +2,7 @@
 import NotificationSettingsComp from '@/components/NotificationSettingsComp.vue';
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import { saveSettings, getSettings } from '@/services/notificationService';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 const saved = ref(false);
 const saving = ref(false);
@@ -32,9 +32,9 @@ const handleSave = async () => {
         <button class='settings-topbar__btn' @click="handleSave">
           <span v-if='saving' class='settings-topbar__btn-spinner'></span>
           <span v-else>Gem</span>
-      </button>    
+      </button>
     </div>
-    <p class='regular settings-breadcrumbs'>  
+    <p class='regular settings-breadcrumbs'>
     <BreadcrumbsComp/>
   </p>
     <div class='settings'>

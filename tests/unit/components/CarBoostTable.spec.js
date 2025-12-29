@@ -4,7 +4,7 @@ import { nextTick } from 'vue';
 import CarboostTable from '@/components/CarBoostTable.vue';
 
 vi.mock('@/components/modals/ShowCustomerCarBoostModal.vue', () => ({
-  default: { template: "<div class='modal'></div>" }
+  default: { template: '<div class=\'modal\'></div>' }
 }));
 
 vi.mock('@/services/carboostService', () => ({

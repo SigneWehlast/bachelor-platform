@@ -1,6 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import MDKMediaOverview from '@/components/dashboard/MDKMediaOverview.vue';
-import { getCustomersInCarboost } from '@/services/carboostService';
 import { ref } from 'vue';
 import { vi, describe, beforeEach, it, expect } from 'vitest';
 

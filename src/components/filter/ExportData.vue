@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import Dropdown from './Dropdown.vue';
 
 const exportOptions = ['Eksporter som CSV'];

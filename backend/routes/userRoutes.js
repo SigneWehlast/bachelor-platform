@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', getUserData);
 router.get('/:user_id/role', getUserRole);
-router.get('/me', authMiddleware, getCurrentUser);   
+router.get('/me', authMiddleware, getCurrentUser);
 
 
 export default router;

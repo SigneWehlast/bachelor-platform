@@ -226,8 +226,6 @@ async function showCustomerData() {
 }
 
 
-
-
 onMounted(async () => {
   salesCustomers.value = await getCustomers();
 });
@@ -266,7 +264,7 @@ watch(selectedMonth, async () => {
         <button v-if='!showTable' class='sales-view__button-next' :disabled='isButtonDisabled' @click='showCustomerData'>Vis valgte</button>
         <button v-if='showTable' class='sales-view__button-anonymize' @click='anonymize'>
           <p v-if='!clicked'>Anonymiser</p>
-          <p v-else='!confirm'>Vis data</p>
+          <p v-else>Vis data</p>
         </button>
       </div>
     </div>
