@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits, ref, watch, onMounted, computed } from 'vue';
+import { ref, watch, onMounted, computed } from 'vue';
 import Icon from '@/components/Icon.vue';
 import CalendarComp from '../filter/CalendarComp.vue';
 import ApexCharts from 'apexcharts';

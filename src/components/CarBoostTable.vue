@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, defineEmits, watch  } from 'vue';
+import { ref, onMounted, computed, watch  } from 'vue';
 import BaseTable from './BaseTable.vue';
 import { getCustomersInCarboost, getCustomersInCarboostByDate, getCustomersInCarboostChange } from "@/services/carboostService";
 import Icon from "@/components/Icon.vue";

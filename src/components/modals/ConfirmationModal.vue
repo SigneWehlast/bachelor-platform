@@ -1,8 +1,6 @@
 <script setup>
 import Icon from '@/components/Icon.vue';
 
-import { defineEmits } from 'vue';
-
 const emit = defineEmits(['yes', 'no']);
 
 function handleYes() {
