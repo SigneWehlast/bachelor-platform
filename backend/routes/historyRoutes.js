@@ -4,7 +4,7 @@ import {
   getSaleHistory,
   getCarboostDailyTable,
   getMonths,
-  debugSalesHistory
+  debugSalesHistorySafe
 } from '../controllers/historyController.js';
 
 const router = express.Router();
@@ -13,7 +13,7 @@ router.get('/carboost', getCarboostHistory);
 router.get('/sales', getSaleHistory);
 router.get('/carboost/table', getCarboostDailyTable);
 router.get('/months', getMonths);
-router.get('/debugSalesHistory', debugSalesHistory);
-router.get('/ping', (req, res) => res.send('pong'));
+router.get('/debugSalesHistorySafe', debugSalesHistorySafe);
+
 
 export default router;
