@@ -35,3 +35,30 @@ export async function getUserRole(userId) {
     return null;
   }
 }
+
+export async function getCurrentUser() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Ingen token fundet, log ind');
+
+    const res = await fetch(`${BASE_URL}/api/user/me`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) throw new Error('Fejl ved hentning af nuværende bruger');
+
+    const data = await res.json();
+    return {
+      id: data.user_id,
+      firstName: data.first_name,
+      lastName: data.last_name,
+      initials: `${data.first_name[0]}${data.last_name[0]}`.toUpperCase(),
+      role: data.role
+    };
+  } catch (err) {
+    console.error('Fejl ved hentning af nuværende bruger:', err);
+    return null;
+  }
+}
