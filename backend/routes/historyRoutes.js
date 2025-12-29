@@ -14,5 +14,6 @@ router.get('/sales', getSaleHistory);
 router.get('/carboost/table', getCarboostDailyTable);
 router.get('/months', getMonths);
 router.get('/debugSalesHistory', debugSalesHistory);
+router.get('/ping', (req, res) => res.send('pong'));
 
 export default router;
