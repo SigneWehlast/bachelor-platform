@@ -43,3 +43,12 @@ export async function getMonths(req, res) {
     res.status(500).json({ error: 'Database error' });
   }
 }
+
+export async function debugSalesHistorySafe(req, res) {
+  try {
+    const rows = await HistoryModel.getSalesHistorySafe();
+    res.json({ debug: true, rows });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
