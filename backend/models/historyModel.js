@@ -18,6 +18,8 @@ export async function getCarboostHistory() {
 
 // Hent salgs-historik
 export async function getSalesHistory() {
+  console.log('🔥🔥🔥 getSalesHistory LIVE VERSION 2025-01-DEBUG');
+
   const [rows] = await db.query(`
     SELECT 
       h.customer_id,
