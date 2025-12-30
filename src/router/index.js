@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router';
 import { menuItems } from '@/config/menuItems';
 import { UserTracking } from '@/utils/tracking';
 
@@ -28,7 +28,7 @@ function generateRoutes(items) {
 const routes = generateRoutes(menuItems);
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes
 });
 
