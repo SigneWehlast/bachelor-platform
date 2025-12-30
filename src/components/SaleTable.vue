@@ -1,4 +1,5 @@
 <script setup>
+//Components
 import BaseTable from './BaseTable.vue';
 import Tooltip from './Tooltip.vue';
 

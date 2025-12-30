@@ -1,6 +1,10 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
+
+//Service
 import { fetchCustomerChanges } from '@/services/customerChangesService';
+
+//Utils
 import { useSearchFilter } from '@/utils/searchFilter';
 
 const props = defineProps({

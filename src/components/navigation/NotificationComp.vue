@@ -1,5 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
+
+//Components
 import Icon from '@/components/Icon.vue';
 
 const props = defineProps({
@@ -8,7 +10,6 @@ const props = defineProps({
     required: true
   }
 });
-
 
 const router = useRouter();
 

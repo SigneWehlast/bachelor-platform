@@ -1,11 +1,17 @@
 <script setup>
 import { ref } from 'vue';
+
+//Components
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
+
+//ENV
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+//Const
 const email = ref('');
 const password = ref('');
 
+//Funktion
 async function login() {
   try {
     const res = await fetch(`${BASE_URL}/api/auth/login`, {
@@ -30,7 +36,6 @@ async function login() {
     console.error('Login error:', err.message);
   }
 }
-
 </script>
 
 <template>
