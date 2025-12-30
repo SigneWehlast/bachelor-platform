@@ -23,15 +23,10 @@ app.use(cors({
   ]
 }));
 
-app.get('/restart', (req, res) => {
-  res.json({
-    message: 'App genstarter',
-    time: new Date().toISOString()
-  });
-
-  setTimeout(() => {
-    process.exit(0);
-  }, 500);
+app.get('/api/restart', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({ message: 'App genstarter', time: new Date().toISOString() });
+  setTimeout(() => process.exit(0), 500);
 });
 
 // Routes
