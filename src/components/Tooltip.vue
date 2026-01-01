@@ -1,7 +1,12 @@
 <script setup>
 import { ref, computed, nextTick } from 'vue';
+
+//Components
 import Icon from '@/components/Icon.vue';
+
+//Data
 import tooltipData from '@/config/tooltipData.json';
+
 
 const props = defineProps({
   type: { type: String, required: true },
@@ -13,6 +18,7 @@ const trigger = ref(null);
 const style = ref({});
 
 const tooltipText = computed(() => tooltipData[props.type]);
+
 
 function open() {
   show.value = true;

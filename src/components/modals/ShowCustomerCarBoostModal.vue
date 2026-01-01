@@ -1,12 +1,15 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';
+import ApexCharts from 'apexcharts';
+
+//Components
 import Icon from '@/components/Icon.vue';
 import CalendarComp from '../filter/CalendarComp.vue';
-import ApexCharts from 'apexcharts';
 import CarBoostTable from '../CarBoostTable.vue';
-import { getHistoryCarboost } from '@/services/historyService';
 import CarBoostGraph from '../CarBoostGraph.vue';
 
+//Service
+import { getHistoryCarboost } from '@/services/historyService';
 const props = defineProps({
   customer: { type: Object, default: null }
 });

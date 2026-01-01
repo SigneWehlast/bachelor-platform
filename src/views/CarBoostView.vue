@@ -13,6 +13,7 @@ import Icon from '@/components/Icon.vue';
 //Functions
 import { useGoBack } from '@/utils/goBack';
 
+//Const
 const searchQuery = ref('');
 const customersList = ref([]);
 

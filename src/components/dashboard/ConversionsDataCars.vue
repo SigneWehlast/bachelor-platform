@@ -1,6 +1,10 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
+
+//Components
 import Dropdown from '../filter/Dropdown.vue';
+
+//Service
 import { getCustomerStats } from '@/services/customerStatsService';
 
 const conversionsCars = ref([

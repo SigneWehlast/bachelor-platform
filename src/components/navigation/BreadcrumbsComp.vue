@@ -1,4 +1,5 @@
 <script setup>
+//Utils
 import { trackingStore } from '@/utils/trackingStore';
 </script>
 <template>

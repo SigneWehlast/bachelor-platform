@@ -1,11 +1,17 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
+
+//Components
 import Icon from '@/components/Icon.vue';
 import NotificationComp from './NotificationComp.vue';
+
+//Service
 import { getCustomersInCarboost } from '@/services/carboostService';
 import { getSettings } from '@/services/notificationService';
-import { matchesNotificationSettings } from '@/utils/filterNotifications';
 import { fetchCustomerChanges } from '@/services/customerChangesService';
+
+//Utils
+import { matchesNotificationSettings } from '@/utils/filterNotifications';
 
 const open = ref(false);
 const settings = getSettings();

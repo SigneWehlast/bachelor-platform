@@ -1,8 +1,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { getCustomersInGroups } from '@/services/groupOverviewService';
-import { useCarboostWarnings } from '@/utils/CarboostWarnings.js';
+
+//Service
 import { getCustomersInCarboost } from '@/services/carboostService';
+import { getCustomersInGroups } from '@/services/groupOverviewService';
+
+//Utils
+import { useCarboostWarnings } from '@/utils/CarboostWarnings.js';
 
 const overviews = ref([]);
 

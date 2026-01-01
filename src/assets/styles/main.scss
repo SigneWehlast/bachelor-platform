@@ -31,7 +31,8 @@
 @use './components/navigation/notification-bell';
 @use './components/navigation/notification-comp';
 
-
+// Layout
+@use './layout/navigation-comp';
 
 // Pages
 @use './pages/administration-view';

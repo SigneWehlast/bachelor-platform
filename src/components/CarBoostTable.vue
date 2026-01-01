@@ -1,12 +1,18 @@
 <script setup>
 import { ref, onMounted, computed, watch  } from 'vue';
+
+//Components
 import BaseTable from './BaseTable.vue';
-import { getCustomersInCarboost, getCustomersInCarboostByDate, getCustomersInCarboostChange } from '@/services/carboostService';
 import Icon from '@/components/Icon.vue';
+import Tooltip from '@/components/Tooltip.vue';
 import ShowCustomerCarBoostModal from './modals/ShowCustomerCarBoostModal.vue';
+
+//Service
+import { getCustomersInCarboost, getCustomersInCarboostByDate, getCustomersInCarboostChange } from '@/services/carboostService';
+
+//Utils
 import { useSearchFilter } from '@/utils/searchFilter';
 import { usePagination } from '@/utils/pagination';
-import Tooltip from '@/components/Tooltip.vue';
 
 const carboostCustomers = ref([]);
 const selectedIds = ref([]);
