@@ -19,7 +19,6 @@ onMounted(() => {
       <header>
         <NavigationComp />
       </header>
-
       <main class='view__page'>
         <RouterView />
       </main>

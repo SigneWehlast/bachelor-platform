@@ -1,5 +1,5 @@
 @use '../../abstracts/variables' as vars;
-@use '../../abstracts/mixins' as m;
+@use '../../abstracts/mixins' as mix;
 
 .confirmation-modal {
   position: fixed;
@@ -25,7 +25,7 @@
     background: vars.$bg-white;
     padding: vars.$spacing-padding-xl;
     border-radius: vars.$border-radius-md;
-    width: 400px;
+    width: vars.$width-xxxxl;
     text-align: center;
     box-shadow: vars.$box-shaddow-dark;
     z-index: 1;
@@ -39,7 +39,7 @@
   }
 
   &__button {
-    @include m.buttons;
+    @include mix.buttons;
 
     &--yes {
       background-color: vars.$primary-color-carads-light;

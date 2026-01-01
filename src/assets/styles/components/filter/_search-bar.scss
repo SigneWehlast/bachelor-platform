@@ -3,6 +3,6 @@
 
 .search-bar {
     @include mix.input;
-    padding: 0 6px 0 6px;
-    width: 300px;
+    padding: 0 vars.$spacing-padding-xs 0 vars.$spacing-padding-xs;
+    width: vars.$width-xxxl;
 }

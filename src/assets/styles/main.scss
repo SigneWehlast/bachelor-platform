@@ -8,7 +8,6 @@
 @use './components/icon';
 @use './components/car-boost-graph';
 @use './components/car-boost-table';
-@use './components/sale-choose-company';
 @use './components/sale-table';
 @use './components/settings-navigation';
 @use './components/notification-settings-comp';
@@ -24,13 +23,11 @@
 @use './components/dashboard/mdk-media-overview';
 @use './components//dashboard/latest-customer-changes-content';
 
-@use './components/filter/calendar-comp';
 @use './components/filter/search-bar';
 @use './components/filter/dropdown';
 
 @use './components/navigation/breadcrumbs-comp';
 @use './components/navigation/navigation-comp';
-@use './components/navigation/pagination-comp';
 @use './components/navigation/notification-bell';
 @use './components/navigation/notification-comp';
 

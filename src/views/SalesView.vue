@@ -33,17 +33,15 @@ const selectedMonth = ref(null);
 // Composable for search & filter
 const { searchQuery, filterValue: selectedCarsFilter, filteredItems: filteredCustomers } = useSearchFilter(
   salesCustomers,
-  'name',          // søgefelt
-  'numberOfCars'   // filterfelt
+  'name',
+  'numberOfCars'
 );
 
 // Go back utility
 const { showTable, goBack, show } = useGoBack();
 
-// Buttons
 const isButtonDisabled = computed(() => selectedCustomers.value.length === 0);
 
-// Options
 const carsOptions = [
   'Alle',
   '0 - 25 biler',
@@ -80,7 +78,6 @@ const visibleColumns = ref ([
   'conversionsInProcent'
 ]);
 
-// Functions
 function anonymize() {
   if (!clicked.value) {
     clicked.value = true;

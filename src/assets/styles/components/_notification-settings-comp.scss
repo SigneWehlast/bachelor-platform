@@ -15,22 +15,18 @@
            margin-right: vars.$spacing-margin-xxxl;
        }
 
-
        &__right {
            flex: 1;
            min-width: 0;
        }
 
-
        &__section {
-
 
            &-group {
                display: flex;
                flex-direction: column;
                gap: vars.$spacing-gap-xs;
                margin-top: vars.$spacing-margin-sm;
-
 
                &__check {
                    display: flex;

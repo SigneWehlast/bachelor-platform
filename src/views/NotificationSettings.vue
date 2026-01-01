@@ -13,6 +13,7 @@ const handleSave = async () => {
 
   await new Promise(r => setTimeout(r, 200));
 
+  //get current settings
   const settings = getSettings();
   if (notificationSettings.value?.localSettings) {
     Object.assign(settings, notificationSettings.value.localSettings);

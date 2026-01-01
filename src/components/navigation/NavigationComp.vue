@@ -10,16 +10,11 @@ import NotificationBell from './NotificationBell.vue';
 
 const user = ref(null);
 const role = ref(null);
-
-// Router
 const route = useRoute();
-
-// State: Holder styr på hvilken dropdown er åben
 const openDropdowns = ref({});
 
 onMounted(async () => {
   const currentUser = await getCurrentUser();
-  console.log('Current user:', currentUser);
   if (currentUser) {
     user.value = currentUser;
     role.value = currentUser.role;
@@ -35,18 +30,14 @@ const toggleDropdown = (label) => {
     newState[label] = true;
     openDropdowns.value = newState;
   }
-  console.log('State:', openDropdowns.value);
 };
 </script>
 <template>
   <nav class='sidebar'>
-    <!-- Top section -->
       <div class='sidebar__top'>
         <img :src='logo' alt='Carads Logo' class='sidebar__logo' />
         <NotificationBell/>
       </div>
-
-      <!--Menu secttion-->
       <div class='sidebar__sectionwrapper'>
         <div v-for='section in menuItems'
         :key='section.label'
@@ -55,11 +46,7 @@ const toggleDropdown = (label) => {
           <h4 class='h4 sidebar__titel'>{{ section.label }}</h4>
 
         <div v-for='item in section.children' :key='item.label'>
-          <div
-            v-if='!item.hidden'
-            class='sidebar__item-wrapper'>
-
-
+          <div v-if='!item.hidden' class='sidebar__item-wrapper'>
             <div class='sidebar__item' @click.stop='item.children && toggleDropdown(item.label)'
               :class="{ 'sidebar__item--open': openDropdowns[item.label] }">
                 <RouterLink
@@ -74,8 +61,6 @@ const toggleDropdown = (label) => {
                 />
                 <span class='sidebar__label text-medium'>{{ item.label }}</span>
               </RouterLink>
-
-              <!-- Dropdown ikon -->
               <Icon
                 v-if='item.children'
                 @click.stop='toggleDropdown(item.label)'
@@ -83,8 +68,6 @@ const toggleDropdown = (label) => {
                 class='sidebar__dropdown-icon'
               />
             </div>
-
-            <!-- Dropdown menu -->
             <div v-if='item.children && openDropdowns[item.label]' class='sidebar__dropdown text-medium'>
               <div
                 v-for='subItem in item.children'
@@ -107,8 +90,6 @@ const toggleDropdown = (label) => {
         </div>
       </div>
     </div>
-
-    <!--Bottom section -->
     <div class='sidebar__bottom' v-if='user'>
       <p class='sidebar__bottom-icon'>{{ user.initials }}</p>
       <div class='sidebar__bottom-userdetails'>

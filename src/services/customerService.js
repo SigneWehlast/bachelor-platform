@@ -1,7 +1,6 @@
 import { sortByName } from '@/utils/sort';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-//Hent rå data fra API
 export async function fetchCustomersRaw() {
   try {
     const res = await fetch(`${BASE_URL}/api/customer`);
@@ -12,23 +11,20 @@ export async function fetchCustomersRaw() {
   }
 }
 
-// Filtrer kunder uden navn
+// Filter customers without a name
 export function filterValidCustomers(customers) {
   return customers.filter(c => c.customer_name);
 }
 
-//Transformér til ønsket format
 export function mapCustomers(customers) {
   return customers.map(c => ({ id: c.customer_id, name: c.customer_name, numberOfCars: c.number_of_cars }));
 }
 
-//Sortér kunder
 export function sortCustomers(customers) {
   sortByName(customers);
   return customers;
 }
 
-//Kombiner alt til en “færdig” liste
 export async function getCustomers() {
   const raw = await fetchCustomersRaw();
   const filtered = filterValidCustomers(raw);
@@ -36,19 +32,14 @@ export async function getCustomers() {
   return sortCustomers(mapped);
 }
 
-
-// Hent kun valgte kunder til tabellen
-//Tjek om der er ids
 export function validateIds(idsArray) {
   return Array.isArray(idsArray) && idsArray.length > 0;
 }
 
-//Lav query string
 export function buildIdsQuery(idsArray) {
   return idsArray.join(',');
 }
 
-//Hent rå data fra API
 export async function fetchSelectedCustomers(idsArray) {
   if (!validateIds(idsArray)) return [];
 
@@ -58,18 +49,17 @@ export async function fetchSelectedCustomers(idsArray) {
 
     if (!res.ok) {
       const text = await res.text();
-      console.error('Server returnerede ikke JSON:', text);
+      console.error('Server error JSON:', text);
       return [];
     }
 
     return await res.json();
   } catch (err) {
-    console.error('Fejl ved hentning af valgte kunder:', err);
+    console.error('Error while fetching chosen customers:', err);
     return [];
   }
 }
 
-//Mapper data til ønsket format
 export function mapSelectedCustomers(data) {
   return data.map(c => ({
     id: c.customer_id,
@@ -85,7 +75,6 @@ export function mapSelectedCustomers(data) {
   }));
 }
 
-//Endelig funktion
 export async function getSelectedCustomers(idsArray) {
   const rawData = await fetchSelectedCustomers(idsArray);
   return mapSelectedCustomers(rawData);

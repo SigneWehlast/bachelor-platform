@@ -1,6 +1,6 @@
 import { db } from '../app.js';
 
-// Hent alle brugere
+//Get all users
 export async function getUserData() {
   const [rows] = await db.query(`
     SELECT user_id, first_name, last_name 
@@ -9,7 +9,7 @@ export async function getUserData() {
   return rows;
 }
 
-// Hent brugerens rolle
+//Get the users role
 export async function getUserRole(user_id) {
   const [rows] = await db.query(`
     SELECT 
@@ -22,6 +22,7 @@ export async function getUserRole(user_id) {
   return rows[0] || null;
 }
 
+//get the user by id
 export async function getUserDataById(user_id) {
   const [rows] = await db.query(`
     SELECT user_id, first_name, last_name 

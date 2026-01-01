@@ -1,6 +1,6 @@
 import { db } from '../app.js';
 
-// Hent alle kunder
+//Get all customers
 export async function getAllCustomers() {
   const [rows] = await db.query(
     'SELECT customer_id, customer_name, number_of_cars FROM customer'
@@ -8,7 +8,7 @@ export async function getAllCustomers() {
   return rows;
 }
 
-// Hent salgs-kunder efter IDs
+//Get customers for sale by ID
 export async function getSaleCustomersByIds(ids) {
   const [rows] = await db.query(`
     SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions
@@ -19,7 +19,7 @@ export async function getSaleCustomersByIds(ids) {
   return rows;
 }
 
-// Hent pagineret liste til Carboost
+//Get list for carboost (paginated)
 export async function getCarboostList(limit, offset) {
   const [rows] = await db.query(`
     SELECT customer_id, customer_name, leads, last_updated
@@ -37,7 +37,7 @@ export async function getCarboostList(limit, offset) {
   return { rows, totalCount };
 }
 
-// Hent kunder med seneste ændringer
+//Get customers for customerchanges
 export async function getCustomerChanges() {
   const [rows] = await db.query(`
     SELECT customer_id, customer_name, create_date
@@ -47,7 +47,7 @@ export async function getCustomerChanges() {
   return rows;
 }
 
-// Hent antal kunder i grupper
+//Get the total of customers in each group
 export async function getCustomersInGroups() {
   const [rows] = await db.query(`
     SELECT g.group_name, COUNT(cg.customer_id) AS customer_count
@@ -58,7 +58,7 @@ export async function getCustomersInGroups() {
   return rows;
 }
 
-// Hent customer stats
+//Get customer stats
 export async function getCustomerStats() {
   const [rows] = await db.query(`
     SELECT customer_id, customer_name, number_of_cars, total_budget, leads, carboost_conversions
@@ -67,7 +67,7 @@ export async function getCustomerStats() {
   return rows;
 }
 
-// Hent kunder baseret på måned
+//Get customers based on month
 export async function getCustomersByDate(month) {
   const [rows] = await db.query(`
     SELECT h.customer_id, c.customer_name, h.leads, h.dif_leads, h.archived_at
@@ -83,15 +83,13 @@ export async function getCustomersByDate(month) {
     WHERE c.customer_name IS NOT NULL
     ORDER BY c.customer_name ASC;
   `, [month]);
-  console.log('getCustomersByDate - month:', month, 'rows:', rows);
   return rows;
 }
 
-// Hent Carboost ændringer måned-til-måned
+//Get carboost changes from month to month
 export async function getCustomersCarboostChange(month) {
   const [year, mon] = month.split('-').map(Number);
   const prevMonth = mon === 1 ? `${year-1}-12` : `${year}-${(mon-1).toString().padStart(2,'0')}`;
-
   const [rows] = await db.query(`
     SELECT 
       h.customer_id,
@@ -122,6 +120,5 @@ export async function getCustomersCarboostChange(month) {
     ON h.customer_id = latest.customer_id AND h.archived_at = latest.latest_date
     ORDER BY c.customer_name ASC;
   `, [prevMonth, month]);
-
   return rows;
 }

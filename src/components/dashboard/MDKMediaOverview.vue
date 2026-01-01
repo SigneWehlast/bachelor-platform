@@ -13,7 +13,6 @@ const combinedOverview = computed(() => {
     name: 'Advarsler',
     data: warningCustomers.value.length
   };
-
   return [warningBox, ...overviews.value];
 });
 
@@ -28,7 +27,6 @@ onMounted(async () => {
   setCustomers(carboostData.customers || []);
 });
 </script>
-
 <template>
   <div class='mdkmedia-overview'>
     <h1 class='mdkmedia-overview__title'>MDK-Media Oversigt</h1>

@@ -1,4 +1,4 @@
-@use '../../abstracts/variables' as v;
+@use '../../abstracts/variables' as vars;
 @use '../../base/typography' as t;
 @use '../icon' as i;
 
@@ -7,21 +7,21 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  border-right: v.$border-width-xxs solid v.$box-shaddow;
+  border-right: vars.$border-width-xxs solid vars.$box-shaddow;
 
 
   &__top {
     display: flex;
     justify-content: space-between;
-    padding: 0 v.$spacing-padding-xs;
-    border-bottom: v.$border-width-xxs solid v.$border-color;
-    padding-left: v.$spacing-gap-xs;
+    padding: 0 vars.$spacing-padding-xs;
+    border-bottom: vars.$border-width-xxs solid vars.$border-color;
+    padding-left: vars.$spacing-gap-xs;
 
   }
 
   &__logo{
-    width: v.$width-xxxxl;
-    padding: v.$spacing-padding-sm 0 v.$spacing-padding-sm 0;
+    width: vars.$width-xl;
+    padding: vars.$spacing-padding-sm 0 vars.$spacing-padding-sm 0;
   }
 
   &__sectionwrapper{
@@ -31,17 +31,17 @@
   }
 
   &__section {
-    margin-bottom: v.$spacing-margin-xl;
-    padding-top: v.$spacing-padding-xs;
+    margin-bottom: vars.$spacing-margin-xl;
+    padding-top: vars.$spacing-padding-xs;
   }
 
   &__titel{
-    padding-left: v.$spacing-gap-xs;
-    padding-bottom: v.$spacing-padding-xs;
+    padding-left: vars.$spacing-gap-xs;
+    padding-bottom: vars.$spacing-padding-xs;
   }
 
   &__item-wrapper {
-    margin-bottom: v.$spacing-margin-xs;
+    margin-bottom: vars.$spacing-margin-xs;
   }
 
   &__item {
@@ -49,34 +49,34 @@
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    padding: v.$spacing-padding-sm;
-    border-left: v.$border-width-xs solid transparent;
+    padding: vars.$spacing-padding-sm;
+    border-left: vars.$border-width-xs solid transparent;
 
     &:hover {
-      background-color: v.$bg-light-gray;
+      background-color: vars.$bg-light-gray;
     }
   }
 
   &__item--open {
-    background: v.$bg-ultra-light-gray;
-    border-left: v.$border-width-xs solid v.$primary-color-carads-dark;
+    background: vars.$bg-ultra-light-gray;
+    border-left: vars.$border-width-xs solid vars.$primary-color-carads-dark;
   }
 
   &__link {
     display: flex;
     align-items: center;
-    gap: v.$spacing-gap-xs;
+    gap: vars.$spacing-gap-xs;
     flex-grow: 1;
     text-decoration: none;
   }
 
   &__dropdown {
     margin: 0;
-    border-left: v.$border-width-xs solid v.$primary-color-carads-dark;
-    background: v.$bg-ultra-light-gray;
+    border-left: vars.$border-width-xs solid vars.$primary-color-carads-dark;
+    background: vars.$bg-ultra-light-gray;
     display: flex;
     flex-direction: column; 
-    gap: v.$spacing-gap-xs; 
+    gap: vars.$spacing-gap-xs; 
     
   }
 
@@ -88,31 +88,31 @@
   &__dropdown-link {
     display: flex;
     width: 100%;
-    padding: v.$spacing-padding-sm;
+    padding: vars.$spacing-padding-sm;
     text-decoration: none;
     box-sizing: border-box;
 
     &:hover,
     &:active{
-      background-color: v.$bg-light-gray;
+      background-color: vars.$bg-light-gray;
     }
   }
 
   &__dropdown-link--active {
-  background-color: v.$bg-light-gray;
+  background-color: vars.$bg-light-gray;
 }
 
   &__bottom {
     display: flex;
     align-items: center;
-    border-top: v.$border-width-xxs solid v.$border-color;
-    padding: v.$spacing-gap-xs 0 v.$spacing-gap-xs v.$spacing-gap-xs;
+    border-top: vars.$border-width-xxs solid vars.$border-color;
+    padding: vars.$spacing-gap-xs 0 vars.$spacing-gap-xs vars.$spacing-gap-xs;
 
 
     &-icon {
-      background-color: v.$bg-light-gray;
-      height: 46px; //hardcodet
-      width: 46px; //hardcodet
+      background-color: vars.$bg-light-gray;
+      height: vars.$width-md;
+      width: vars.$width-md;
       border-radius: 100%;
       display: flex;
       align-items: center;
@@ -122,12 +122,12 @@
     &-userdetails {
       display: flex;
       flex-direction: column;
-      margin: 0 0 0 v.$spacing-margin-xs;
-      gap: v.$spacing-gap-xs;
+      margin: 0 0 0 vars.$spacing-margin-xs;
+      gap: vars.$spacing-gap-xs;
 
 
       &-username {
-      margin-bottom: v.$spacing-margin-xs;
+      margin-bottom: vars.$spacing-margin-xs;
       }
     }
   }

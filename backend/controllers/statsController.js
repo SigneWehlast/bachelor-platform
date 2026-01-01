@@ -1,5 +1,6 @@
 import * as StatsModel from '../models/statsModel.js';
 
+// /api/stats/customer
 export async function getCustomerStats(req, res) {
   try {
     const rows = await StatsModel.getCustomerStats();

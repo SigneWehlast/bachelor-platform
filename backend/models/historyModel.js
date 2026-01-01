@@ -1,6 +1,6 @@
 import { db } from '../app.js';
 
-// Hent Carboost-historik
+// Get Carboost-history
 export async function getCarboostHistory() {
   const [rows] = await db.query(`
     SELECT 
@@ -16,7 +16,7 @@ export async function getCarboostHistory() {
   return rows;
 }
 
-// Hent salgs-historik
+// Get sales history
 export async function getSalesHistory() {
   const [rows] = await db.query(`
     SELECT 
@@ -33,7 +33,7 @@ export async function getSalesHistory() {
   return rows;
 }
 
-// Hent daglig Carboost-tabel
+//Get daily carboost table
 export async function getCarboostDailyTable() {
   const [rows] = await db.query(`
     SELECT 
@@ -51,30 +51,12 @@ export async function getCarboostDailyTable() {
   return rows;
 }
 
-// Hent alle måneder med historik
+//Gets the months that have data in the history table
 export async function getMonths() {
   const [rows] = await db.query(`
     SELECT DISTINCT DATE_FORMAT(archived_at, '%Y-%m') AS month
     FROM history
     ORDER BY month DESC
-  `);
-  return rows;
-}
-
-// Hent salgs-historik – safe version
-export async function getSalesHistorySafe() {
-  const [rows] = await db.query(`
-    SELECT 
-      h.customer_id,
-      COALESCE(c.customer_name, 'Ukendt') AS customer_name,
-      COALESCE(h.carboost_conversions, 0) AS carboost_conversions,
-      COALESCE(h.total_budget, 0) AS total_budget,
-      COALESCE(h.number_of_cars, 0) AS number_of_cars,
-      COALESCE(h.leads, 0) AS leads,
-      COALESCE(h.archived_at, NOW()) AS archived_at
-    FROM history h
-    LEFT JOIN customer c ON h.customer_id = c.customer_id
-    ORDER BY h.archived_at DESC
   `);
   return rows;
 }

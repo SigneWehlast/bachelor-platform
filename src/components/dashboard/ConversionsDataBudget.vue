@@ -24,11 +24,13 @@ const customerData = ref([]);
 function parseBudgetSegment(segment) {
   const cleaned = segment.replace('kr.', '').trim();
 
+  //min is first number max is infinite
   if (cleaned.includes('+')) {
     const min = parseInt(cleaned);
     return { min, max: Infinity };
   }
 
+  //set min af first number and max as second
   const [min, max] = cleaned
     .split('-')
     .map(v => parseInt(v.trim()));
@@ -91,7 +93,6 @@ onMounted(async () => {
 
 watch(selectedSegment, updateConversionsBudget);
 </script>
-
 <template>
     <div class='conversion-data-budget'>
         <h1 class='conversion-data-budget__title'>Konverteringsdata budget</h1>

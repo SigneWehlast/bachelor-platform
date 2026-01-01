@@ -2,8 +2,11 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import * as AuthModel from '../models/authModel.js';
 
+//get variables from .env
 dotenv.config();
 
+//check if the email and password matches a user in db
+// api/user/login
 export async function login(req, res) {
   const { email, password } = req.body;
 
@@ -26,7 +29,7 @@ export async function login(req, res) {
 
     return res.json({ token });
   } catch (err) {
-    console.error('LOGIN ERROR:', err);
+    console.error('Login error:', err);
     return res.status(500).json({ error: 'Database error' });
   }
 }

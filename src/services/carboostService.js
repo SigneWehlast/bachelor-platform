@@ -7,6 +7,7 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
     const resCustomers = await fetch(`${BASE_URL}/api/customer/carboost?page=${page}&limit=${limit}`);
     const resultCustomers = await resCustomers.json();
     const customersData = resultCustomers.data;
+    //total count for calculating total pages
     const totalCount = resultCustomers.totalCount;
 
     const resHistory = await fetch(`${BASE_URL}/api/history/carboost/table`);
@@ -39,7 +40,7 @@ export async function getCustomersInCarboost(page = 1, limit = 10) {
     sortByName(customers);
     return { customers, totalCount };
   } catch (err) {
-    console.error('Fejl ved hentning af kunder:', err);
+    console.error('Error while fetching customers:', err);
     return { customers: [], totalCount: 0 };
   }
 }
@@ -62,7 +63,7 @@ export const getCustomersInCarboostByDate = async (month) => {
     }));
     return { customers };
   } catch (err) {
-    console.error('Fejl i getCustomersInCarboostByDate:', err);
+    console.error('Error in getCustomersInCarboostByDate:', err);
     return { customers: [] };
   }
 };
@@ -105,7 +106,7 @@ export const getCustomersInCarboostChange = async (month) => {
     });
     return { customers };
   } catch (err) {
-    console.error('Fejl i getCustomersInCarboostChange:', err);
+    console.error('Error in getCustomersInCarboostChange:', err);
     return { customers: [] };
   }
 };

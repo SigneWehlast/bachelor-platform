@@ -9,10 +9,10 @@ const props = defineProps({
   }
 });
 
-
 const router = useRouter();
 
 const emit = defineEmits(['close']);
+
 function handleClose() {
   emit('close');
 };
@@ -21,7 +21,7 @@ const navigate = (customer) => {
   if (customer.isRecent) {
     router.push('/dashboard/customerchanges');
     handleClose();
-  } else if (customer.yesterdays_dif > 9 && customer.todays_dif / customer.yesterdays_dif < 0.7) {
+  } else if (customer.yesterdays_dif > 9 && customer.todays_dif / customer.yesterdays_dif < 0.7 || customer.yesterdays_dif > 0 && customer.todays_dif / customer.yesterdays_dif > 1.5) {
     router.push('/lead-view');
     handleClose();
   }

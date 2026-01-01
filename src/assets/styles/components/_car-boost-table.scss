@@ -17,13 +17,13 @@
         }
 
         &-title {
-            width: 120px;
+            width: vars.$width-lg;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
 
             &-name {
-                width: 222px;
+                width: 13.875rem;
             }
         }
     }

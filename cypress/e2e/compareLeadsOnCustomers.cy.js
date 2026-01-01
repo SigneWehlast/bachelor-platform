@@ -1,12 +1,12 @@
 describe('Compare leads on customers', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:5173');
+    cy.visit('http://bach.carads.io');
   });
 
   it('can login, navigate, select customers in carboost and choose December', () => {
     //login
     cy.get('input[type="email"]').type('signe@mail.com');
-    cy.get('input[type="password"]').type('213');
+    cy.get('input[type="password"]').type('Signe123');
     cy.contains('button', 'Login').click();
 
     //go to administration
@@ -22,10 +22,8 @@ describe('Compare leads on customers', () => {
     //show chosen customers
     cy.contains('button', 'Vis valgte').click();
 
-    //choose december
+    //choose second month
     cy.get('.dropdown').contains('Vælg periode').click();
-    cy.get('.dropdown-options .dropdown-item').eq(1).click();
-
-    //godkend
+    cy.get('.dropdown-options .dropdown-item').eq(2).click();
   });
 });

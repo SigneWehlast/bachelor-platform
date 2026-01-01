@@ -16,7 +16,7 @@ const toggle = () => {
 };
 
 onMounted(async () => {
-  const response = await getCustomersInCarboost(1, 99999);
+  const response = await getCustomersInCarboost(1, 1000);
   const dbCustomers = response.customers || [];
 
   const fetched = await fetchCustomerChanges();

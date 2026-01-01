@@ -7,6 +7,7 @@ const props = defineProps({
   modelValue: { type: String, default: null },
   hideDayOption: { type: Boolean, default: false }
 });
+
 const emit = defineEmits(['update:modelValue']);
 
 const months = ref([]);
@@ -31,7 +32,6 @@ onMounted(async () => {
 watch(selectedMonth, (val) => emit('update:modelValue', val));
 watch(() => props.modelValue, (val) => selectedMonth.value = val);
 </script>
-
 <template>
   <Dropdown
     v-if='displayOptions.length'

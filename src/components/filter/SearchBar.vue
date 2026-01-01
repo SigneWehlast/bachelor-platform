@@ -17,7 +17,6 @@ watch(() => props.modelValue, (newValue) => {
   searchText.value = newValue;
 });
 </script>
-
 <template>
   <input class='search-bar text-regular' type='text' placeholder='Søg...' v-model='searchText' />
 </template>

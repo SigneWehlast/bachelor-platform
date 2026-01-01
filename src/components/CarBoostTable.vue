@@ -64,10 +64,12 @@ const fetchAll = async () => {
   try {
     let customers = [];
 
+    //if no month is chosen show all customers
     if (!props.selectedMonth) {
       const res = await getCustomersInCarboost(1, 1000);
       customers = res.customers || [];
     } else {
+      //if month is chosen show customers based on month and get changes
       const { customers: leadsData = [] } = await getCustomersInCarboostByDate(props.selectedMonth);
       const { customers: changeData = [] } = await getCustomersInCarboostChange(props.selectedMonth);
 
@@ -163,6 +165,7 @@ const toggleSelection = (id) => {
   emit('update:selectedIds', selectedIds.value);
 };
 
+//pagination
 const {
   currentPage,
   totalPages,
@@ -202,6 +205,7 @@ watch(filteredItems, () => {
   resetPage();
 });
 
+//period on modal
 const periodLabel = computed(() => {
   if (!props.selectedMonth) return '-';
 
@@ -216,6 +220,17 @@ const periodLabel = computed(() => {
     .replace(/^\w/, c => c.toUpperCase());
 });
 
+const leadsTooltipType = computed(() =>
+  props.selectedMonth ? 'leadsTotal' : 'leads'
+);
+
+const changeTooltipType = computed(() =>
+  props.selectedMonth ? 'changeInMonth' : 'change'
+);
+
+const tendensTooltipType = computed(() =>
+  props.selectedMonth ? 'tendensThisMonth' : 'tendens'
+);
 </script>
 <template>
   <div class='carboost-table'>
@@ -241,7 +256,7 @@ const periodLabel = computed(() => {
                       : 'ArrowUpThin'"
               class="carboost-table__filter-icon"
             />
-            Leads<Tooltip type="leads"/></div>
+            Leads<Tooltip :type="leadsTooltipType"/></div>
           </th>
 
           <th v-if="props.visibleColumns.includes('change')" @click="sortBy('change')" class="carboost-table__filter-title">
@@ -252,7 +267,7 @@ const periodLabel = computed(() => {
                       : 'ArrowUpThin'"
               class="carboost-table__filter-icon"
             />
-            Ændring<Tooltip type="change"/></div>
+            Ændring<Tooltip :type="changeTooltipType"/></div>
           </th>
 
           <th @click="sortBy('tendens')" class="carboost-table__filter-title">
@@ -263,7 +278,7 @@ const periodLabel = computed(() => {
                       : 'ArrowUpThin'"
               class='carboost-table__filter-icon'
             />
-            Tendens<Tooltip type="tendens"/></div>
+            Tendens<Tooltip :type="tendensTooltipType"/></div>
           </th>
 
           <th class="carboost-table__filter-title">
