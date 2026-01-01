@@ -62,3 +62,23 @@ export async function getCurrentUser() {
     return null;
   }
 }
+
+export async function login(email, password) {
+  try {
+    const res = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || 'Login fejlede');
+
+    localStorage.setItem('token', data.token);
+    return data.token;
+  } catch (err) {
+    console.error('Login fejl:', err);
+    return null;
+  }
+}

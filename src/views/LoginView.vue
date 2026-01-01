@@ -31,7 +31,7 @@ async function login() {
     const data = await res.json();
     localStorage.setItem('token', data.token);
 
-    window.location.href = '/dashboard';
+    window.location.href = '/#';
   } catch (err) {
     console.error('Login error:', err.message);
   }

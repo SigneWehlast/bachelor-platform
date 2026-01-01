@@ -140,46 +140,31 @@ const filteredByMonthTableData = computed(() => {
 
 
 async function showCustomerData() {
-  console.log('🔵 showCustomerData kaldt');
 
   if (selectedCustomers.value.length === 0) {
-    console.warn('⛔ Ingen valgte kunder');
     return;
   }
 
   const selectedIds = selectedCustomers.value.map(c => c.id);
-  console.log('👥 Valgte kunde-IDs:', selectedIds);
-  console.log('📅 Valgt måned:', selectedMonth.value);
 
-  // Ingen måned valgt → normal kundedata
   if (!selectedMonth.value) {
-    console.log('➡️ Ingen måned valgt – henter normale kundedata');
     const data = await getSelectedCustomers(selectedIds);
-    console.log('📦 Kundedata uden måned:', data);
 
     customerTableData.value = data;
     show();
     return;
   }
 
-  // Måned valgt → hent historik
-  console.log('➡️ Måned valgt – henter historik');
   const { history } = await getHistorySales(selectedIds);
-  console.log('📦 Rå history fra API:', history);
-  console.log('📊 Antal history-rækker:', history.length);
 
   const [selYear, selMonth] = selectedMonth.value.split('-').map(Number);
-  console.log('🗓️ Filtrerer på år/måned:', selYear, selMonth);
 
-  // 1️⃣ Filtrér på valgte kunder + korrekt måned
   const filtered = history.filter(item => {
     if (!item.archived_at) {
-      console.warn('⚠️ Mangler archived_at:', item);
       return false;
     }
 
     if (!selectedIds.includes(item.id)) {
-      console.warn('⚠️ Kunde ikke valgt:', item.id);
       return false;
     }
 
@@ -187,21 +172,9 @@ async function showCustomerData() {
     const match =
       date.getFullYear() === selYear &&
       date.getMonth() + 1 === selMonth;
-
-    if (!match) {
-      console.log('❌ Forkert måned:', {
-        id: item.id,
-        archived_at: item.archived_at
-      });
-    }
-
     return match;
   });
 
-  console.log('✅ Efter måned + kunde-filter:', filtered);
-  console.log('📊 Antal efter filter:', filtered.length);
-
-  // 2️⃣ Vælg seneste datapunkt pr. kunde
   const latestPerCustomer = {};
 
   filtered.forEach(item => {
@@ -209,22 +182,16 @@ async function showCustomerData() {
 
     if (!current) {
       latestPerCustomer[item.id] = item;
-      console.log('🆕 Første entry for kunde', item.id, item.archived_at);
     } else if (new Date(item.archived_at) > new Date(current.archived_at)) {
       latestPerCustomer[item.id] = item;
-      console.log('🔄 Opdaterer kunde', item.id, 'til nyere dato', item.archived_at);
     }
   });
 
   const finalData = Object.values(latestPerCustomer);
-  console.log('🏁 Endelig tabeldata:', finalData);
-  console.table(finalData);
 
-  // 3️⃣ Sæt tabeldata
   customerTableData.value = finalData;
   show();
 }
-
 
 onMounted(async () => {
   salesCustomers.value = await getCustomers();
