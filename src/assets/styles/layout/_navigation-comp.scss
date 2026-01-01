@@ -1,6 +1,6 @@
-@use '../../abstracts/variables' as vars;
-@use '../../base/typography' as t;
-@use '../icon' as i;
+@use '../abstracts/variables' as vars;
+@use '../base/typography' as t;
+@use '../components/icon' as i;
 
 .sidebar {
   width: 216px; //hardcodet
