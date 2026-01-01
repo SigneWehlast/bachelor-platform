@@ -6,9 +6,9 @@ export async function fetchCustomerChanges() {
     const data = await res.json();
 
     return data.map(c => {
+      //checking if the customers is created within the last 24 hours
       const created = new Date(c.create_date);
       const now = new Date();
-
       const hoursDiff = (now - created) / (1000 * 60 * 60);
 
       return {

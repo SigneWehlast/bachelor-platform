@@ -10,7 +10,7 @@ export async function getCustomersInGroups() {
       customerCount: item.customer_count
     }));
   } catch (err) {
-    console.error('Fejl ved hentning af kunder:', err);
+    console.error('Error while fetching customers:', err);
     return [];
   }
 }

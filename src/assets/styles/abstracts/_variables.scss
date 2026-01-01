@@ -1,6 +1,6 @@
 // Primary color
-$primary-color-carads-light: #E5231C; //lys rød
-$primary-color-carads-dark: #991624; //mørkerød
+$primary-color-carads-light: #E5231C; //light red
+$primary-color-carads-dark: #991624; //dark red
 
 // Secondary color
 $white: #FFFFFF;
@@ -59,7 +59,7 @@ $spacing-padding-lg: 1.5rem; // 24px
 $spacing-padding-xl: 1.875rem; // 30px
 $spacing-padding-xxl: 3rem; // 48px
 
-// Gap i rem
+// Gap in rem
 $spacing-gap-xs: 0.375rem; // 6px
 $spacing-gap-sm: 0.75rem; // 12px
 $spacing-gap-md: 1.125rem; // 18px
@@ -87,10 +87,13 @@ $border-radius-md: 0.625rem; // 10px
 // Widths
 $width-xs: 0.375rem; // 6px
 $width-sm: 0.75rem; // 12px
-
-$width-xxxl: 7.5rem; //120 px
-$width-xxxxl: 10rem; // 160px
-$width-xxxxxl: 12rem; // 192px
+$width-md: 2.875rem; //46px
+$width-lg: 7.5rem; //120 px
+$width-xl: 10rem; // 160px
+$width-xxl: 12rem; // 192px
+$width-xxxl: 18.75rem; //300px
+$width-xxxxl: 25rem; //400px
+$width-xxxxxl: 62.5rem; //1000px
 
 // Height
 $height-xxs: 1rem; // 16px

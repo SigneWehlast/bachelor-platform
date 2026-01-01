@@ -29,7 +29,7 @@ export async function getHistoryCarboost() {
     return { history, totalCount: history.length };
 
   } catch (err) {
-    console.error('Fejl ved hentning af historik:', err);
+    console.error('Error while getting data from history:', err);
     return { history: [], totalCount: 0 };
   }
 }
@@ -82,56 +82,7 @@ export async function getHistorySales(customerIds = []) {
 
     return { history, totalCount: history.length };
   } catch (err) {
-    console.error('Fejl ved hentning af salgshistorik:', err);
-    return { history: [], totalCount: 0 };
-  }
-}
-
-export async function getHistorySalesSafe(customerIds = []) {
-  try {
-    const res = await fetch(`${BASE_URL}/api/history/debugSalesHistorySafe`);
-    const result = await res.json();
-    const data = Array.isArray(result.rows) ? result.rows : [];
-
-    const grouped = {};
-    data.forEach(h => {
-      const id = h.customer_id;
-      if (customerIds.length > 0 && !customerIds.includes(id)) return;
-
-      const date = new Date(h.archived_at).toLocaleDateString('da-DK');
-      const key = `${id}-${date}`;
-
-      if (!grouped[key]) {
-        grouped[key] = {
-          id,
-          name: h.customer_name,
-          numberOfCars: h.number_of_cars,
-          totalBudget: h.total_budget,
-          leads: h.leads,
-          carboostConversions: h.carboost_conversions,
-          archived_at: h.archived_at
-        };
-      } else {
-        grouped[key].leads += h.leads;
-        grouped[key].carboostConversions += h.carboost_conversions;
-        grouped[key].totalBudget += h.total_budget;
-        grouped[key].numberOfCars += h.number_of_cars;
-      }
-    });
-
-    const history = Object.values(grouped).map(h => ({
-      ...h,
-      budgetPerDay: h.numberOfCars > 0
-        ? Number((h.totalBudget / (h.numberOfCars * 30)).toFixed(1))
-        : 0,
-      conversionPercent: h.leads > 0
-        ? Number(((h.carboostConversions / h.leads) * 100).toFixed(1))
-        : 0
-    }));
-
-    return { history, totalCount: history.length };
-  } catch (err) {
-    console.error('Fejl ved hentning af salgshistorik:', err);
+    console.error('Error while getting history', err);
     return { history: [], totalCount: 0 };
   }
 }

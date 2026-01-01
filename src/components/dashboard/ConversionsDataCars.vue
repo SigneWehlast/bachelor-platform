@@ -7,7 +7,6 @@ import Dropdown from '../filter/Dropdown.vue';
 //Service
 import { getCustomerStats } from '@/services/customerStatsService';
 
-// Data til visning med dynamiske beskrivelser
 const conversionsCars = ref([
   { name: 'Gns konverteringer', data: '-', description: '' },
   { name: 'Gns CarBoost konverteringer', data: '-', description: '' },
@@ -15,7 +14,6 @@ const conversionsCars = ref([
   { name: 'Gns antal biler', data: '-', description: '' }
 ]);
 
-// Segment options
 const segmentOptions = [
   '0 - 25 biler',
   '26-50 biler',
@@ -28,20 +26,17 @@ const segmentOptions = [
   '200+ biler'
 ];
 
-// Valgt segment
 const selectedSegment = ref(segmentOptions[0]);
-
-// State til data fra API
 const customerData = ref([]);
 
-// Funktion til at parse segmenttekst til min/max værdier
+//parsing segment text for min/maz values
 function parseSegment(segment) {
   if (segment === '200+ biler') return { min: 201, max: Infinity };
   const [min, max] = segment.split('-').map(s => parseInt(s.trim()));
   return { min, max };
 }
 
-// Opdater konverteringsdata baseret på segment
+//Update data based on chosen segment
 function updateConversions() {
   const { min, max } = parseSegment(selectedSegment.value);
   const filtered = customerData.value.filter(c => c.numberOfCars >= min && c.numberOfCars <= max);
@@ -58,23 +53,23 @@ function updateConversions() {
   const segmentTotalCarBoost = filtered.reduce((acc, c) => acc + c.carboostConversions, 0);
   const segmentTotalCars = filtered.reduce((acc, c) => acc + c.numberOfCars, 0);
 
-  // Overordnede totals
+  // Overall totals
   const overallTotalCarBoost = customerData.value.reduce((acc, c) => acc + c.carboostConversions, 0);
 
-  // Beregn pris pr. bil pr. dag per kunde og gennemsnit
+  //Calculate pris pr. bil pr. dag per kunde and average
   const budgetPerDayArray = filtered.map(c =>
     c.numberOfCars > 0 ? Number((c.totalBudget / (c.numberOfCars * 30)).toFixed(1)) : 0
   );
 
   const avgBudgetPerDay = (budgetPerDayArray.reduce((acc, val) => acc + val, 0) / budgetPerDayArray.length).toFixed(1);
 
-  // Opdater data
+  // update data
   conversionsCars.value[0].data = (segmentTotalLeads / filtered.length).toFixed(0);
   conversionsCars.value[1].data = (segmentTotalCarBoost / filtered.length).toFixed(0);
   conversionsCars.value[2].data = avgBudgetPerDay;
   conversionsCars.value[3].data = (segmentTotalCars / filtered.length).toFixed(0);
 
-  // Dynamiske beskrivelser
+  // update dynamic descriptions
   conversionsCars.value[0].description = (segmentTotalLeads / filtered.length) > 50 ? 'Høj konvertering' : 'Stabil';
   conversionsCars.value[1].description = overallTotalCarBoost > 0
     ? ((segmentTotalCarBoost / overallTotalCarBoost) * 100).toFixed(1) + '% af totalen'
@@ -83,18 +78,18 @@ function updateConversions() {
   conversionsCars.value[3].description = (segmentTotalCars / filtered.length) > 100 ? 'Stort segment' : 'Mindre segment';
 }
 
-// Hent data når komponenten mountes
+// Get data when the component is mounted
 onMounted(async () => {
   try {
     const data = await getCustomerStats();
     customerData.value = data;
     updateConversions();
   } catch (err) {
-    console.error('Fejl ved hentning af stats:', err);
+    console.error('Error while getting stats:', err);
   }
 });
 
-// Watcher på selectedSegment
+// Watcher on selectedSegment
 watch(selectedSegment, () => {
   updateConversions();
 });

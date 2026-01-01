@@ -40,24 +40,23 @@ function close() {
   show.value = false;
 }
 </script>
+<template>
+  <div
+    class="tooltip"
+    ref="trigger"
+    @mouseenter="open"
+    @mouseleave="close"
+  >
+    <Icon :name="iconName" class="tooltip__icon" />
 
-    <template>
-        <div
-          class="tooltip"
-          ref="trigger"
-          @mouseenter="open"
-          @mouseleave="close"
-        >
-          <Icon :name="iconName" class="tooltip__icon" />
-
-          <Teleport to="body">
-            <div
-              v-if="show"
-              class="tooltip__text"
-              :style="style"
-            >
-              {{ tooltipText }}
-            </div>
-          </Teleport>
-        </div>
-      </template>
+    <Teleport to="body">
+      <div
+        v-if="show"
+        class="tooltip__text"
+        :style="style"
+      >
+        {{ tooltipText }}
+      </div>
+    </Teleport>
+  </div>
+</template>

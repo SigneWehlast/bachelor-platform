@@ -1,12 +1,12 @@
 describe('Check data on customers', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:5173');
+    cy.visit('http://bach.carads.io');
   });
 
   it('can login, select first car option, select all customers and see table, press anonymize and remove anonymization', () => {
     //login
     cy.get('input[type="email"]').type('signe@mail.com');
-    cy.get('input[type="password"]').type('213');
+    cy.get('input[type="password"]').type('Signe123');
     cy.contains('button', 'Login').click();
 
     //go to administration

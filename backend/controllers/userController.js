@@ -1,6 +1,7 @@
 import * as UserModel from '../models/userModel.js';
 
-// /api/users
+//Get all users
+// /api/user
 export async function getUserData(req, res) {
   try {
     const rows = await UserModel.getUserData();
@@ -11,7 +12,8 @@ export async function getUserData(req, res) {
   }
 }
 
-// /api/users/:user_id/role
+//Get roles for user
+// /api/user/:user_id/role
 export async function getUserRole(req, res) {
   try {
     const { user_id } = req.params;
@@ -28,6 +30,8 @@ export async function getUserRole(req, res) {
   }
 }
 
+//Get the current user logged in
+// api/user/me
 export async function getCurrentUser(req, res) {
   try {
     const userId = req.userId;

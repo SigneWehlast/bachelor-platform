@@ -86,7 +86,7 @@ onMounted(async () => {
 watch(
   [selectedMonth, () => props.customer, history],
   ([month, customer, hist]) => {
-    if (hist.length && customer) fetchCustomerData();
+    if (customer && hist.length) fetchCustomerData();
   },
   { immediate: true }
 );

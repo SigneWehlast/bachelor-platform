@@ -6,7 +6,6 @@
    flex-direction: row;
    margin-top: vars.$spacing-margin-md;   
 
-
    &-topbar {
        display: flex;
        flex-direction: row;
@@ -16,15 +15,14 @@
            @include mix.buttons;
 
            &-spinner {
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid vars.$primary-color-carads-dark;
+            border: 0.125rem solid #f3f3f3;
+            border-top: 0.125rem solid vars.$primary-color-carads-dark;
             border-radius: 50%;
-            width: 16px;
-            height: 16px;
+            width: vars.$icon-size-md;
+            height: vars.$icon-size-md;
             animation: spin 1s linear infinite;
             display: inline-block;
             vertical-align: middle;
-            margin-right: 5px;
            }
        }
    }

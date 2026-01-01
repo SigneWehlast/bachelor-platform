@@ -16,7 +16,7 @@
   font-size: vars.$font-size-base;
   border-radius: vars.$border-radius-sm;
   background-color: vars.$btn-color-dark;
-  width: vars.$width-xxxl;
+  width: vars.$width-lg;
   height: vars.$height-sm;
   text-align: center;
 
@@ -39,7 +39,7 @@
   background-color: vars.$white;
   color: vars.$black;
   height: vars.$height-sm;
-  width: vars.$width-xxxxxl;
+  width: vars.$width-xxl;
   padding: vars.$spacing-padding-xl vars.$spacing-padding-xxl;
 
   &:hover {
@@ -48,8 +48,7 @@
   }
 }
 
-// Forrige og næste knap
-
+//pagination buttons
 @mixin buttons-pagination {
   appearance: none;
   border-style: solid;
@@ -58,7 +57,7 @@
   border-radius: vars.$border-radius-md;
   background-color: vars.$white;
   color: vars.$text-color-gray;
-  width: vars.$width-xxxl;
+  width: vars.$width-lg;
   height: vars.$height-sm;
 
   &:disabled {

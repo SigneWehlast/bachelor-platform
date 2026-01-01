@@ -31,13 +31,12 @@ async function login() {
     const data = await res.json();
     localStorage.setItem('token', data.token);
 
-    window.location.href = '/#';
+    window.location.href = '/#/dashboard';
   } catch (err) {
     console.error('Login error:', err.message);
   }
 }
 </script>
-
 <template>
   <div class='login'>
     <div class='login__blank'></div>

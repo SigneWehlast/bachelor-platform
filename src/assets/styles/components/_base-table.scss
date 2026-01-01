@@ -23,7 +23,4 @@ tr {
   & tbody tr:nth-child(odd) {
     background-color: vars.$table-color-first;
   }
-
-  & th:not(:first-child), td:not(:first-child) {
-}
 }

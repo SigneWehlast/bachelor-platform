@@ -3,8 +3,8 @@
 
 .notification-comp {
     position: absolute;
-    top: 50px;
-    left: 6px;
+    top: 3.125rem;
+    left: 0.375rem;
     display: flex;
     flex-direction: column;
     @include mix.input;
@@ -54,6 +54,6 @@
 
     &__empty {
         padding: vars.$spacing-padding-xs 0;
-        min-width: vars.$width-xxxxxl;
+        min-width: vars.$width-xxl;
     }
 }

@@ -1,5 +1,6 @@
 import * as HistoryModel from '../models/historyModel.js';
 
+//Get data for carboost from history table
 // /api/history/carboost
 export async function getCarboostHistory(req, res) {
   try {
@@ -11,6 +12,7 @@ export async function getCarboostHistory(req, res) {
   }
 }
 
+//Get data for sale from history table
 // /api/history/sales
 export async function getSaleHistory(req, res) {
   try {
@@ -22,6 +24,7 @@ export async function getSaleHistory(req, res) {
   }
 }
 
+//Gets data for carboost for today and yesterday to get change
 // /api/history/carboost/table
 export async function getCarboostDailyTable(req, res) {
   try {
@@ -33,6 +36,7 @@ export async function getCarboostDailyTable(req, res) {
   }
 }
 
+// Gets the months that have data in the history table
 // /api/history/months
 export async function getMonths(req, res) {
   try {
@@ -41,14 +45,5 @@ export async function getMonths(req, res) {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });
-  }
-}
-
-export async function debugSalesHistorySafe(req, res) {
-  try {
-    const rows = await HistoryModel.getSalesHistorySafe();
-    res.json({ debug: true, rows });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
   }
 }

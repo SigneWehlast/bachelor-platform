@@ -6,26 +6,32 @@ import Icon from '../Icon.vue';
 
 const props = defineProps({
   modelValue: [String, Number, Array],
+  //options in dropdown
   options: {
     type: Array,
     required: true
   },
+  //label on dropdown
   label: {
     type: String,
     default: ''
   },
+  //if a options is disabled in some dropdowns
   disableOptions: {
     type: Array,
     default: () => []
   },
+  //special text on dropdown
   selectedPrefix: {
     type: String,
     default: ''
   },
+  //if multiple options can be chosen
   multiple: {
     type: Boolean,
     default: false
   },
+  //always show the chosen label
   alwaysShowLabel: {
     type: Boolean,
     default: false
@@ -72,7 +78,6 @@ function getLabel(option) {
   return String(option);
 }
 </script>
-
 <template>
   <div class='dropdown' @click='toggle'>
     <p class='text-regular'>

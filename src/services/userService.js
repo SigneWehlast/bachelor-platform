@@ -4,7 +4,7 @@ export async function getUsers() {
   try {
     const res = await fetch(`${BASE_URL}/api/user`);
     if (!res.ok) {
-      throw new Error('Fejl ved hentning af brugere');
+      throw new Error('Error while fetching users');
     }
     const data = await res.json();
     return data.map(user => ({
@@ -14,7 +14,7 @@ export async function getUsers() {
       initials: `${user.first_name[0]}${user.last_name[0]}`.toUpperCase()
     }));
   } catch (err) {
-    console.error('Fejl ved hentning af brugere:', err);
+    console.error('Error while fetching users', err);
     return [];
   }
 }
@@ -23,7 +23,7 @@ export async function getUserRole(userId) {
   try {
     const res = await fetch(`${BASE_URL}/api/user/${userId}/role`);
     if (!res.ok) {
-      throw new Error('Fejl ved hentning af brugerrolle');
+      throw new Error('Error while getting users role');
     }
     const role = await res.json();
     return {
@@ -31,7 +31,7 @@ export async function getUserRole(userId) {
       name: role.role_name
     };
   } catch (err) {
-    console.error('Fejl ved hentning af brugerrolle:', err);
+    console.error('Error while getting users role', err);
     return null;
   }
 }
@@ -39,7 +39,7 @@ export async function getUserRole(userId) {
 export async function getCurrentUser() {
   try {
     const token = localStorage.getItem('token');
-    if (!token) throw new Error('Ingen token fundet, log ind');
+    if (!token) throw new Error('No token found, log in');
 
     const res = await fetch(`${BASE_URL}/api/user/me`, {
       headers: {
@@ -47,7 +47,7 @@ export async function getCurrentUser() {
       }
     });
 
-    if (!res.ok) throw new Error('Fejl ved hentning af nuværende bruger');
+    if (!res.ok) throw new Error('Error while getting current user');
 
     const data = await res.json();
     return {
@@ -58,7 +58,7 @@ export async function getCurrentUser() {
       role: data.role
     };
   } catch (err) {
-    console.error('Fejl ved hentning af nuværende bruger:', err);
+    console.error('Error while getting current user', err);
     return null;
   }
 }
@@ -73,12 +73,12 @@ export async function login(email, password) {
 
     const data = await res.json();
 
-    if (!res.ok) throw new Error(data.error || 'Login fejlede');
+    if (!res.ok) throw new Error(data.error || 'Login failed');
 
     localStorage.setItem('token', data.token);
     return data.token;
   } catch (err) {
-    console.error('Login fejl:', err);
+    console.error('Login failed:', err);
     return null;
   }
 }

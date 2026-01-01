@@ -2,7 +2,6 @@
 //Utils
 import { trackingStore } from '@/utils/trackingStore';
 </script>
-
 <template>
 <div class='breadcrumbs text-light'>
   <template v-for='(crumb, index) in trackingStore.breadcrumbs' :key='index'>

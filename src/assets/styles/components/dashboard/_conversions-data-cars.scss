@@ -1,5 +1,4 @@
 @use '../../abstracts/variables' as vars;
-@use '../../abstracts/mixins' as mix;
 
 .conversion-data-cars {
     &__title {
@@ -34,7 +33,5 @@
                 color: vars.$text-color-gray;
             }
         }
-
     }
-
 }

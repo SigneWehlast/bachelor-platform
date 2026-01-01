@@ -10,7 +10,7 @@
   position: relative;
   justify-content: space-between;
   z-index: 800;
-  width: 162px;
+  width: vars.$width-xxl;
 
   p {
     color: vars.$text-color-gray;

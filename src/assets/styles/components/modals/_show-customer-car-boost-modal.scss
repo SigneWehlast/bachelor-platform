@@ -20,7 +20,7 @@
     border-radius: vars.$border-radius-md;
     box-shadow: vars.$box-shaddow-dark;
     z-index: 1;
-    width: 1000px;
+    width: vars.$width-xxxxxl;
   }
 
   &__topbar {    
@@ -35,15 +35,15 @@
 
     &-dropdowns {
         display: flex;
-        gap: 24px;
+        gap: vars.$spacing-gap-lg;
         justify-content: flex-end;
-        margin: 24px 0 12px 0;
+        margin: vars.$spacing-margin-lg 0 vars.$spacing-padding-sm 0;
     }
 
     &-alert {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: vars.$spacing-gap-xs;
         color: vars.$text-color-gray;
 
         &__text {
@@ -60,6 +60,6 @@
   &__last-updated {
     display: flex;
     justify-content: flex-end;
-    margin: 12px 0 12px 0;
+    margin: vars.$spacing-margin-sm 0 vars.$spacing-margin-sm 0;
   }
 }

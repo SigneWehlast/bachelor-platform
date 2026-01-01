@@ -1,6 +1,7 @@
 import * as CustomerModel from '../models/customerModel.js';
 
-// Hent alle kunder
+//Get all customers
+// api/customer/
 export async function getAllCustomers(req, res) {
   try {
     const rows = await CustomerModel.getAllCustomers();
@@ -11,7 +12,8 @@ export async function getAllCustomers(req, res) {
   }
 }
 
-// Hent salgs-kunder
+//Get all customers for sale
+// api/customer/sale
 export async function getSaleCustomers(req, res) {
   try {
     const ids = req.query.ids.split(',').map(Number);
@@ -23,7 +25,8 @@ export async function getSaleCustomers(req, res) {
   }
 }
 
-// Hent Carboost liste
+//Get list for carboost
+// api/customer/carboost
 export async function getCarboostList(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -38,7 +41,8 @@ export async function getCarboostList(req, res) {
   }
 }
 
-// Hent kundernes ændringer
+//Get all customer changes
+// api/customer/changes
 export async function getCustomerChanges(req, res) {
   try {
     const rows = await CustomerModel.getCustomerChanges();
@@ -49,7 +53,8 @@ export async function getCustomerChanges(req, res) {
   }
 }
 
-// Hent kunder i grupper
+//Get all customers in groups
+// api/customer/customers-in-groups
 export async function getCustomersInGroups(req, res) {
   try {
     const rows = await CustomerModel.getCustomersInGroups();
@@ -60,7 +65,8 @@ export async function getCustomersInGroups(req, res) {
   }
 }
 
-// Hent stats
+//Get stats from customers
+// api/customer/stats
 export async function getCustomerStats(req, res) {
   try {
     const rows = await CustomerModel.getCustomerStats();
@@ -71,7 +77,8 @@ export async function getCustomerStats(req, res) {
   }
 }
 
-// Hent kunder efter måned
+//Get customers based on month
+// api/customer/carboost/date
 export async function getCustomersByDate(req, res) {
   try {
     const { month } = req.query;
@@ -85,7 +92,8 @@ export async function getCustomersByDate(req, res) {
   }
 }
 
-// Hent Carboost ændringer
+//Get customers and their changes in leads
+// api/customer/carboost/change
 export async function getCustomersCarboostChange(req, res) {
   try {
     const { month } = req.query;
