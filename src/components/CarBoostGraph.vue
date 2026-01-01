@@ -1,6 +1,8 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue';
 import ApexCharts from 'apexcharts';
+
+//Service
 import { getHistoryCarboost } from '@/services/historyService';
 
 const props = defineProps({

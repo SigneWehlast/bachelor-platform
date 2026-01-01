@@ -1,17 +1,25 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { menuItems } from '@/config/menuItems';
-import Icon from '@/components/Icon.vue';
 import logo from '@/assets/images/Carads_logo_dark_text.svg';
-import { UserTracking } from '@/utils/tracking';
-import { getCurrentUser } from '@/services/userService.js';
+
+//Components
+import Icon from '@/components/Icon.vue';
 import NotificationBell from './NotificationBell.vue';
+
+//Config
+import { menuItems } from '@/config/menuItems';
+
+//Utils
+import { UserTracking } from '@/utils/tracking';
+
+//Service
+import { getCurrentUser } from '@/services/userService.js';
 
 const user = ref(null);
 const role = ref(null);
 
-// Router
+// Router const
 const route = useRoute();
 
 // State: Holder styr på hvilken dropdown er åben

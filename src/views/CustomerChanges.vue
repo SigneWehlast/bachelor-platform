@@ -1,12 +1,15 @@
 <script setup>
 import { ref } from 'vue';
+//Components
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 import LatestCustomerChangesContent from '../components/dashboard/LatestCustomerChangesContent.vue';
 import SearchBar from '@/components/filter/SearchBar.vue';
 import Tooltip from '@/components/Tooltip.vue';
 
+//Const
 const searchQuery = ref('');
 </script>
+
 <template>
   <div class="customer-changes">
     <div class="customer-changes__text">

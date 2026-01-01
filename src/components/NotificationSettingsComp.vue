@@ -1,6 +1,8 @@
 <script setup>
+import { onMounted, ref } from 'vue';   
+
+//Service
 import { getSettings, loadSettings } from '@/services/notificationService';
-import { onMounted, ref } from 'vue';
 
 const settings = getSettings();
 const localSettings = ref({ ...settings });

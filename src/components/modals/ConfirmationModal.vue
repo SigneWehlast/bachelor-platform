@@ -1,4 +1,5 @@
 <script setup>
+//Components
 import Icon from '@/components/Icon.vue';
 
 const emit = defineEmits(['yes', 'no']);

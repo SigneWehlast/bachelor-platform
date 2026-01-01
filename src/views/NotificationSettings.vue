@@ -1,9 +1,14 @@
 <script setup>
-import NotificationSettingsComp from '@/components/NotificationSettingsComp.vue';
-import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
-import { saveSettings, getSettings } from '@/services/notificationService';
 import { ref } from 'vue';
 
+//Components
+import NotificationSettingsComp from '@/components/NotificationSettingsComp.vue';
+import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
+
+// Services
+import { saveSettings, getSettings } from '@/services/notificationService';
+
+// Const
 const saved = ref(false);
 const saving = ref(false);
 const notificationSettings = ref(null);

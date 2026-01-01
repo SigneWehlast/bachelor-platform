@@ -1,4 +1,5 @@
 <script setup>
+//Components
 import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
 
 </script>

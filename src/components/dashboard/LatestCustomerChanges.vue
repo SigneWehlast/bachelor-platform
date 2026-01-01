@@ -1,4 +1,5 @@
 <script setup>
+//Components
 import LatestCustomerChangesContent from './LatestCustomerChangesContent.vue';
 import Tooltip from '../Tooltip.vue';
 </script>

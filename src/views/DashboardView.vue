@@ -4,6 +4,7 @@ import ConversionsDataCars from '@/components/dashboard/ConversionsDataCars.vue'
 import LatestCustomerChanges from '@/components/dashboard/LatestCustomerChanges.vue';
 import MDKMediaOverview from '@/components/dashboard/MDKMediaOverview.vue';
 </script>
+
 <template>
     <div class='dashboard-view'>
         <div class='dashboard-view__section'>

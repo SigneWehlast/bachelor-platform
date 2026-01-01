@@ -1,6 +1,8 @@
 <script setup>
-import { icons } from '@/config/icons.js';
 import { computed } from 'vue';
+
+//Config
+import { icons } from '@/config/icons.js';
 
 const props = defineProps({
   name: { type: String, required: true }

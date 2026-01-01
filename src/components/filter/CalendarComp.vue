@@ -1,6 +1,10 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue';
+
+//Components
 import Dropdown from './Dropdown.vue';
+
+//Service
 import { getMonths } from '@/services/calendarService';
 
 const props = defineProps({

@@ -1,9 +1,14 @@
 <script setup>
+import { computed, onMounted } from 'vue';  
 import { useRouter, useRoute } from 'vue-router';
-import { menuItems } from '@/config/menuItems';
-import { computed, onMounted } from 'vue';
+
+//Components
 import Icon from '@/components/Icon.vue';
 
+//Config
+import { menuItems } from '@/config/menuItems';
+
+//Const
 const router = useRouter();
 const route = useRoute();
 
@@ -22,10 +27,6 @@ const sections = computed(() => {
   return map;
 });
 
-function goTo(path) {
-  router.push(path);
-};
-
 onMounted(() => {
   const sectionQuery = route.query.section;
   if (sectionQuery) {
@@ -33,6 +34,12 @@ onMounted(() => {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 });
+
+//Functions
+function goTo(path) {
+  router.push(path);
+};
+
 </script>
 <template>
   <div class='administration'>
