@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import { menuItems } from '@/config/menuItems';
 import { UserTracking } from '@/utils/tracking';
 

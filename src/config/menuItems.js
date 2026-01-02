@@ -34,6 +34,15 @@ export const menuItems = [
             LabelAdministration: 'Håndter salgs funktioner',
             meta: { title: 'Salgvisning - CarAds' }
           },
+           {
+            label: 'Indstillinger',
+            path: '/diverse/notificationsettings',
+            view: () => import('@/views/SettingsView.vue'),
+            section: 'Generelle indstillinger',
+            iconAdministration: 'Cog',
+            LabelAdministration:'Håndter bruger indstillinger',
+            meta: { title: 'Indstillinger - CarAds'}
+          }
         ]
       },
       {

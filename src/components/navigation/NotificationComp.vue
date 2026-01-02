@@ -73,7 +73,7 @@ const navigate = (customer) => {
             <span v-if="c.yesterdays_dif > 9 && c.todays_dif / c.yesterdays_dif < 0.7">
               leads er faldet
             </span>
-            <span v-else-if="c.yesterdays_dif > 0 && c.todays_dif / c.yesterdays_dif > 1.5">
+            <span v-else-if="c.yesterdays_dif > 9 && c.todays_dif / c.yesterdays_dif > 1.5">
               leads er steget
             </span>
           </span>

@@ -13,6 +13,4 @@ import BreadcrumbsComp from '@/components/navigation/BreadcrumbsComp.vue';
         <BreadcrumbsComp/>
       </p>
    </div>
-
-
 </template>

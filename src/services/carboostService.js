@@ -1,7 +1,6 @@
 import { sortByName } from '@/utils/sort';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-
 export async function getCustomersInCarboost(page = 1, limit = 10) {
   try {
     const resCustomers = await fetch(`${BASE_URL}/api/customer/carboost?page=${page}&limit=${limit}`);

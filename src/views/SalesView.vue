@@ -135,9 +135,7 @@ const filteredByMonthTableData = computed(() => {
   });
 });
 
-
 async function showCustomerData() {
-
   if (selectedCustomers.value.length === 0) {
     return;
   }
@@ -153,7 +151,6 @@ async function showCustomerData() {
   }
 
   const { history } = await getHistorySales(selectedIds);
-
   const [selYear, selMonth] = selectedMonth.value.split('-').map(Number);
 
   const filtered = history.filter(item => {
