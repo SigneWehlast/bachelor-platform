@@ -39,6 +39,11 @@ const toggleDropdown = (label) => {
     openDropdowns.value = newState;
   }
 };
+
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/#/login';
+}
 </script>
 <template>
   <nav class='sidebar'>
@@ -96,6 +101,12 @@ const toggleDropdown = (label) => {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="sidebar__logout" v-if="user">
+      <div class="sidebar__logout-btn" @click="logout">
+        <Icon name="Logout" class="sidebar__icon" />
+        <span class="text-medium">Log ud</span>
       </div>
     </div>
     <div class='sidebar__bottom' v-if='user'>

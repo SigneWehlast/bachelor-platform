@@ -131,4 +131,16 @@
       }
     }
   }
+   &__logout {
+    padding: vars.$spacing-padding-md;
+
+    &-btn {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      gap: vars.$spacing-gap-xs;
+      flex-grow: 1;
+      text-decoration: none;
+    }
+  }
 }
