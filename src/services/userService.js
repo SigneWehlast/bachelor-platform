@@ -39,7 +39,7 @@ export async function getUserRole(userId) {
 export async function getCurrentUser() {
   try {
     const token = localStorage.getItem('token');
-    if (!token) throw new Error('No token found, log in');
+    if (!token) return null;
 
     const res = await fetch(`${BASE_URL}/api/user/me`, {
       headers: {
